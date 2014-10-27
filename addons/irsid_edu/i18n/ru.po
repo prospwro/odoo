@@ -1,0 +1,4891 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* irsid_edu
+#
+# , 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.saas~3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-02 01:49+0000\n"
+"PO-Revision-Date: 2014-04-02 09:06+0700\n"
+"Last-Translator: \n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+"Language: ru\n"
+"X-Generator: Lokalize 1.5\n"
+
+#. module: irsid_edu
+#: selection:edu.journal,recordtype:0
+#: selection:edu.module.record,recordtype:0
+msgid "Practice"
+msgstr "Практика"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_plan_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_plan_updated
+msgid "План обновлён"
+msgstr "План обновлён"
+
+#. module: irsid_edu
+#: field:edu.grade.line,title:0
+#: field:edu.module,name:0
+#: field:edu.module.task,name:0
+#: field:edu.plan,name:0
+#: field:edu.program,name:0
+#: field:edu.schedule,name:0
+#: field:edu.time,name:0
+msgid "Title"
+msgstr "Наименование"
+
+#. module: irsid_edu
+#: selection:edu.journal,recordtype:0
+#: selection:edu.module.record,recordtype:0
+msgid "Regular Module"
+msgstr "Обычный модуль"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,time_id:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,time_id:0
+#: view:edu.module.seance:0
+#: field:edu.module.seance,time_id:0
+#: view:edu.module.work:0
+#: field:edu.module.work,time_id:0
+#: view:edu.program:0
+#: field:edu.program,time_ids:0
+#: field:edu.schedule.line,time_id:0
+#: view:edu.seance:0
+#: field:edu.seance,time_id:0
+#: view:edu.time:0
+#: view:edu.work:0
+#: field:edu.work,time_id:0
+#: model:ir.model,name:irsid_edu.model_edu_time
+msgid "Time"
+msgstr "Время"
+
+#. module: irsid_edu
+#: field:edu.admission,date_approved:0
+#: field:edu.admission.line,date_approved:0
+#: field:edu.application,date_approved:0
+#: field:edu.application.line,date_approved:0
+#: field:edu.doc,date_approved:0
+#: field:edu.grade,date_approved:0
+#: field:edu.grade.line,date_approved:0
+#: field:edu.module,date_approved:0
+#: field:edu.module.record,date_approved:0
+#: field:edu.module.seance,date_approved:0
+#: field:edu.module.section,date_approved:0
+#: field:edu.module.task,date_approved:0
+#: field:edu.module.work,date_approved:0
+#: field:edu.order,date_approved:0
+#: field:edu.order.line,date_approved:0
+#: field:edu.plan,date_approved:0
+#: field:edu.pricelist,date_approved:0
+#: field:edu.pricelist.line,date_approved:0
+#: field:edu.program,date_approved:0
+#: field:edu.record,date_approved:0
+#: field:edu.record.line,date_approved:0
+#: field:edu.schedule,date_approved:0
+#: field:edu.schedule.line,date_approved:0
+#: field:edu.seance,date_approved:0
+#: field:edu.time,date_approved:0
+#: field:edu.work,date_approved:0
+#: field:edu.work.order,date_approved:0
+msgid "Date Of Approval"
+msgstr "Дата утверждения"
+
+#. module: irsid_edu
+#: selection:edu.stage,state:0
+#: selection:edu.student.program,state:0
+msgid "Training Canceled"
+msgstr "Обучение прервано"
+
+#. module: irsid_edu
+#: selection:edu.module.task,type:0
+msgid "Theme"
+msgstr "Тема"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.pricelist:0
+msgid "Форма обучения"
+msgstr "Форма обучения"
+
+#. module: irsid_edu
+#: field:edu.program,department_id:0
+msgid "Department"
+msgstr "Подразделение"
+
+#. module: irsid_edu
+#: field:edu.admission.target,partner_targeted:0
+msgid "Partner Targeted"
+msgstr "Целевое обучение"
+
+#. module: irsid_edu
+#: field:edu.module,subsection_id:0
+#: model:ir.model,name:irsid_edu.model_edu_program_subsection
+msgid "Program Subsection"
+msgstr "Часть"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_time_category
+msgid "Time Category"
+msgstr "Категория времени"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_module
+msgid "Academic Module"
+msgstr "Учебный модуль"
+
+#. module: irsid_edu
+#: report:edu.pricelist:0
+msgid "Цена"
+msgstr "Цена"
+
+#. module: irsid_edu
+#: sql_constraint:edu.admission.target:0
+#: sql_constraint:edu.student.program:0
+msgid "Code must be unique!"
+msgstr "Код не должен повторяться!"
+
+#. module: irsid_edu
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_configuration_training
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_training
+msgid "Training"
+msgstr "Обучение"
+
+#. module: irsid_edu
+#: view:edu.work.type:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_work_type
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_work_type
+msgid "Work Types"
+msgstr "Виды работ"
+
+#. module: irsid_edu
+#: field:edu.order,main_text:0
+msgid "Decision Text"
+msgstr "Решение"
+
+#. module: irsid_edu
+#: field:edu.module,eff_credits:0
+msgid "Effective Credits"
+msgstr "Действ. ЗЕ"
+
+#. module: irsid_edu
+#: field:edu.module,case_default:0
+msgid "Default for New Plans"
+msgstr "По умолчанию для новых планов"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_plan
+msgid "Academic Plan"
+msgstr "Учебный план"
+
+#. module: irsid_edu
+#: field:edu.statement,app_intro_text:0
+msgid "Application Reason Text"
+msgstr "Основание заявления"
+
+#. module: irsid_edu
+#: view:edu.pricelist:0
+#: field:edu.pricelist,line_ids:0
+#: view:edu.pricelist.line:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_pricelist_line
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_pricelist_line
+msgid "Pricelist Lines"
+msgstr "Строки прейскуранта"
+
+#. module: irsid_edu
+#: field:edu.order,origin:0
+#: field:edu.order.line,origin:0
+#: field:edu.pricelist,origin:0
+#: field:edu.pricelist.line,origin:0
+msgid "Origin"
+msgstr "Источник"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_statement
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_statement
+msgid "Statements"
+msgstr "Формулировки"
+
+#. module: irsid_edu
+#: view:edu.student.program:0
+msgid "Schedule Extract"
+msgstr "График"
+
+#. module: irsid_edu
+#: selection:edu.module.task,type:0
+msgid "Test Paper"
+msgstr "Билет"
+
+#. module: irsid_edu
+#: view:edu.application:0
+msgid "Application: "
+msgstr "Заявление: "
+
+#. module: irsid_edu
+#: help:edu.admission,message_summary:0
+#: help:edu.admission.line,message_summary:0
+#: help:edu.application,message_summary:0
+#: help:edu.application.line,message_summary:0
+#: help:edu.doc,message_summary:0
+#: help:edu.grade,message_summary:0
+#: help:edu.grade.line,message_summary:0
+#: help:edu.module,message_summary:0
+#: help:edu.module.record,message_summary:0
+#: help:edu.module.seance,message_summary:0
+#: help:edu.module.section,message_summary:0
+#: help:edu.module.task,message_summary:0
+#: help:edu.module.work,message_summary:0
+#: help:edu.order,message_summary:0
+#: help:edu.order.line,message_summary:0
+#: help:edu.plan,message_summary:0
+#: help:edu.pricelist,message_summary:0
+#: help:edu.pricelist.line,message_summary:0
+#: help:edu.program,message_summary:0
+#: help:edu.record,message_summary:0
+#: help:edu.record.line,message_summary:0
+#: help:edu.schedule,message_summary:0
+#: help:edu.schedule.line,message_summary:0
+#: help:edu.seance,message_summary:0
+#: help:edu.student.program,message_summary:0
+#: help:edu.time,message_summary:0
+#: help:edu.work,message_summary:0
+#: help:edu.work.order,message_summary:0
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is directly "
+"in html format in order to be inserted in kanban views."
+msgstr ""
+"Содержит сводку по переписке (число сообщений, ...). Эта сводка имеет формат "
+"html для вставки в виды канбан."
+
+#. module: irsid_edu
+#: model:res.groups,name:irsid_edu.group_edu_rector
+msgid "Rector"
+msgstr "Ректор"
+
+#. module: irsid_edu
+#: field:edu.admission.target,partner_id:0
+#: model:ir.model,name:irsid_edu.model_res_partner
+msgid "Partner"
+msgstr "Заказчик"
+
+#. module: irsid_edu
+#: view:edu.order.line:0
+#: model:ir.model,name:irsid_edu.model_edu_order_line
+msgid "Order Line"
+msgstr "Строка приказа"
+
+#. module: irsid_edu
+#: view:edu.competence:0
+#: view:edu.module:0
+#: field:edu.module,competence_ids:0
+#: view:edu.program:0
+#: field:edu.program,competence_ids:0
+#: view:edu.speciality:0
+#: field:edu.speciality,competence_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_competence
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_competence
+msgid "Competences"
+msgstr "Компетенции"
+
+#. module: irsid_edu
+#: selection:edu.application,type:0
+#: selection:edu.application.line,type:0
+#: selection:edu.order,type:0
+#: selection:edu.order.line,type:0
+#: selection:edu.statement,type:0
+msgid "Dismissal"
+msgstr "Отчисление"
+
+#. module: irsid_edu
+#: selection:edu.admission,state:0
+#: selection:edu.admission.line,state:0
+#: selection:edu.application,state:0
+#: selection:edu.application.line,state:0
+#: selection:edu.doc,state:0
+#: selection:edu.grade,state:0
+#: selection:edu.grade.line,state:0
+#: selection:edu.module,state:0
+#: selection:edu.module.record,state:0
+#: selection:edu.module.seance,state:0
+#: selection:edu.module.section,state:0
+#: selection:edu.module.task,state:0
+#: selection:edu.module.work,state:0
+#: selection:edu.order,state:0
+#: selection:edu.order.line,state:0
+#: selection:edu.plan,state:0
+#: selection:edu.pricelist,state:0
+#: selection:edu.pricelist.line,state:0
+#: selection:edu.program,state:0
+#: selection:edu.record,state:0
+#: selection:edu.record.line,state:0
+#: selection:edu.schedule,state:0
+#: selection:edu.schedule.line,state:0
+#: selection:edu.seance,state:0
+#: selection:edu.time,state:0
+#: selection:edu.work,state:0
+#: selection:edu.work.order,state:0
+msgid "On Approval"
+msgstr "На утверждении"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_order_dismissal
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_order_dismissal
+msgid "Orders For Dismissal"
+msgstr "Отчисление"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.admission.line:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.grade.line:0
+#: view:edu.module:0
+#: view:edu.module.record:0
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: view:edu.module.work:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: view:edu.seance:0
+#: field:edu.stage,state:0
+#: view:edu.student.program:0
+#: field:edu.student.program,state:0
+#: view:edu.time:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+#: view:res.partner:0
+msgid "State"
+msgstr "Состояние"
+
+#. module: irsid_edu
+#: field:edu.module.work,eff_emp_hours:0
+#: field:edu.work,eff_emp_hours:0
+#: field:edu.work.order,eff_emp_hours:0
+msgid "Effective Employee Hours"
+msgstr "Действ. часов сотруд."
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Subsection"
+msgstr "Часть"
+
+#. module: irsid_edu
+#: field:edu.statement,app_main_text:0
+msgid "Application Petition Text"
+msgstr "Просьба заявления"
+
+#. module: irsid_edu
+#: field:edu.module,eff_st_hours:0
+#: field:edu.module.work,eff_st_hours:0
+#: field:edu.work,eff_st_hours:0
+#: field:edu.work.order,eff_st_hours:0
+msgid "Effective Student Hours"
+msgstr "Действ. часов обуч."
+
+#. module: irsid_edu
+#: selection:edu.stage,state:0
+#: selection:edu.student.program,state:0
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_entrance
+msgid "Entrance"
+msgstr "Поступление"
+
+#. module: irsid_edu
+#: field:edu.module,eff_seance_hours:0
+#: field:edu.module.work,eff_seance_hours:0
+#: field:edu.work,eff_seance_hours:0
+#: field:edu.work.order,eff_seance_hours:0
+msgid "Effective Seance Hours"
+msgstr "Действ. часов занятий"
+
+#. module: irsid_edu
+#: selection:edu.admission,state:0
+#: selection:edu.admission.line,state:0
+#: selection:edu.application,state:0
+#: selection:edu.application.line,state:0
+#: selection:edu.doc,state:0
+#: selection:edu.grade,state:0
+#: selection:edu.grade.line,state:0
+#: selection:edu.module,state:0
+#: selection:edu.module.record,state:0
+#: selection:edu.module.seance,state:0
+#: selection:edu.module.section,state:0
+#: selection:edu.module.task,state:0
+#: selection:edu.module.work,state:0
+#: selection:edu.order,state:0
+#: selection:edu.order.line,state:0
+#: selection:edu.plan,state:0
+#: selection:edu.pricelist,state:0
+#: selection:edu.pricelist.line,state:0
+#: selection:edu.program,state:0
+#: selection:edu.record,state:0
+#: selection:edu.record.line,state:0
+#: selection:edu.schedule,state:0
+#: selection:edu.schedule.line,state:0
+#: selection:edu.seance,state:0
+#: selection:edu.time,state:0
+#: selection:edu.work,state:0
+#: selection:edu.work.order,state:0
+msgid "Rejected"
+msgstr "Отклонен"
+
+#. module: irsid_edu
+#: field:edu.application.line,date_stop:0
+#: field:edu.order.line,date_stop:0
+#: field:edu.pricelist.line,date_stop:0
+msgid "Date Stop"
+msgstr "Дата окончания"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.pricelist:0
+#: report:edu.schedule.short:0
+#: report:edu.student.program.list:0
+msgid "Стадия"
+msgstr "Стадия"
+
+#. module: irsid_edu
+#: field:edu.work,datetime_start1:0
+msgid "Start DateTime 1"
+msgstr "Дата и время начала 1"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_application_other
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_application_other
+msgid "Other Applications"
+msgstr "Другое"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_applicant
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_applicant
+msgid "Applicants"
+msgstr "Поступающие"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module,posterior_ids:0
+msgid "Posterior Modules"
+msgstr "Последующие модули"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_order_other
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_order_other
+msgid "Other Orders"
+msgstr "Другое"
+
+#. module: irsid_edu
+#: view:edu.statement:0
+msgid "Academic Statements"
+msgstr "Учебные формулировки"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_exstudent
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_exstudent
+msgid "Ex-students"
+msgstr "Необучающиеся"
+
+#. module: irsid_edu
+#: view:edu.work:0
+msgid "Update Seances"
+msgstr "Обновить занятия"
+
+#. module: irsid_edu
+#: field:edu.module.seance,ind_work:0
+#: field:edu.module.work,ind_work:0
+#: field:edu.seance,ind_work:0
+#: field:edu.work,ind_work:0
+#: field:edu.work.type,ind_work:0
+msgid "Individual Work"
+msgstr "Индивид. работа"
+
+#. module: irsid_edu
+#: view:edu.program:0
+msgid "Short Title..."
+msgstr "Краткое наименование..."
+
+#. module: irsid_edu
+#: view:edu.module.task:0
+#: model:ir.model,name:irsid_edu.model_edu_module_task
+msgid "Module Task"
+msgstr "Задание"
+
+#. module: irsid_edu
+#: field:edu.location,parent_id:0
+msgid "Parent Location"
+msgstr "Укрупнённое место проведения"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_work
+msgid "Academic Work"
+msgstr "Учебная работа"
+
+#. module: irsid_edu
+#: selection:edu.module,replace_method:0
+msgid "Alternative"
+msgstr "Альтернативный"
+
+#. module: irsid_edu
+#: view:edu.schedule.line:0
+#: field:edu.schedule.line,category_id:0
+#: view:edu.time:0
+#: field:edu.time,category_id:0
+msgid "Category"
+msgstr "Категория"
+
+#. module: irsid_edu
+#: view:edu.speciality:0
+#: field:edu.speciality,program_ids:0
+msgid "Education Programs"
+msgstr "Образовательные программы"
+
+#. module: irsid_edu
+#: view:edu.group:0
+#: field:edu.group,name:0
+#: view:edu.student.program:0
+#: field:edu.student.program,group_id:0
+msgid "Group"
+msgstr "Группа"
+
+#. module: irsid_edu
+#: view:edu.admission.line:0
+#: selection:edu.application,type:0
+#: selection:edu.application.line,type:0
+#: selection:edu.order,type:0
+#: selection:edu.order.line,type:0
+#: selection:edu.statement,type:0
+#: model:ir.model,name:irsid_edu.model_edu_admission
+msgid "Admission"
+msgstr "Приём"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_order_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_order_updated
+msgid "Приказ обновлён"
+msgstr "Приказ обновлён"
+
+#. module: irsid_edu
+#: selection:edu.stage,state:0
+#: selection:edu.student.program,state:0
+msgid "Training Suspended"
+msgstr "Обучение приостановлено"
+
+#. module: irsid_edu
+#: view:edu.plan:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_plan_module
+msgid "Modules By Plan"
+msgstr "Модули по плану"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Вид работы:"
+msgstr "Вид работы:"
+
+#. module: irsid_edu
+#: report:edu.order:0
+#: report:edu.order.line:0
+msgid "Вид приказа:"
+msgstr "Вид приказа:"
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Elective Module"
+msgstr "Модуль по выбору"
+
+#. module: irsid_edu
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_partner
+msgid "Customers"
+msgstr "Заказчики"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_grade_line
+msgid "Lines By Grade"
+msgstr "Строки ведомости"
+
+#. module: irsid_edu
+#: field:edu.student.program,plan_id:0
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_plan
+msgid "Training Plan"
+msgstr "Учебный план"
+
+#. module: irsid_edu
+#: view:edu.program:0
+#: field:edu.program,eprog:0
+msgid "Express"
+msgstr "Ускоренная"
+
+#. module: irsid_edu
+#: view:edu.qualification:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_qualification
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_qualification
+msgid "Qualifications"
+msgstr "Квалификации"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Баллов"
+msgstr "Баллов"
+
+#. module: irsid_edu
+#: field:edu.seance,datetime_stop:0
+msgid "End Time"
+msgstr "Время окончания"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,seance_id:0
+#: view:edu.module.task:0
+#: view:edu.seance:0
+#: model:ir.model,name:irsid_edu.model_edu_seance
+msgid "Seance"
+msgstr "Занятие"
+
+#. module: irsid_edu
+#: field:edu.admission,state:0
+#: field:edu.admission.line,state:0
+#: field:edu.application,state:0
+#: field:edu.application.line,state:0
+#: field:edu.doc,state:0
+#: field:edu.grade,state:0
+#: field:edu.grade.line,state:0
+#: field:edu.module,state:0
+#: field:edu.module.record,state:0
+#: field:edu.module.seance,state:0
+#: field:edu.module.section,state:0
+#: field:edu.module.task,state:0
+#: field:edu.module.work,state:0
+#: field:edu.order,state:0
+#: field:edu.order.line,state:0
+#: field:edu.plan,state:0
+#: field:edu.pricelist,state:0
+#: field:edu.pricelist.line,state:0
+#: field:edu.program,state:0
+#: field:edu.record,state:0
+#: field:edu.record.line,state:0
+#: field:edu.schedule,state:0
+#: field:edu.schedule.line,state:0
+#: field:edu.seance,state:0
+#: field:edu.time,state:0
+#: field:edu.work,state:0
+#: field:edu.work.order,state:0
+msgid "State Of Document"
+msgstr "Состояние документа"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_pricelist
+msgid "Training Pricelist"
+msgstr "Прейскурант на обучение"
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Set Default"
+msgstr "Установить по умолчанию"
+
+#. module: irsid_edu
+#: report:edu.schedule:0
+msgid "Категория"
+msgstr "Категория"
+
+#. module: irsid_edu
+#: field:edu.admission,message_summary:0
+#: field:edu.admission.line,message_summary:0
+#: view:edu.application:0
+#: field:edu.application,message_summary:0
+#: field:edu.application.line,message_summary:0
+#: field:edu.doc,message_summary:0
+#: view:edu.grade:0
+#: field:edu.grade,message_summary:0
+#: field:edu.grade.line,message_summary:0
+#: field:edu.module,message_summary:0
+#: field:edu.module.record,message_summary:0
+#: field:edu.module.seance,message_summary:0
+#: field:edu.module.section,message_summary:0
+#: field:edu.module.task,message_summary:0
+#: field:edu.module.work,message_summary:0
+#: view:edu.order:0
+#: field:edu.order,message_summary:0
+#: field:edu.order.line,message_summary:0
+#: field:edu.plan,message_summary:0
+#: view:edu.pricelist:0
+#: field:edu.pricelist,message_summary:0
+#: field:edu.pricelist.line,message_summary:0
+#: field:edu.program,message_summary:0
+#: view:edu.record:0
+#: field:edu.record,message_summary:0
+#: field:edu.record.line,message_summary:0
+#: view:edu.schedule:0
+#: field:edu.schedule,message_summary:0
+#: field:edu.schedule.line,message_summary:0
+#: view:edu.seance:0
+#: field:edu.seance,message_summary:0
+#: field:edu.student.program,message_summary:0
+#: field:edu.time,message_summary:0
+#: field:edu.work,message_summary:0
+#: view:edu.work.order:0
+#: field:edu.work.order,message_summary:0
+msgid "Summary"
+msgstr "Сводка"
+
+#. module: irsid_edu
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_grade
+msgid "Grade Sheet"
+msgstr "Ведомость успеваемости"
+
+#. module: irsid_edu
+#: sql_constraint:edu.work:0
+msgid "The work must be unique !"
+msgstr "Работа не должна повторяться!"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module.record,module_id:0
+#: field:edu.module.section,module_id:0
+#: field:edu.module.work,module_id:0
+#: field:edu.work,module_id:0
+msgid "Training Module"
+msgstr "Учебный модуль"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_entrance_order
+msgid "Entrance Orders"
+msgstr "Приказы по поступлению"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module,description:0
+#: view:edu.program:0
+#: field:edu.program,description:0
+#: view:edu.speciality:0
+#: field:edu.speciality,description:0
+msgid "Characterization"
+msgstr "Характеристика"
+
+#. module: irsid_edu
+#: field:edu.application,final_text:0
+#: field:edu.order,final_text:0
+msgid "Responsibility Text"
+msgstr "Ответственность"
+
+#. module: irsid_edu
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: field:edu.module.task,description:0
+msgid "Text"
+msgstr "Текст"
+
+#. module: irsid_edu
+#: report:edu.pricelist:0
+msgid "Программа"
+msgstr "Программа"
+
+#. module: irsid_edu
+#: view:edu.module.seance:0
+#: field:edu.module.seance,period_id:0
+#: view:edu.module.work:0
+#: field:edu.module.work,period_id:0
+#: view:edu.schedule.line:0
+#: field:edu.schedule.line,period_id:0
+#: view:edu.seance:0
+#: field:edu.seance,period_id:0
+#: view:edu.time:0
+#: field:edu.time,period_id:0
+#: view:edu.work:0
+#: field:edu.work,period_id:0
+#: model:ir.model,name:irsid_edu.model_edu_period
+msgid "Period"
+msgstr "Период"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_entrance_application
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_entrance_application
+msgid "Entrance Applications"
+msgstr "Заявления по поступлению"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_application_admission
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"admission.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected admission line(s).\n"
+"                    Before creating application make sure you have record(s) "
+"under\n"
+"                    \"Applicants\" menu entry for applicant(s). If it's true "
+"just click\n"
+"                    \"Create\" to fill in application form, then press "
+"\"Confirm\" button.\n"
+"                    Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    You can choose several admission lines in one "
+"application. If you are representative\n"
+"                    (parent, employee) then you can choose several applicants "
+"you\n"
+"                    are in charge of with several admission lines. The social "
+"feature\n"
+"                    helps you organize discussions on application and allows "
+"you to\n"
+"                    keep track of its current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"admission.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected admission line(s).\n"
+"                    Before creating application make sure you have record(s) "
+"under\n"
+"                    \"Applicants\" menu entry for applicant(s). If it's true "
+"just click\n"
+"                    \"Create\" to fill in application form, then press "
+"\"Confirm\" button.\n"
+"                    Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    You can choose several admission lines in one "
+"application. If you are representative\n"
+"                    (parent, employee) then you can choose several applicants "
+"you\n"
+"                    are in charge of with several admission lines. The social "
+"feature\n"
+"                    helps you organize discussions on application and allows "
+"you to\n"
+"                    keep track of its current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: view:edu.admission:0
+msgid "Admission Plan: "
+msgstr "План приема: "
+
+#. module: irsid_edu
+#: report:edu.work.order:0
+msgid "Вид работы"
+msgstr "Вид работы"
+
+#. module: irsid_edu
+#: report:edu.order.line:0
+msgid "ВЫПИСКА ИЗ ПРИКАЗА"
+msgstr "ВЫПИСКА ИЗ ПРИКАЗА"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Put an internal note..."
+msgstr "Поместите внутреннюю заметку..."
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "e.g. Sales Director"
+msgstr "пример: Главный инженер"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_module_module_record_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_module_record_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_module_record_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_record_updated
+msgid "Аттестация обновлена"
+msgstr "Аттестация обновлена"
+
+#. module: irsid_edu
+#: view:edu.mode:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_mode
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_mode
+msgid "Modes of Study"
+msgstr "Формы обучения"
+
+#. module: irsid_edu
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_schedule
+#: model:ir.model,name:irsid_edu.model_edu_schedule
+msgid "Academic Schedule"
+msgstr "Учебный график"
+
+#. module: irsid_edu
+#: view:edu.work.order:0
+msgid "Work Order: "
+msgstr "Заказ: "
+
+#. module: irsid_edu
+#: view:edu.module.record:0
+#: field:edu.module.record,journal_id:0
+#: view:edu.record:0
+#: field:edu.record,journal_id:0
+#: model:ir.model,name:irsid_edu.model_edu_journal
+msgid "Journal"
+msgstr "Журнал"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_configuration_admissions
+msgid "Admissions"
+msgstr "Приём"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_order_line_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_order_order_line_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_student_program_order_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_order_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_order_order_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_student_program_order_line_updated
+msgid "Строка приказа обновлена"
+msgstr "Строка приказа обновлена"
+
+#. module: irsid_edu
+#: report:edu.plan:0
+msgid "ЗЕ"
+msgstr "ЗЕ"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_student_program_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_student_student_program_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_student_program_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_student_student_program_updated
+msgid "Программа обучающегося обновлена"
+msgstr "Программа обучающегося обновлена"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_pricelist_line_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_pricelist_pricelist_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_pricelist_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_pricelist_pricelist_line_updated
+msgid "Строка прейскуранта обновлена"
+msgstr "Строка прейскуранта обновлена"
+
+#. module: irsid_edu
+#: field:edu.admission,user_approved:0
+#: field:edu.admission.line,user_approved:0
+#: field:edu.application,user_approved:0
+#: field:edu.application.line,user_approved:0
+#: field:edu.doc,user_approved:0
+#: field:edu.grade,user_approved:0
+#: field:edu.grade.line,user_approved:0
+#: field:edu.module,user_approved:0
+#: field:edu.module.record,user_approved:0
+#: field:edu.module.seance,user_approved:0
+#: field:edu.module.section,user_approved:0
+#: field:edu.module.task,user_approved:0
+#: field:edu.module.work,user_approved:0
+#: field:edu.order,user_approved:0
+#: field:edu.order.line,user_approved:0
+#: field:edu.plan,user_approved:0
+#: field:edu.pricelist,user_approved:0
+#: field:edu.pricelist.line,user_approved:0
+#: field:edu.program,user_approved:0
+#: field:edu.record,user_approved:0
+#: field:edu.record.line,user_approved:0
+#: field:edu.schedule,user_approved:0
+#: field:edu.schedule.line,user_approved:0
+#: field:edu.seance,user_approved:0
+#: field:edu.time,user_approved:0
+#: field:edu.work,user_approved:0
+#: field:edu.work.order,user_approved:0
+msgid "Approved By"
+msgstr "Утвердил"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module,prior_ids:0
+msgid "Prior Modules"
+msgstr "Предшествующие модули"
+
+#. module: irsid_edu
+#: field:edu.admission.target,state_funding:0
+msgid "State funding"
+msgstr "Гос. финансирование"
+
+#. module: irsid_edu
+#: view:edu.grade.mark:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_grade_mark
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_grade_mark
+msgid "Grade Marks"
+msgstr "Оценки"
+
+#. module: irsid_edu
+#: view:edu.program.section:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_program_section
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_program_section
+msgid "Program Sections"
+msgstr "Разделы программы"
+
+#. module: irsid_edu
+#: report:edu.application:0
+msgid "Вид заявления:"
+msgstr "Вид заявления:"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_admission
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_admission
+msgid "Admission Plans"
+msgstr "Планы приёма"
+
+#. module: irsid_edu
+#: view:edu.grade.line:0
+msgid "Place here title of work (task) done by student..."
+msgstr "Введите здесь наименование работы (задания) обучающегося ..."
+
+#. module: irsid_edu
+#: field:edu.admission.line,name:0
+#: field:edu.program,short_name:0
+#: field:edu.time,short_name:0
+msgid "Short Title"
+msgstr "Краткое наименование"
+
+#. module: irsid_edu
+#: view:edu.admission.line:0
+#: field:edu.admission.line,test_ids:0
+msgid "Admission Tests"
+msgstr "Вступительные испытания"
+
+#. module: irsid_edu
+#: view:edu.application:0
+msgid "Author"
+msgstr "Заявитель"
+
+#. module: irsid_edu
+#: report:edu.plan:0
+msgid "Форма обучения:"
+msgstr "Форма обучения:"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_schedule_line_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_schedule_schedule_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_schedule_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_schedule_schedule_line_updated
+msgid "Строка графика обновлена"
+msgstr "Строка графика обновлена"
+
+#. module: irsid_edu
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+msgid "Период"
+msgstr "Период"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+msgid "Направление приёма"
+msgstr "Направление приёма"
+
+#. module: irsid_edu
+#: view:edu.plan:0
+msgid "Training Plan: "
+msgstr "Учебный план: "
+
+#. module: irsid_edu
+#: view:edu.schedule.line:0
+msgid "Schedule"
+msgstr "График"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,type_id:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,type_id:0
+#: view:edu.module.seance:0
+#: field:edu.module.seance,type_id:0
+#: view:edu.module.work:0
+#: field:edu.module.work,type_id:0
+#: field:edu.seance,type_id:0
+#: field:edu.work,type_id:0
+#: model:ir.model,name:irsid_edu.model_edu_work_type
+msgid "Work Type"
+msgstr "Вид работы"
+
+#. module: irsid_edu
+#: view:edu.grade.line:0
+#: field:edu.grade.line,points:0
+#: field:edu.record.line,points:0
+msgid "Points"
+msgstr "Баллов"
+
+#. module: irsid_edu
+#: field:edu.pricelist.line,pricelist_program_id:0
+msgid "Pricelist Program"
+msgstr "Программа прейскуранта"
+
+#. module: irsid_edu
+#: help:edu.admission,message_unread:0
+#: help:edu.admission.line,message_unread:0
+#: help:edu.application,message_unread:0
+#: help:edu.application.line,message_unread:0
+#: help:edu.doc,message_unread:0
+#: help:edu.grade,message_unread:0
+#: help:edu.grade.line,message_unread:0
+#: help:edu.module,message_unread:0
+#: help:edu.module.record,message_unread:0
+#: help:edu.module.seance,message_unread:0
+#: help:edu.module.section,message_unread:0
+#: help:edu.module.task,message_unread:0
+#: help:edu.module.work,message_unread:0
+#: help:edu.order,message_unread:0
+#: help:edu.order.line,message_unread:0
+#: help:edu.plan,message_unread:0
+#: help:edu.pricelist,message_unread:0
+#: help:edu.pricelist.line,message_unread:0
+#: help:edu.program,message_unread:0
+#: help:edu.record,message_unread:0
+#: help:edu.record.line,message_unread:0
+#: help:edu.schedule,message_unread:0
+#: help:edu.schedule.line,message_unread:0
+#: help:edu.seance,message_unread:0
+#: help:edu.student.program,message_unread:0
+#: help:edu.time,message_unread:0
+#: help:edu.work,message_unread:0
+#: help:edu.work.order,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "Если отмечено, то сообщения требуют вашего внимания."
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_module_record
+msgid "Records By Module"
+msgstr "Аттестация по модулю"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_module_section
+msgid "Sections By Module"
+msgstr "Разделы по модулю"
+
+#. module: irsid_edu
+#: view:edu.program:0
+msgid "Education Program: "
+msgstr "Образовательная программа: "
+
+#. module: irsid_edu
+#: view:edu.journal:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_journal
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_journal
+msgid "Journals"
+msgstr "Журналы"
+
+#. module: irsid_edu
+#: field:edu.pricelist.line,pricelist_stage_id:0
+msgid "Pricelist Stage"
+msgstr "Стадия прейскуранта"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "ZIP"
+msgstr "Индекс"
+
+#. module: irsid_edu
+#: view:edu.module.section:0
+#: model:ir.model,name:irsid_edu.model_edu_module_section
+msgid "Module Section"
+msgstr "Раздел модуля"
+
+#. module: irsid_edu
+#: view:edu.application:0
+msgid "Place agreement and responsibility text here..."
+msgstr "Укажите здесь обязательства и ответственность..."
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Часов занятий:"
+msgstr "Часов занятий:"
+
+#. module: irsid_edu
+#: view:edu.module.record:0
+#: field:edu.record,modulerecord_id:0
+#: model:ir.model,name:irsid_edu.model_edu_module_record
+msgid "Module Record"
+msgstr "Аттестация по модулю"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_pricelist
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_pricelist
+msgid "Training Pricelists"
+msgstr "Прейскуранты на обучение"
+
+#. module: irsid_edu
+#: field:edu.admission,user_job_approved:0
+#: field:edu.admission.line,user_job_approved:0
+#: field:edu.application,user_job_approved:0
+#: field:edu.application.line,user_job_approved:0
+#: field:edu.doc,user_job_approved:0
+#: field:edu.grade,user_job_approved:0
+#: field:edu.grade.line,user_job_approved:0
+#: field:edu.module,user_job_approved:0
+#: field:edu.module.record,user_job_approved:0
+#: field:edu.module.seance,user_job_approved:0
+#: field:edu.module.section,user_job_approved:0
+#: field:edu.module.task,user_job_approved:0
+#: field:edu.module.work,user_job_approved:0
+#: field:edu.order,user_job_approved:0
+#: field:edu.order.line,user_job_approved:0
+#: field:edu.plan,user_job_approved:0
+#: field:edu.pricelist,user_job_approved:0
+#: field:edu.pricelist.line,user_job_approved:0
+#: field:edu.program,user_job_approved:0
+#: field:edu.record,user_job_approved:0
+#: field:edu.record.line,user_job_approved:0
+#: field:edu.schedule,user_job_approved:0
+#: field:edu.schedule.line,user_job_approved:0
+#: field:edu.seance,user_job_approved:0
+#: field:edu.time,user_job_approved:0
+#: field:edu.work,user_job_approved:0
+#: field:edu.work.order,user_job_approved:0
+msgid "Job of Approver"
+msgstr "Должность утвердившего"
+
+#. module: irsid_edu
+#: view:edu.program:0
+#: view:edu.time:0
+msgid "Training Time"
+msgstr "Учебное время"
+
+#. module: irsid_edu
+#: field:edu.application,author_id:0
+msgid "Application Author"
+msgstr "Автор заявления"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_order_enrollment
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"enrollment.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected Education Programs.\n"
+"                    Before creating order make sure you have record(s) under "
+"\"Applicant\n"
+"                    Programs\" menu entry for applicant(s). If it's true just "
+"click\n"
+"                    \"Create\" to fill in order form, then press \"Confirm\" "
+"button. Please\n"
+"                    fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"enrollment.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected Education Programs.\n"
+"                    Before creating order make sure you have record(s) under "
+"\"Applicant\n"
+"                    Programs\" menu entry for applicant(s). If it's true just "
+"click\n"
+"                    \"Create\" to fill in order form, then press \"Confirm\" "
+"button. Please\n"
+"                    fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_program
+msgid "Academic Program"
+msgstr "Образовательная программа"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "Номер документа"
+msgstr "Номер документа"
+
+#. module: irsid_edu
+#: field:edu.module.seance,section_ids:0
+#: view:edu.module.section:0
+msgid "Module Sections"
+msgstr "Разделы модуля"
+
+#. module: irsid_edu
+#: field:edu.admission,name:0
+#: field:edu.application,name:0
+#: field:edu.grade,name:0
+#: field:edu.module.seance,name:0
+#: field:edu.order,name:0
+#: field:edu.pricelist,name:0
+#: field:edu.seance,name:0
+#: field:edu.statement,name:0
+#: field:edu.work.order,name:0
+msgid "Subject"
+msgstr "Тема"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_order_transfer
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_order_transfer
+msgid "Orders For Transfer"
+msgstr "Перевод"
+
+#. module: irsid_edu
+#: field:edu.admission,user_job_validated:0
+#: field:edu.admission.line,user_job_validated:0
+#: field:edu.application,user_job_validated:0
+#: field:edu.application.line,user_job_validated:0
+#: field:edu.doc,user_job_validated:0
+#: field:edu.grade,user_job_validated:0
+#: field:edu.grade.line,user_job_validated:0
+#: field:edu.module,user_job_validated:0
+#: field:edu.module.record,user_job_validated:0
+#: field:edu.module.seance,user_job_validated:0
+#: field:edu.module.section,user_job_validated:0
+#: field:edu.module.task,user_job_validated:0
+#: field:edu.module.work,user_job_validated:0
+#: field:edu.order,user_job_validated:0
+#: field:edu.order.line,user_job_validated:0
+#: field:edu.plan,user_job_validated:0
+#: field:edu.pricelist,user_job_validated:0
+#: field:edu.pricelist.line,user_job_validated:0
+#: field:edu.program,user_job_validated:0
+#: field:edu.record,user_job_validated:0
+#: field:edu.record.line,user_job_validated:0
+#: field:edu.schedule,user_job_validated:0
+#: field:edu.schedule.line,user_job_validated:0
+#: field:edu.seance,user_job_validated:0
+#: field:edu.time,user_job_validated:0
+#: field:edu.work,user_job_validated:0
+#: field:edu.work.order,user_job_validated:0
+msgid "Job of Validator"
+msgstr "Должность согласовавшего"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_program_schedule_line
+msgid "Schedule Lines By Program"
+msgstr "Выписка из графика"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: field:edu.admission,line_ids:0
+#: view:edu.admission.line:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_admission_line
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_admission_line
+msgid "Admission Lines"
+msgstr "Направления приёма"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_program_seance
+msgid "Seances By Program"
+msgstr "Занятия"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_module_work
+msgid "Work By Module"
+msgstr "Учебная работа"
+
+#. module: irsid_edu
+#: field:res.partner,passport:0
+msgid "Passport"
+msgstr "Паспорт"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Tags..."
+msgstr "Ярлыки..."
+
+#. module: irsid_edu
+#: view:edu.order:0
+#: field:edu.order,line_ids:0
+#: view:edu.order.line:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_order_line
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_order_line
+msgid "Order Lines"
+msgstr "Строки приказа"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: field:edu.application,type:0
+#: view:edu.application.line:0
+#: field:edu.application.line,type:0
+#: field:edu.grade.mark,type_id:0
+#: field:edu.journal,recordtype:0
+#: view:edu.module.task:0
+#: field:edu.module.task,type:0
+#: view:edu.order:0
+#: field:edu.order,type:0
+#: view:edu.order.line:0
+#: field:edu.order.line,type:0
+#: view:edu.seance:0
+#: field:edu.statement,type:0
+#: view:edu.work:0
+msgid "Type"
+msgstr "Вид"
+
+#. module: irsid_edu
+#: view:edu.pricelist:0
+msgid "Pricelists"
+msgstr "Прейскуранты"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "Дата начала действия"
+msgstr "Дата начала действия"
+
+#. module: irsid_edu
+#: view:edu.module.section:0
+#: field:edu.module.work,seance_ids:0
+#: view:edu.seance:0
+#: view:edu.student.program:0
+#: field:edu.work,seance_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_seance
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_seance
+msgid "Seances"
+msgstr "Занятия"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_grade_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_record_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_grade_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_record_updated
+msgid "Ведомость обновлена"
+msgstr "Ведомость обновлена"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+msgid "Поступающий"
+msgstr "Поступающий"
+
+#. module: irsid_edu
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: field:edu.pricelist.line,pricelist_id:0
+msgid "Pricelist"
+msgstr "Прейскурант"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_application_enrollment
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_application_enrollment
+msgid "Applications For Enrollment"
+msgstr "Зачисление"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: field:edu.application,stage_id:0
+#: view:edu.application.line:0
+#: field:edu.application.line,stage_id:0
+#: field:edu.module.work,stage_id:0
+#: view:edu.order:0
+#: field:edu.order,stage_id:0
+#: view:edu.order.line:0
+#: field:edu.order.line,stage_id:0
+#: field:edu.period,stage_id:0
+#: view:edu.pricelist:0
+#: field:edu.pricelist,stage_id:0
+#: view:edu.pricelist.line:0
+#: field:edu.pricelist.line,stage_id:0
+#: view:edu.schedule.line:0
+#: field:edu.schedule.line,stage_id:0
+#: view:edu.stage:0
+#: view:edu.student.program:0
+#: field:edu.student.program,stage_id:0
+#: view:edu.time:0
+#: field:edu.time,stage_id:0
+#: field:edu.work,stage_id:0
+#: view:edu.work.order:0
+#: field:edu.work.order,stage_id:0
+#: model:ir.model,name:irsid_edu.model_edu_stage
+msgid "Stage"
+msgstr "Стадия"
+
+#. module: irsid_edu
+#: view:edu.work:0
+msgid "Update Seances Datetime"
+msgstr "Обновить дату и время занятий"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "Образовательная программа:"
+msgstr "Образовательная программа:"
+
+#. module: irsid_edu
+#: view:edu.record:0
+#: field:edu.record.line,record_id:0
+#: field:edu.student.program,record_ids:0
+#: model:ir.model,name:irsid_edu.model_edu_record
+msgid "Record"
+msgstr "Аттестация"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_record_line
+msgid "Record Lines By Record"
+msgstr "Позиции ведомости"
+
+#. module: irsid_edu
+#: field:edu.statement,order_main_text:0
+msgid "Order Decision Text"
+msgstr "Решение приказа"
+
+#. module: irsid_edu
+#: field:edu.work,datetime_start2:0
+msgid "Start Datetime 2"
+msgstr "Дата и время начала 2"
+
+#. module: irsid_edu
+#: view:edu.program:0
+#: field:edu.program,stage_ids:0
+#: view:edu.stage:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_stage
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_stage
+msgid "Stages"
+msgstr "Стадии"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_application_transfer
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"transfer.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"selected program, stage, plan\n"
+"                    and status for transfer. Stages include different "
+"courses, study\n"
+"                    leave etc. If student is to change program then "
+"application must\n"
+"                    have two lines with old program and new one with "
+"correspondent\n"
+"                    stages. Just click \"Create\" to fill in application "
+"form, then\n"
+"                    press \"Confirm\" button. Please fill in all forms "
+"carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several student programs\n"
+"                    you are in charge of. The social feature helps you "
+"organize discussions\n"
+"                    on application and allows you to keep track of its "
+"current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"transfer.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"selected program, stage, plan\n"
+"                    and status for transfer. Stages include different "
+"courses, study\n"
+"                    leave etc. If student is to change program then "
+"application must\n"
+"                    have two lines with old program and new one with "
+"correspondent\n"
+"                    stages. Just click \"Create\" to fill in application "
+"form, then\n"
+"                    press \"Confirm\" button. Please fill in all forms "
+"carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several student programs\n"
+"                    you are in charge of. The social feature helps you "
+"organize discussions\n"
+"                    on application and allows you to keep track of its "
+"current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: view:edu.student.program:0
+msgid "Delete"
+msgstr "Удалить"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_order
+msgid "Orders By Student"
+msgstr "Приказы"
+
+#. module: irsid_edu
+#: view:edu.application.line:0
+#: field:edu.application.line,speciality_id:0
+#: field:edu.competence,speciality_id:0
+#: view:edu.order.line:0
+#: field:edu.order.line,speciality_id:0
+#: view:edu.plan:0
+#: field:edu.plan,speciality_id:0
+#: view:edu.pricelist.line:0
+#: field:edu.pricelist.line,speciality_id:0
+#: view:edu.program:0
+#: field:edu.program,speciality_id:0
+#: view:edu.speciality:0
+#: view:edu.student.program:0
+#: field:edu.student.program,speciality_id:0
+#: model:ir.model,name:irsid_edu.model_edu_speciality
+msgid "Speciality"
+msgstr "Специальность"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,grade_id:0
+#: field:edu.seance,grade_ids:0
+#: model:ir.model,name:irsid_edu.model_edu_grade
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_configuration_grade
+msgid "Grade"
+msgstr "Успеваемость"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.student.program.list:0
+msgid "План"
+msgstr "План"
+
+#. module: irsid_edu
+#: report:edu.application:0
+msgid "Заявитель"
+msgstr "Заявитель"
+
+#. module: irsid_edu
+#: view:edu.time.category:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_time_category
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_time_category
+msgid "Time Categories"
+msgstr "Категории времени"
+
+#. module: irsid_edu
+#: report:edu.application:0
+msgid "ЗАЯВЛЕНИЕ"
+msgstr "ЗАЯВЛЕНИЕ"
+
+#. module: irsid_edu
+#: view:edu.speciality:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_speciality
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_speciality
+msgid "Specialities"
+msgstr "Специальности"
+
+#. module: irsid_edu
+#: report:edu.student.program.list:0
+msgid "Обр. программа"
+msgstr "Обр. программа"
+
+#. module: irsid_edu
+#: report:edu.work.order:0
+msgid "Стадия:"
+msgstr "Стадия:"
+
+#. module: irsid_edu
+#: view:edu.order:0
+msgid "I ORDER"
+msgstr "ПРИКАЗЫВАЮ"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_module_task_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_task_updated
+msgid "Задание обновлено"
+msgstr "Задание обновлено"
+
+#. module: irsid_edu
+#: field:edu.grade.line,modulework_id:0
+#: view:edu.module:0
+#: field:edu.module,work_ids:0
+#: view:edu.module.record:0
+#: field:edu.module.record,work_ids:0
+#: field:edu.module.seance,work_id:0
+#: field:edu.module.task,work_id:0
+#: view:edu.module.work:0
+#: view:edu.record:0
+#: field:edu.record,modulework_ids:0
+#: field:edu.seance,modulework_id:0
+#: field:edu.work,modulework_id:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_module_work
+#: model:ir.model,name:irsid_edu.model_edu_module_work
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_module_work
+msgid "Module Work"
+msgstr "Работа по модулю"
+
+#. module: irsid_edu
+#: view:edu.admission.line:0
+#: field:edu.admission.line,program_id:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.grade:0
+#: field:edu.grade,program_id:0
+#: view:edu.module:0
+#: view:edu.module.work:0
+#: field:edu.module.work,program_id:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: field:edu.record,program_id:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: field:edu.schedule.line,program_id:0
+#: view:edu.seance:0
+#: field:edu.seance,program_id:0
+#: view:edu.student.program:0
+#: view:edu.time:0
+#: field:edu.time,program_id:0
+#: view:edu.work:0
+#: field:edu.work,program_id:0
+#: view:edu.work.order:0
+msgid "Program"
+msgstr "Программа"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_order_line
+msgid "Lines By Order"
+msgstr "Позиции приказа"
+
+#. module: irsid_edu
+#: field:edu.application,program_id:0
+#: field:edu.application.line,program_id:0
+#: field:edu.module,program_id:0
+#: field:edu.order,program_id:0
+#: field:edu.order.line,program_id:0
+#: field:edu.plan,program_id:0
+#: field:edu.pricelist,program_id:0
+#: field:edu.pricelist.line,program_id:0
+#: field:edu.schedule,program_id:0
+#: field:edu.student.program,program_id:0
+#: field:edu.work.order,program_id:0
+msgid "Education Program"
+msgstr "Образовательная программа"
+
+#. module: irsid_edu
+#: view:edu.order:0
+msgid "Place reason text here (In connection ... etc)"
+msgstr ""
+"Укажите здесь основание, если возможно (На основании, в связи, с целью ... и "
+"т.п.)"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid ""
+"Негосударственное (частное) образовательное учреждение высшего "
+"профессионального образования"
+msgstr ""
+"Негосударственное (частное) образовательное учреждение высшего "
+"профессионального образования"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_module_my
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_module_my
+msgid "My Modules"
+msgstr "Мои модули"
+
+#. module: irsid_edu
+#: view:edu.student.program:0
+msgid "í"
+msgstr "í"
+
+#. module: irsid_edu
+#: field:edu.work,interval2:0
+msgid "Interval 2 (days)"
+msgstr "Интервал 2 (дней)"
+
+#. module: irsid_edu
+#: view:edu.student.program:0
+msgid "Student Program: "
+msgstr "Учебная карточка: "
+
+#. module: irsid_edu
+#: field:edu.admission,date:0
+#: field:edu.application,date:0
+#: field:edu.grade,date:0
+#: field:edu.order,date:0
+#: field:edu.pricelist,date:0
+#: field:edu.record,date:0
+#: field:edu.schedule,date:0
+#: field:edu.work.order,date:0
+msgid "Date"
+msgstr "Дата"
+
+#. module: irsid_edu
+#: field:edu.admission,message_is_follower:0
+#: field:edu.admission.line,message_is_follower:0
+#: field:edu.application,message_is_follower:0
+#: field:edu.application.line,message_is_follower:0
+#: field:edu.doc,message_is_follower:0
+#: field:edu.grade,message_is_follower:0
+#: field:edu.grade.line,message_is_follower:0
+#: field:edu.module,message_is_follower:0
+#: field:edu.module.record,message_is_follower:0
+#: field:edu.module.seance,message_is_follower:0
+#: field:edu.module.section,message_is_follower:0
+#: field:edu.module.task,message_is_follower:0
+#: field:edu.module.work,message_is_follower:0
+#: field:edu.order,message_is_follower:0
+#: field:edu.order.line,message_is_follower:0
+#: field:edu.plan,message_is_follower:0
+#: field:edu.pricelist,message_is_follower:0
+#: field:edu.pricelist.line,message_is_follower:0
+#: field:edu.program,message_is_follower:0
+#: field:edu.record,message_is_follower:0
+#: field:edu.record.line,message_is_follower:0
+#: field:edu.schedule,message_is_follower:0
+#: field:edu.schedule.line,message_is_follower:0
+#: field:edu.seance,message_is_follower:0
+#: field:edu.student.program,message_is_follower:0
+#: field:edu.time,message_is_follower:0
+#: field:edu.work,message_is_follower:0
+#: field:edu.work.order,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Подписчик"
+
+#. module: irsid_edu
+#: report:edu.schedule:0
+msgid "Недель"
+msgstr "Недель"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_program_record_line
+msgid "Record Lines By Student Program"
+msgstr "Аттестация"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "расшифровка подписи"
+msgstr "расшифровка подписи"
+
+#. module: irsid_edu
+#: view:edu.record:0
+msgid "Record Sheet: "
+msgstr "Ведомость аттестации: "
+
+#. module: irsid_edu
+#: selection:edu.admission,state:0
+#: selection:edu.admission.line,state:0
+#: selection:edu.application,state:0
+#: selection:edu.application.line,state:0
+#: selection:edu.doc,state:0
+#: selection:edu.grade,state:0
+#: selection:edu.grade.line,state:0
+#: selection:edu.module,state:0
+#: selection:edu.module.record,state:0
+#: selection:edu.module.seance,state:0
+#: selection:edu.module.section,state:0
+#: selection:edu.module.task,state:0
+#: selection:edu.module.work,state:0
+#: selection:edu.order,state:0
+#: selection:edu.order.line,state:0
+#: selection:edu.plan,state:0
+#: selection:edu.pricelist,state:0
+#: selection:edu.pricelist.line,state:0
+#: selection:edu.program,state:0
+#: selection:edu.record,state:0
+#: selection:edu.record.line,state:0
+#: selection:edu.schedule,state:0
+#: selection:edu.schedule.line,state:0
+#: selection:edu.seance,state:0
+#: selection:edu.time,state:0
+#: selection:edu.work,state:0
+#: selection:edu.work.order,state:0
+msgid "On Validation"
+msgstr "На рассмотрении"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_admission_line
+msgid "Lines By Admission"
+msgstr "Позиции плана"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_work_my
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_work_my
+msgid "My Training Work"
+msgstr "Моя учебная работа"
+
+#. module: irsid_edu
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+msgid "Дата начала"
+msgstr "Дата начала"
+
+#. module: irsid_edu
+#: view:edu.application.line:0
+#: model:ir.model,name:irsid_edu.model_edu_application_line
+msgid "Application Line"
+msgstr "Строка заявления"
+
+#. module: irsid_edu
+#: view:edu.program.subsection:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_program_subsection
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_program_subsection
+msgid "Program Subsections"
+msgstr "Части программы"
+
+#. module: irsid_edu
+#: view:edu.program:0
+msgid "Main Modules"
+msgstr "Основные модули"
+
+#. module: irsid_edu
+#: field:edu.admission,code:0
+#: field:edu.admission.target,code:0
+#: field:edu.application,code:0
+#: field:edu.application.line,code:0
+#: field:edu.competence,code:0
+#: field:edu.grade,code:0
+#: field:edu.grade.mark,code:0
+#: field:edu.grade.type,code:0
+#: field:edu.mode,code:0
+#: field:edu.module,code:0
+#: field:edu.module.work,code:0
+#: field:edu.order,code:0
+#: field:edu.period,code:0
+#: field:edu.plan,code:0
+#: field:edu.pricelist,code:0
+#: field:edu.program,code:0
+#: field:edu.program.section,code:0
+#: field:edu.program.subsection,code:0
+#: field:edu.qualification,code:0
+#: field:edu.record,code:0
+#: field:edu.record.line,code:0
+#: field:edu.schedule,code:0
+#: field:edu.schedule.line,code:0
+#: field:edu.speciality,code:0
+#: field:edu.student.program,code:0
+#: field:edu.time,code:0
+#: field:edu.time.category,code:0
+#: field:edu.work.order,code:0
+#: field:edu.work.type,code:0
+#: field:edu.year,code:0
+msgid "Code"
+msgstr "Код"
+
+#. module: irsid_edu
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_pricelist
+msgid "Trainig Pricelist"
+msgstr "Прейскурант на обучение"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Учебное время:"
+msgstr "Учебное время:"
+
+#. module: irsid_edu
+#: field:edu.grade.line,mark_value:0
+msgid "Mark Value"
+msgstr "Значение оценки"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "личная подпись"
+msgstr "личная подпись"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_order_dismissal
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"dismissal.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student program(s) "
+"for dismissal. Stages for\n"
+"                    this type are 'Training Done' and 'Training Canceled'. "
+"Just click\n"
+"                    \"Create\" to fill in order form, then press \"Confirm\" "
+"button. Please\n"
+"                    fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"dismissal.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student program(s) "
+"for dismissal. Stages for\n"
+"                    this type are 'Training Done' and 'Training Canceled'. "
+"Just click\n"
+"                    \"Create\" to fill in order form, then press \"Confirm\" "
+"button. Please\n"
+"                    fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_seance_grade
+msgid "Grades By Seance"
+msgstr "Ведомости"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_application_dismissal
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_application_dismissal
+msgid "Applications For Dismissal"
+msgstr "Отчисление"
+
+#. module: irsid_edu
+#: view:edu.schedule:0
+msgid "Training Schedules"
+msgstr "Учебные графики"
+
+#. module: irsid_edu
+#: report:edu.application:0
+msgid "ПРОШУ"
+msgstr "ПРОШУ"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: view:edu.grade:0
+#: view:edu.order:0
+#: view:edu.pricelist:0
+#: view:edu.record:0
+#: view:edu.schedule:0
+#: view:edu.work.order:0
+msgid "Period of Validity"
+msgstr "Срок действия"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_doc
+msgid "Academic Document"
+msgstr "Учебный документ"
+
+#. module: irsid_edu
+#: field:edu.speciality,accredited:0
+msgid "Accredited"
+msgstr "Аккредитована"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_program_time
+msgid "Program Training Time"
+msgstr "Учебное время программы"
+
+#. module: irsid_edu
+#: selection:edu.application,type:0
+#: selection:edu.application.line,type:0
+#: selection:edu.journal,recordtype:0
+#: selection:edu.module.record,recordtype:0
+#: selection:edu.order,type:0
+#: selection:edu.order.line,type:0
+#: selection:edu.statement,type:0
+msgid "Other"
+msgstr "Другое"
+
+#. module: irsid_edu
+#: report:edu.work.order:0
+msgid "Модуль"
+msgstr "Модуль"
+
+#. module: irsid_edu
+#: view:edu.module.seance:0
+msgid "Sections"
+msgstr "Разделы"
+
+#. module: irsid_edu
+#: field:edu.seance,datetime_start:0
+msgid "Start Time"
+msgstr "Время начала"
+
+#. module: irsid_edu
+#: selection:edu.journal,journaltype:0
+#: view:edu.module:0
+#: field:edu.module,credits:0
+#: field:edu.module.record,credits:0
+#: selection:edu.module.record,journaltype:0
+#: view:edu.plan:0
+#: view:edu.program:0
+#: field:edu.record,credits:0
+msgid "Credits"
+msgstr "ЗЕ"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_applicant_program
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new applicant program.<"
+"/p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant program "
+"he wishes to study. If you\n"
+"                    are going to enroll then just click \"Create\" to fill in "
+"information\n"
+"                    about yourself, then go to "
+"\"Applications-&gt;Enrollment\" menu entry.\n"
+"                    If you are representative (parent, employee) then you can "
+"create\n"
+"                    several applicant programs. Please fill in all forms "
+"carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    When all applicant programs are entered, you can create "
+"an application for enrollment\n"
+"                    on them using \"Applications-&gt;Enrollment\" menu entry. "
+"The social\n"
+"                    feature helps you organize discussions on programs and "
+"allows\n"
+"                    you to keep track of their current enrollment state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new applicant program.<"
+"/p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant program "
+"he wishes to study. If you\n"
+"                    are going to enroll then just click \"Create\" to fill in "
+"information\n"
+"                    about yourself, then go to "
+"\"Applications-&gt;Enrollment\" menu entry.\n"
+"                    If you are representative (parent, employee) then you can "
+"create\n"
+"                    several applicant programs. Please fill in all forms "
+"carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    When all applicant programs are entered, you can create "
+"an application for enrollment\n"
+"                    on them using \"Applications-&gt;Enrollment\" menu entry. "
+"The social\n"
+"                    feature helps you organize discussions on programs and "
+"allows\n"
+"                    you to keep track of their current enrollment state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_training_order
+msgid "Training Orders"
+msgstr "Приказы по обучению"
+
+#. module: irsid_edu
+#: model:ir.actions.server,name:irsid_edu.action_server_applications_to_orders
+msgid "Applications To Orders"
+msgstr "Заявления в приказы"
+
+#. module: irsid_edu
+#: field:edu.admission.target,name:0
+#: field:edu.competence,name:0
+#: field:edu.grade.mark,name:0
+#: field:edu.grade.type,name:0
+#: field:edu.journal,name:0
+#: field:edu.location,name:0
+#: field:edu.mode,name:0
+#: field:edu.module.record,name:0
+#: field:edu.module.section,name:0
+#: field:edu.order.line,name:0
+#: field:edu.period,name:0
+#: field:edu.pricelist.line,name:0
+#: field:edu.program.section,name:0
+#: field:edu.program.subsection,name:0
+#: field:edu.qualification,name:0
+#: field:edu.schedule.line,name:0
+#: field:edu.speciality,name:0
+#: field:edu.stage,name:0
+#: field:edu.student.program,name:0
+#: field:edu.time.category,name:0
+#: field:edu.work,code:0
+#: field:edu.work.type,name:0
+#: field:edu.year,name:0
+msgid "Name"
+msgstr "Наименование"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "\"Институт радиоэлектроники, сервиса и диагностики\""
+msgstr "\"Институт радиоэлектроники, сервиса и диагностики\""
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_application
+msgid "Applications By Student"
+msgstr "Заявления"
+
+#. module: irsid_edu
+#: view:edu.module.seance:0
+#: field:edu.module.seance,emp_hours:0
+#: view:edu.module.work:0
+#: field:edu.module.work,emp_hours:0
+#: view:edu.seance:0
+#: field:edu.seance,emp_hours:0
+#: view:edu.work:0
+#: field:edu.work,emp_hours:0
+#: view:edu.work.order:0
+#: field:edu.work.type,emp_hours:0
+msgid "Employee Hours"
+msgstr "Часов сотрудника"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Система оценки:"
+msgstr "Система оценки:"
+
+#. module: irsid_edu
+#: view:edu.application.line:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.student.program:0
+msgid "Mode"
+msgstr "Форма обучения"
+
+#. module: irsid_edu
+#: selection:edu.stage,state:0
+#: selection:edu.student.program,state:0
+msgid "Training Done"
+msgstr "Обучение завершено"
+
+#. module: irsid_edu
+#: help:edu.admission,message_ids:0
+#: help:edu.admission.line,message_ids:0
+#: help:edu.application,message_ids:0
+#: help:edu.application.line,message_ids:0
+#: help:edu.doc,message_ids:0
+#: help:edu.grade,message_ids:0
+#: help:edu.grade.line,message_ids:0
+#: help:edu.module,message_ids:0
+#: help:edu.module.record,message_ids:0
+#: help:edu.module.seance,message_ids:0
+#: help:edu.module.section,message_ids:0
+#: help:edu.module.task,message_ids:0
+#: help:edu.module.work,message_ids:0
+#: help:edu.order,message_ids:0
+#: help:edu.order.line,message_ids:0
+#: help:edu.plan,message_ids:0
+#: help:edu.pricelist,message_ids:0
+#: help:edu.pricelist.line,message_ids:0
+#: help:edu.program,message_ids:0
+#: help:edu.record,message_ids:0
+#: help:edu.record.line,message_ids:0
+#: help:edu.schedule,message_ids:0
+#: help:edu.schedule.line,message_ids:0
+#: help:edu.seance,message_ids:0
+#: help:edu.student.program,message_ids:0
+#: help:edu.time,message_ids:0
+#: help:edu.work,message_ids:0
+#: help:edu.work.order,message_ids:0
+msgid "Messages and communication history"
+msgstr "Сообщения и история переписки"
+
+#. module: irsid_edu
+#: field:edu.order.line,order_program_id:0
+msgid "Order Program"
+msgstr "Программа"
+
+#. module: irsid_edu
+#: view:edu.application:0
+msgid ""
+"Place reason text here (In connection with...                             etc)"
+msgstr ""
+"Place reason text here (In connection with...                             etc)"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_module_section_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_section_updated
+msgid "Раздел обновлён"
+msgstr "Раздел обновлён"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,module_id:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,module_id:0
+#: view:edu.module.record:0
+#: field:edu.module.seance,module_id:0
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: field:edu.module.task,module_id:0
+#: view:edu.module.work:0
+#: view:edu.record:0
+#: field:edu.record,module_id:0
+#: view:edu.seance:0
+#: field:edu.seance,module_id:0
+#: view:edu.work:0
+msgid "Module"
+msgstr "Модуль"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "Дата окончания"
+msgstr "Дата окончания"
+
+#. module: irsid_edu
+#: view:edu.plan:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_plan_work
+msgid "Work By Plan"
+msgstr "Учебная работа"
+
+#. module: irsid_edu
+#: view:edu.work.order:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_work_order
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_work_order
+msgid "Work Orders"
+msgstr "Заказы"
+
+#. module: irsid_edu
+#: sql_constraint:edu.admission.line:0
+msgid "Admission Line must be unique per Plan and Target!"
+msgstr "Направление приёма должно быть уникальным для плана и цели!"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.admission.line:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.grade:0
+#: view:edu.grade.line:0
+#: view:edu.module:0
+#: view:edu.module.record:0
+#: view:edu.module.seance:0
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: view:edu.module.work:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.record:0
+#: view:edu.record.line:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: view:edu.seance:0
+#: view:edu.student.program:0
+#: view:edu.time:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+#: view:res.partner:0
+msgid "Group By..."
+msgstr "Группировать по..."
+
+#. module: irsid_edu
+#: field:edu.admission,user_validated:0
+#: field:edu.admission.line,user_validated:0
+#: field:edu.application,user_validated:0
+#: field:edu.application.line,user_validated:0
+#: field:edu.doc,user_validated:0
+#: field:edu.grade,user_validated:0
+#: field:edu.grade.line,user_validated:0
+#: field:edu.module,user_validated:0
+#: field:edu.module.record,user_validated:0
+#: field:edu.module.seance,user_validated:0
+#: field:edu.module.section,user_validated:0
+#: field:edu.module.task,user_validated:0
+#: field:edu.module.work,user_validated:0
+#: field:edu.order,user_validated:0
+#: field:edu.order.line,user_validated:0
+#: field:edu.plan,user_validated:0
+#: field:edu.pricelist,user_validated:0
+#: field:edu.pricelist.line,user_validated:0
+#: field:edu.program,user_validated:0
+#: field:edu.record,user_validated:0
+#: field:edu.record.line,user_validated:0
+#: field:edu.schedule,user_validated:0
+#: field:edu.schedule.line,user_validated:0
+#: field:edu.seance,user_validated:0
+#: field:edu.time,user_validated:0
+#: field:edu.work,user_validated:0
+#: field:edu.work.order,user_validated:0
+msgid "Validated By"
+msgstr "Согласовал"
+
+#. module: irsid_edu
+#: view:edu.competence:0
+#: view:edu.speciality:0
+#: model:ir.model,name:irsid_edu.model_edu_competence
+msgid "Competence"
+msgstr "Компетенция"
+
+#. module: irsid_edu
+#: field:edu.schedule.line,hours:0
+msgid "Hours"
+msgstr "Часов"
+
+#. module: irsid_edu
+#: view:edu.grade.type:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_grade_type
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_grade_type
+msgid "Grade Types"
+msgstr "Системы оценки"
+
+#. module: irsid_edu
+#: field:edu.admission,message_unread:0
+#: field:edu.admission.line,message_unread:0
+#: field:edu.application,message_unread:0
+#: field:edu.application.line,message_unread:0
+#: field:edu.doc,message_unread:0
+#: field:edu.grade,message_unread:0
+#: field:edu.grade.line,message_unread:0
+#: field:edu.module,message_unread:0
+#: field:edu.module.record,message_unread:0
+#: field:edu.module.seance,message_unread:0
+#: field:edu.module.section,message_unread:0
+#: field:edu.module.task,message_unread:0
+#: field:edu.module.work,message_unread:0
+#: field:edu.order,message_unread:0
+#: field:edu.order.line,message_unread:0
+#: field:edu.plan,message_unread:0
+#: field:edu.pricelist,message_unread:0
+#: field:edu.pricelist.line,message_unread:0
+#: field:edu.program,message_unread:0
+#: field:edu.record,message_unread:0
+#: field:edu.record.line,message_unread:0
+#: field:edu.schedule,message_unread:0
+#: field:edu.schedule.line,message_unread:0
+#: field:edu.seance,message_unread:0
+#: field:edu.student.program,message_unread:0
+#: field:edu.time,message_unread:0
+#: field:edu.work,message_unread:0
+#: field:edu.work.order,message_unread:0
+msgid "Unread Messages"
+msgstr "Непрочитанные"
+
+#. module: irsid_edu
+#: view:edu.record.line:0
+msgid "Update"
+msgstr "Обновить"
+
+#. module: irsid_edu
+#: selection:edu.journal,journaltype:0
+#: selection:edu.module.record,journaltype:0
+msgid "State Diploma"
+msgstr "Диплом гос. образца"
+
+#. module: irsid_edu
+#: view:edu.record:0
+#: view:edu.student.program:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_record
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_record
+msgid "Records"
+msgstr "Ведомости аттестации"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.admission.line:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.module:0
+#: view:edu.module.record:0
+#: view:edu.module.seance:0
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: view:edu.module.work:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.record:0
+#: view:edu.record.line:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: view:edu.seance:0
+#: view:edu.time:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+msgid "Validate"
+msgstr "Направить на утверждение"
+
+#. module: irsid_edu
+#: field:edu.speciality,rank:0
+msgid "Special Rank"
+msgstr "Специальное звание"
+
+#. module: irsid_edu
+#: view:edu.record:0
+#: field:edu.record,line_ids:0
+#: view:edu.record.line:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_record_line
+msgid "Record Lines"
+msgstr "Позиции аттестации"
+
+#. module: irsid_edu
+#: field:edu.admission,website_message_ids:0
+#: field:edu.admission.line,website_message_ids:0
+#: field:edu.application,website_message_ids:0
+#: field:edu.application.line,website_message_ids:0
+#: field:edu.doc,website_message_ids:0
+#: field:edu.grade,website_message_ids:0
+#: field:edu.grade.line,website_message_ids:0
+#: field:edu.module,website_message_ids:0
+#: field:edu.module.record,website_message_ids:0
+#: field:edu.module.seance,website_message_ids:0
+#: field:edu.module.section,website_message_ids:0
+#: field:edu.module.task,website_message_ids:0
+#: field:edu.module.work,website_message_ids:0
+#: field:edu.order,website_message_ids:0
+#: field:edu.order.line,website_message_ids:0
+#: field:edu.plan,website_message_ids:0
+#: field:edu.pricelist,website_message_ids:0
+#: field:edu.pricelist.line,website_message_ids:0
+#: field:edu.program,website_message_ids:0
+#: field:edu.record,website_message_ids:0
+#: field:edu.record.line,website_message_ids:0
+#: field:edu.schedule,website_message_ids:0
+#: field:edu.schedule.line,website_message_ids:0
+#: field:edu.seance,website_message_ids:0
+#: field:edu.student.program,website_message_ids:0
+#: field:edu.time,website_message_ids:0
+#: field:edu.work,website_message_ids:0
+#: field:edu.work.order,website_message_ids:0
+msgid "Website Messages"
+msgstr "Сообщения сайта"
+
+#. module: irsid_edu
+#: field:edu.grade.mark,value:0
+msgid "Value"
+msgstr "Значение"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_program_application
+msgid "Applications By Program"
+msgstr "Заявления по программе"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module,product_ids:0
+msgid "Products"
+msgstr "Продукты"
+
+#. module: irsid_edu
+#: field:edu.application,intro_text:0
+#: field:edu.order,intro_text:0
+msgid "Reason Text"
+msgstr "Основание"
+
+#. module: irsid_edu
+#: view:edu.schedule:0
+#: field:edu.schedule,line_ids:0
+#: view:edu.schedule.line:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_schedule_line
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_schedule_line
+msgid "Schedule Lines"
+msgstr "Позиции графика"
+
+#. module: irsid_edu
+#: code:addons/irsid_edu/irsid_edu.py:136
+#: code:addons/irsid_edu/irsid_edu.py:5754
+#, python-format
+msgid "Invalid Action!"
+msgstr "Невозможное действие!"
+
+#. module: irsid_edu
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_schedule_short
+msgid "Acadedmic Schedule (short)"
+msgstr "Учебный график (краткий)"
+
+#. module: irsid_edu
+#: view:edu.student.program:0
+msgid "Edit..."
+msgstr "Изменить..."
+
+#. module: irsid_edu
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_report
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_root
+msgid "Education"
+msgstr "Образование"
+
+#. module: irsid_edu
+#: report:edu.plan:0
+msgid "Часть"
+msgstr "Часть"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "должность"
+msgstr "должность"
+
+#. module: irsid_edu
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_partners
+#: view:res.partner:0
+msgid "Partners"
+msgstr "Партнёры"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: field:edu.application,statement_id:0
+#: view:edu.application.line:0
+#: field:edu.application.line,statement_id:0
+#: view:edu.order:0
+#: field:edu.order,statement_id:0
+#: view:edu.order.line:0
+#: field:edu.order.line,statement_id:0
+msgid "Statement"
+msgstr "Формулировка"
+
+#. module: irsid_edu
+#: field:edu.location,area:0
+msgid "Area"
+msgstr "Площадь"
+
+#. module: irsid_edu
+#: selection:edu.module.task,type:0
+msgid "Question"
+msgstr "Вопрос"
+
+#. module: irsid_edu
+#: report:edu.plan:0
+msgid "УЧЕБНЫЙ ПЛАН"
+msgstr "УЧЕБНЫЙ ПЛАН"
+
+#. module: irsid_edu
+#: field:edu.module,location_id:0
+#: field:edu.module.seance,location_id:0
+#: view:edu.module.work:0
+#: field:edu.module.work,location_id:0
+#: view:edu.seance:0
+#: field:edu.seance,location_id:0
+#: view:edu.work:0
+#: field:edu.work,location_id:0
+msgid "Location"
+msgstr "Место проведения"
+
+#. module: irsid_edu
+#: view:edu.grade.line:0
+#: model:ir.model,name:irsid_edu.model_edu_grade_line
+msgid "Grade Line"
+msgstr "Позиции ведомости успеваемости"
+
+#. module: irsid_edu
+#: view:edu.schedule:0
+msgid "Training Schedule: "
+msgstr "Учебный график: "
+
+#. module: irsid_edu
+#: view:edu.module.record:0
+msgid "Module Records"
+msgstr "Аттестация по модулю"
+
+#. module: irsid_edu
+#: help:edu.admission,website_message_ids:0
+#: help:edu.admission.line,website_message_ids:0
+#: help:edu.application,website_message_ids:0
+#: help:edu.application.line,website_message_ids:0
+#: help:edu.doc,website_message_ids:0
+#: help:edu.grade,website_message_ids:0
+#: help:edu.grade.line,website_message_ids:0
+#: help:edu.module,website_message_ids:0
+#: help:edu.module.record,website_message_ids:0
+#: help:edu.module.seance,website_message_ids:0
+#: help:edu.module.section,website_message_ids:0
+#: help:edu.module.task,website_message_ids:0
+#: help:edu.module.work,website_message_ids:0
+#: help:edu.order,website_message_ids:0
+#: help:edu.order.line,website_message_ids:0
+#: help:edu.plan,website_message_ids:0
+#: help:edu.pricelist,website_message_ids:0
+#: help:edu.pricelist.line,website_message_ids:0
+#: help:edu.program,website_message_ids:0
+#: help:edu.record,website_message_ids:0
+#: help:edu.record.line,website_message_ids:0
+#: help:edu.schedule,website_message_ids:0
+#: help:edu.schedule.line,website_message_ids:0
+#: help:edu.seance,website_message_ids:0
+#: help:edu.student.program,website_message_ids:0
+#: help:edu.time,website_message_ids:0
+#: help:edu.work,website_message_ids:0
+#: help:edu.work.order,website_message_ids:0
+msgid "Website communication history"
+msgstr "История сообщения сайта"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module,parent_id:0
+msgid "Parent Module"
+msgstr "Заменяемый модуль"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "e.g. www.openerp.com"
+msgstr "пример: irsid.ru"
+
+#. module: irsid_edu
+#: selection:edu.application.line,status:0
+#: selection:edu.order.line,status:0
+#: selection:edu.student.program,status:0
+msgid "Listener"
+msgstr "Слушатель"
+
+#. module: irsid_edu
+#: view:edu.admission.line:0
+#: field:edu.application.line,line_id:0
+#: field:edu.order.line,line_id:0
+#: model:ir.model,name:irsid_edu.model_edu_admission_line
+msgid "Admission Line"
+msgstr "Направление приёма"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,st_program_ids:0
+#: view:edu.record:0
+#: field:edu.record,st_program_ids:0
+#: view:edu.seance:0
+#: field:edu.seance,st_program_ids:0
+#: view:edu.student.program:0
+#: view:edu.work:0
+#: field:edu.work,st_program_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_student_program
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_student_program
+msgid "Student Programs"
+msgstr "Программы обучающихся"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.pricelist:0
+msgid "Специальность"
+msgstr "Специальность"
+
+#. module: irsid_edu
+#: view:edu.admission.line:0
+#: field:edu.admission.line,target_id:0
+#: model:ir.model,name:irsid_edu.model_edu_admission_target
+msgid "Target"
+msgstr "Цель приёма"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Settings"
+msgstr "Настройки"
+
+#. module: irsid_edu
+#: field:edu.location,beamer:0
+msgid "Has Beamer?"
+msgstr "Есть проектор?"
+
+#. module: irsid_edu
+#: model:res.groups,name:irsid_edu.group_edu_prorector
+msgid "Prorector"
+msgstr "Проректор"
+
+#. module: irsid_edu
+#: view:edu.module.seance:0
+#: field:edu.module.task,seance_id:0
+#: field:edu.seance,moduleseance_id:0
+#: model:ir.model,name:irsid_edu.model_edu_module_seance
+msgid "Module Seance"
+msgstr "Занятие модуля"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.admission.line:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.grade:0
+#: view:edu.grade.line:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.record:0
+#: view:edu.record.line:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: view:edu.seance:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+msgid "Cancel"
+msgstr "Отменить"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,gradetype_id:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,gradetype_id:0
+#: field:edu.journal,gradetype_id:0
+#: view:edu.module.record:0
+#: field:edu.module.record,gradetype_id:0
+#: field:edu.module.seance,gradetype_id:0
+#: view:edu.module.work:0
+#: field:edu.module.work,gradetype_id:0
+#: view:edu.record:0
+#: field:edu.record,gradetype_id:0
+#: field:edu.seance,gradetype_id:0
+#: view:edu.work:0
+#: field:edu.work,gradetype_id:0
+#: field:edu.work.type,gradetype_id:0
+#: model:ir.model,name:irsid_edu.model_edu_grade_type
+msgid "Grade Type"
+msgstr "Система оценки"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_application_admission
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_application_admission
+msgid "Applications For Admission"
+msgstr "Приём"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Часов обучения:"
+msgstr "Часов обучения:"
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Normal Module"
+msgstr "Обычный модуль"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_work_order_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_work_order_updated
+msgid "Заказ обновлён"
+msgstr "Заказ обновлён"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_seance_task
+msgid "Tasks By Seance"
+msgstr "Задания"
+
+#. module: irsid_edu
+#: field:edu.student.program,image_medium:0
+msgid "Medium-sized image"
+msgstr "Среднее изображение"
+
+#. module: irsid_edu
+#: selection:edu.stage,state:0
+#: selection:edu.student.program,state:0
+msgid "Training in Progress"
+msgstr "В процессе обучения"
+
+#. module: irsid_edu
+#: selection:edu.journal,recordtype:0
+#: selection:edu.module.record,recordtype:0
+msgid "Course Work"
+msgstr "Курсовая работа"
+
+#. module: irsid_edu
+#: field:edu.admission,date_start:0
+#: field:edu.application,date_start:0
+#: field:edu.grade,date_start:0
+#: field:edu.order,date_start:0
+#: field:edu.pricelist,date_start:0
+#: field:edu.record,date_start:0
+#: field:edu.schedule,date_start:0
+#: field:edu.schedule.line,date_start:0
+#: field:edu.work,date_start:0
+#: field:edu.work.order,date_start:0
+#: field:edu.year,date_start:0
+msgid "Start Date"
+msgstr "Дата начала"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.student.program.list:0
+msgid "Статус"
+msgstr "Статус"
+
+#. module: irsid_edu
+#: field:edu.stage,fold:0
+msgid "Folded by Default"
+msgstr "Свернуто по умолчанию"
+
+#. module: irsid_edu
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_student_program_list
+msgid "Student Program (list)"
+msgstr "Программа обуч. (список)"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.application:0
+#: view:edu.grade:0
+#: view:edu.order:0
+#: view:edu.pricelist:0
+#: view:edu.record:0
+#: view:edu.schedule:0
+#: view:edu.work.order:0
+msgid " On "
+msgstr " от "
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Street..."
+msgstr "Улица..."
+
+#. module: irsid_edu
+#: field:edu.journal,journaltype:0
+#: field:edu.module.record,journaltype:0
+msgid "Journal Type"
+msgstr "Тип журнала"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.record:0
+#: view:edu.record.line:0
+msgid "Reject"
+msgstr "Отклонить"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_program_plan_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_program_plan_updated
+msgid "Учебный план обновлён"
+msgstr "Учебный план обновлён"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_student
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_student
+#: view:res.partner:0
+msgid "Students"
+msgstr "Обучающиеся"
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Module: "
+msgstr "Модуль: "
+
+#. module: irsid_edu
+#: view:edu.application.line:0
+#: field:edu.application.line,plan_id:0
+#: view:edu.order.line:0
+#: field:edu.order.line,plan_id:0
+#: view:edu.plan:0
+#: view:edu.student.program:0
+msgid "Plan"
+msgstr "План"
+
+#. module: irsid_edu
+#: view:edu.group:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_group
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_group
+msgid "Groups"
+msgstr "Группы"
+
+#. module: irsid_edu
+#: field:edu.order.line,order_stage_id:0
+msgid "Order Stage"
+msgstr "Стадия"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_application_enrollment
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"enrollment.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected Education Programs.\n"
+"                    Before creating application make sure you have record(s) "
+"under\n"
+"                    \"Applicant Programs\" menu entry for applicant(s). If "
+"it's true\n"
+"                    just click \"Create\" to fill in application form, then "
+"press \"Confirm\"\n"
+"                    button. Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several applicant\n"
+"                    programs you are in charge of. The social feature helps "
+"you organize\n"
+"                    discussions on application and allows you to keep track "
+"of its\n"
+"                    current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"enrollment.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected Education Programs.\n"
+"                    Before creating application make sure you have record(s) "
+"under\n"
+"                    \"Applicant Programs\" menu entry for applicant(s). If "
+"it's true\n"
+"                    just click \"Create\" to fill in application form, then "
+"press \"Confirm\"\n"
+"                    button. Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several applicant\n"
+"                    programs you are in charge of. The social feature helps "
+"you organize\n"
+"                    discussions on application and allows you to keep track "
+"of its\n"
+"                    current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: view:edu.order:0
+msgid "Place obligation and responsibility text here..."
+msgstr "Укажите здесь обязательства и ответственность..."
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_st_program
+msgid "Programs By Student"
+msgstr "Программы"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_program_time_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_time_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_program_time_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_time_updated
+msgid "Учебное время обновлено"
+msgstr "Учебное время обновлено"
+
+#. module: irsid_edu
+#: view:edu.program:0
+msgid "Full Title..."
+msgstr "Полное наименование..."
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_order_transfer
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"transfer.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"selected program, stage, plan\n"
+"                    and status for transfer. Stages include different "
+"courses, study\n"
+"                    leave etc. If student is to change program then order "
+"must have\n"
+"                    two lines with old program and new one with correspondent "
+"stages.\n"
+"                    Just click \"Create\" to fill in order form, then press "
+"\"Confirm\"\n"
+"                    button. Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"transfer.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"selected program, stage, plan\n"
+"                    and status for transfer. Stages include different "
+"courses, study\n"
+"                    leave etc. If student is to change program then order "
+"must have\n"
+"                    two lines with old program and new one with correspondent "
+"stages.\n"
+"                    Just click \"Create\" to fill in order form, then press "
+"\"Confirm\"\n"
+"                    button. Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: report:edu.plan:0
+#: report:edu.work.order:0
+msgid "Часов обучения"
+msgstr "Часов обучения"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_order_enrollment
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_order_enrollment
+msgid "Orders For Enrollment"
+msgstr "Зачисление"
+
+#. module: irsid_edu
+#: report:edu.work.order:0
+msgid "Выполнить учебную работу в следующем объеме:"
+msgstr "Выполнить учебную работу в следующем объеме:"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_work_order_work_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_work_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_work_order_work_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_work_updated
+msgid "Учебная работа обновлена"
+msgstr "Учебная работа обновлена"
+
+#. module: irsid_edu
+#: view:edu.record.line:0
+#: model:ir.model,name:irsid_edu.model_edu_record_line
+msgid "Record Line"
+msgstr "Позиция ведомости"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.admission.line:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.grade:0
+#: view:edu.grade.line:0
+#: view:edu.module:0
+#: view:edu.module.record:0
+#: view:edu.module.seance:0
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: view:edu.module.work:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: view:edu.seance:0
+#: view:edu.time:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+msgid "Revise"
+msgstr "Направить на доработку"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_pricelist_line
+msgid "Lines By Pricelist"
+msgstr "Позиции прейскуранта"
+
+#. module: irsid_edu
+#: help:res.partner,student:0
+msgid "Check this box if this contact is a student."
+msgstr "Отметьте, если данный контакт относится к обучающемуся (поступающему)."
+
+#. module: irsid_edu
+#: field:edu.admission,date_validated:0
+#: field:edu.admission.line,date_validated:0
+#: field:edu.application,date_validated:0
+#: field:edu.application.line,date_validated:0
+#: field:edu.doc,date_validated:0
+#: field:edu.grade,date_validated:0
+#: field:edu.grade.line,date_validated:0
+#: field:edu.module,date_validated:0
+#: field:edu.module.record,date_validated:0
+#: field:edu.module.seance,date_validated:0
+#: field:edu.module.section,date_validated:0
+#: field:edu.module.task,date_validated:0
+#: field:edu.module.work,date_validated:0
+#: field:edu.order,date_validated:0
+#: field:edu.order.line,date_validated:0
+#: field:edu.plan,date_validated:0
+#: field:edu.pricelist,date_validated:0
+#: field:edu.pricelist.line,date_validated:0
+#: field:edu.program,date_validated:0
+#: field:edu.record,date_validated:0
+#: field:edu.record.line,date_validated:0
+#: field:edu.schedule,date_validated:0
+#: field:edu.schedule.line,date_validated:0
+#: field:edu.seance,date_validated:0
+#: field:edu.time,date_validated:0
+#: field:edu.work,date_validated:0
+#: field:edu.work.order,date_validated:0
+msgid "Date Of Validation"
+msgstr "Дата согласования"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: selection:edu.admission,state:0
+#: view:edu.admission.line:0
+#: selection:edu.admission.line,state:0
+#: view:edu.application:0
+#: selection:edu.application,state:0
+#: view:edu.application.line:0
+#: selection:edu.application.line,state:0
+#: selection:edu.doc,state:0
+#: selection:edu.grade,state:0
+#: selection:edu.grade.line,state:0
+#: selection:edu.module,state:0
+#: selection:edu.module.record,state:0
+#: selection:edu.module.seance,state:0
+#: selection:edu.module.section,state:0
+#: selection:edu.module.task,state:0
+#: selection:edu.module.work,state:0
+#: view:edu.order:0
+#: selection:edu.order,state:0
+#: view:edu.order.line:0
+#: selection:edu.order.line,state:0
+#: selection:edu.plan,state:0
+#: view:edu.pricelist:0
+#: selection:edu.pricelist,state:0
+#: view:edu.pricelist.line:0
+#: selection:edu.pricelist.line,state:0
+#: selection:edu.program,state:0
+#: selection:edu.record,state:0
+#: selection:edu.record.line,state:0
+#: view:edu.schedule:0
+#: selection:edu.schedule,state:0
+#: view:edu.schedule.line:0
+#: selection:edu.schedule.line,state:0
+#: view:edu.seance:0
+#: selection:edu.seance,state:0
+#: selection:edu.time,state:0
+#: view:edu.work:0
+#: selection:edu.work,state:0
+#: view:edu.work.order:0
+#: selection:edu.work.order,state:0
+msgid "Done"
+msgstr "Исполнен"
+
+#. module: irsid_edu
+#: view:edu.period:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_period
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_period
+msgid "Periods"
+msgstr "Периоды"
+
+#. module: irsid_edu
+#: field:edu.application.line,mode_id:0
+#: field:edu.order.line,mode_id:0
+#: field:edu.plan,mode_id:0
+#: field:edu.pricelist.line,mode_id:0
+#: field:edu.student.program,mode_id:0
+msgid "Mode Of Study"
+msgstr "Форма обучения"
+
+#. module: irsid_edu
+#: field:edu.stage,case_default:0
+msgid "Default for New Programs"
+msgstr "По умолчанию для новых программ"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Модуль:"
+msgstr "Модуль:"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "City"
+msgstr "Город"
+
+#. module: irsid_edu
+#: selection:edu.application,type:0
+#: selection:edu.application.line,type:0
+#: selection:edu.order,type:0
+#: selection:edu.order.line,type:0
+#: selection:edu.statement,type:0
+msgid "Transfer"
+msgstr "Перевод"
+
+#. module: irsid_edu
+#: model:ir.actions.server,name:irsid_edu.action_server_st_programs_to_work_orders
+msgid "Student Programs To Work Orders"
+msgstr "Программы обучающихся в Заказы"
+
+#. module: irsid_edu
+#: report:edu.student.program.list:0
+msgid "Группа"
+msgstr "Группа"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_location
+msgid "Training Location"
+msgstr "Место проведения"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_program_module
+msgid "Program Modules"
+msgstr "Модули программы"
+
+#. module: irsid_edu
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_order
+#: model:ir.model,name:irsid_edu.model_edu_order
+msgid "Academic Order"
+msgstr "Приказ"
+
+#. module: irsid_edu
+#: code:addons/irsid_edu/irsid_edu.py:136
+#: code:addons/irsid_edu/irsid_edu.py:5754
+#, python-format
+msgid "Cannot delete document in state '%s'."
+msgstr "Нельзя удалить документ в состоянии '%s'."
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module,plan_ids:0
+#: view:edu.plan:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_plan
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_plan
+msgid "Plans"
+msgstr "Планы"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,seance_hours:0
+#: view:edu.module:0
+#: field:edu.module,seance_hours:0
+#: view:edu.module.record:0
+#: field:edu.module.record,seance_hours:0
+#: view:edu.module.seance:0
+#: field:edu.module.seance,seance_hours:0
+#: view:edu.module.work:0
+#: field:edu.module.work,seance_hours:0
+#: view:edu.plan:0
+#: view:edu.program:0
+#: view:edu.record:0
+#: field:edu.record,seance_hours:0
+#: view:edu.seance:0
+#: field:edu.seance,seance_hours:0
+#: view:edu.work:0
+#: field:edu.work,seance_hours:0
+#: view:edu.work.order:0
+#: field:edu.work.type,seance_hours:0
+msgid "Seance Hours"
+msgstr "Часов занятий"
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Main Module"
+msgstr "Основной модуль"
+
+#. module: irsid_edu
+#: sql_constraint:edu.student.program:0
+msgid "Program must be unique per Student!"
+msgstr "Программа должна быть уникальной для обучающегося!"
+
+#. module: irsid_edu
+#: view:edu.module.task:0
+msgid "Module Tasks"
+msgstr "Задания модуля"
+
+#. module: irsid_edu
+#: field:edu.location,address_id:0
+#: view:res.partner:0
+msgid "Address"
+msgstr "Адрес"
+
+#. module: irsid_edu
+#: view:edu.year:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_year
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_year
+msgid "Academic Years"
+msgstr "Учебные года"
+
+#. module: irsid_edu
+#: field:edu.admission,date_stop:0
+#: field:edu.application,date_stop:0
+#: field:edu.grade,date_stop:0
+#: field:edu.order,date_stop:0
+#: field:edu.pricelist,date_stop:0
+#: field:edu.record,date_stop:0
+#: field:edu.schedule,date_stop:0
+#: field:edu.schedule.line,date_stop:0
+#: field:edu.work,date_stop:0
+#: field:edu.work.order,date_stop:0
+#: field:edu.year,date_stop:0
+msgid "End Date"
+msgstr "Дата окончания"
+
+#. module: irsid_edu
+#: selection:edu.application,type:0
+#: selection:edu.application.line,type:0
+#: selection:edu.order,type:0
+#: selection:edu.order.line,type:0
+#: selection:edu.statement,type:0
+msgid "Enrollment"
+msgstr "Зачисление"
+
+#. module: irsid_edu
+#: view:edu.competence:0
+#: field:edu.competence,module_ids:0
+#: view:edu.module:0
+#: view:edu.plan:0
+#: field:edu.plan,module_ids:0
+#: view:edu.program:0
+#: field:edu.program,electivemodule_ids:0
+#: field:edu.program,mainmodule_ids:0
+#: field:edu.program,module_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_module
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_module
+msgid "Modules"
+msgstr "Модули"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_training_application
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_training_application
+msgid "Training Applications"
+msgstr "Заявления по обучению"
+
+#. module: irsid_edu
+#: report:edu.pricelist:0
+msgid "ПРЕЙСКУРАНТ ЦЕН"
+msgstr "ПРЕЙСКУРАНТ ЦЕН"
+
+#. module: irsid_edu
+#: field:edu.record.line,mark_id:0
+#: model:ir.model,name:irsid_edu.model_edu_grade_mark
+msgid "Grade Mark"
+msgstr "Оценка"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_admission_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_admission_updated
+msgid "План приёма обновлён"
+msgstr "План приёма обновлён"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.admission.line:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.grade:0
+#: view:edu.grade.line:0
+#: view:edu.module:0
+#: view:edu.module.record:0
+#: view:edu.module.seance:0
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: view:edu.module.work:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.record:0
+#: view:edu.record.line:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: view:edu.seance:0
+#: view:edu.time:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+msgid "Approve"
+msgstr "Утвердить"
+
+#. module: irsid_edu
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: field:edu.order.line,order_id:0
+#: view:edu.work:0
+#: model:ir.model,name:irsid_edu.model_edu_work_order
+msgid "Order"
+msgstr "Приказ"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_module_module_work_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_module_work_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_module_work_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_work_updated
+msgid "Работа обновлена"
+msgstr "Работа обновлена"
+
+#. module: irsid_edu
+#: view:edu.work:0
+msgid "Update Work"
+msgstr "Обновить работу"
+
+#. module: irsid_edu
+#: field:edu.pricelist.line,stage_price:0
+msgid "Stage Price"
+msgstr "Цена"
+
+#. module: irsid_edu
+#: model:res.groups,name:irsid_edu.group_edu_manager
+msgid "Manager"
+msgstr "Менеджер"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_application_transfer
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_application_transfer
+msgid "Applications For Transfer"
+msgstr "Перевод"
+
+#. module: irsid_edu
+#: field:edu.application.line,date_start:0
+#: field:edu.order.line,date_start:0
+#: field:edu.pricelist.line,date_start:0
+msgid "Date Start"
+msgstr "Дата начала"
+
+#. module: irsid_edu
+#: model:ir.model,name:irsid_edu.model_edu_group
+msgid "Students Groups"
+msgstr "Группы обучающихся"
+
+#. module: irsid_edu
+#: field:res.partner,edu_document:0
+msgid "Educational Document"
+msgstr "Учебный документ"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_application_dismissal
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"dismissal.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student program(s) "
+"for dismissal. Stages for\n"
+"                    this type are 'Training Done' and 'Training Canceled'. "
+"Just click\n"
+"                    \"Create\" to fill in application form, then press "
+"\"Confirm\" button.\n"
+"                    Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several student programs\n"
+"                    you are in charge of. The social feature helps you "
+"organize discussions\n"
+"                    on application and allows you to keep track of its "
+"current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new application for "
+"dismissal.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student program(s) "
+"for dismissal. Stages for\n"
+"                    this type are 'Training Done' and 'Training Canceled'. "
+"Just click\n"
+"                    \"Create\" to fill in application form, then press "
+"\"Confirm\" button.\n"
+"                    Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several student programs\n"
+"                    you are in charge of. The social feature helps you "
+"organize discussions\n"
+"                    on application and allows you to keep track of its "
+"current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: view:edu.application:0
+msgid "Place petition text here..."
+msgstr "Укажите здесь текст просьбы..."
+
+#. module: irsid_edu
+#: field:edu.module,replace_method:0
+msgid "Replace Method"
+msgstr "Метод замены"
+
+#. module: irsid_edu
+#: field:edu.program,mode_id:0
+#: model:ir.model,name:irsid_edu.model_edu_mode
+msgid "Mode of Study"
+msgstr "Форма обучения"
+
+#. module: irsid_edu
+#: view:edu.program:0
+#: view:edu.schedule.line:0
+#: field:edu.schedule.line,weeks:0
+#: view:edu.time:0
+#: field:edu.time,weeks:0
+msgid "Weeks"
+msgstr "Недель"
+
+#. module: irsid_edu
+#: view:edu.seance:0
+msgid "Update Seance From Module"
+msgstr "Обновить занятие"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: view:edu.student.program:0
+#: view:res.partner:0
+msgid "Applications"
+msgstr "Заявления"
+
+#. module: irsid_edu
+#: report:edu.plan:0
+msgid "Заменяемый модуль"
+msgstr "Заменяемый модуль"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_exstudent_program
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_exstudent_program
+msgid "Ex-student Programs"
+msgstr "Программы необучающихся"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_order_other
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new arbitrary order.</p>"
+"\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"petition in arbitrary form.\n"
+"                    This order doesn't change student program, stage, plan or "
+"status.\n"
+"                    Just click \"Create\" to fill in order form, then press "
+"\"Confirm\"\n"
+"                    button. Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new arbitrary order.</p>"
+"\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"petition in arbitrary form.\n"
+"                    This order doesn't change student program, stage, plan or "
+"status.\n"
+"                    Just click \"Create\" to fill in order form, then press "
+"\"Confirm\"\n"
+"                    button. Please fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    The social feature helps you organize discussions on "
+"order and allows you to keep\n"
+"                    track of its current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: selection:edu.admission,state:0
+#: view:edu.admission.line:0
+#: selection:edu.admission.line,state:0
+#: selection:edu.application,state:0
+#: selection:edu.application.line,state:0
+#: selection:edu.doc,state:0
+#: selection:edu.grade,state:0
+#: selection:edu.grade.line,state:0
+#: selection:edu.module,state:0
+#: selection:edu.module.record,state:0
+#: selection:edu.module.seance,state:0
+#: selection:edu.module.section,state:0
+#: selection:edu.module.task,state:0
+#: selection:edu.module.work,state:0
+#: selection:edu.order,state:0
+#: selection:edu.order.line,state:0
+#: selection:edu.plan,state:0
+#: selection:edu.pricelist,state:0
+#: view:edu.pricelist.line:0
+#: selection:edu.pricelist.line,state:0
+#: selection:edu.program,state:0
+#: selection:edu.record,state:0
+#: selection:edu.record.line,state:0
+#: selection:edu.schedule,state:0
+#: selection:edu.schedule.line,state:0
+#: selection:edu.seance,state:0
+#: selection:edu.time,state:0
+#: selection:edu.work,state:0
+#: selection:edu.work.order,state:0
+msgid "Approved"
+msgstr "Утвержден"
+
+#. module: irsid_edu
+#: field:edu.competence,program_ids:0
+#: view:edu.program:0
+#: field:edu.stage,program_ids:0
+#: view:edu.student.program:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_program
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_configuration_programs
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_program
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_programs
+#: view:res.partner:0
+#: field:res.partner,program_ids:0
+msgid "Programs"
+msgstr "Программы"
+
+#. module: irsid_edu
+#: report:edu.order:0
+#: report:edu.order.line:0
+msgid "ПРИКАЗЫВАЮ"
+msgstr "ПРИКАЗЫВАЮ"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Use customer address"
+msgstr "Совпадает с адресом заказчика"
+
+#. module: irsid_edu
+#: field:edu.admission,message_ids:0
+#: field:edu.admission.line,message_ids:0
+#: field:edu.application,message_ids:0
+#: field:edu.application.line,message_ids:0
+#: field:edu.doc,message_ids:0
+#: field:edu.grade,message_ids:0
+#: field:edu.grade.line,message_ids:0
+#: field:edu.module,message_ids:0
+#: field:edu.module.record,message_ids:0
+#: field:edu.module.seance,message_ids:0
+#: field:edu.module.section,message_ids:0
+#: field:edu.module.task,message_ids:0
+#: field:edu.module.work,message_ids:0
+#: field:edu.order,message_ids:0
+#: field:edu.order.line,message_ids:0
+#: field:edu.plan,message_ids:0
+#: field:edu.pricelist,message_ids:0
+#: field:edu.pricelist.line,message_ids:0
+#: field:edu.program,message_ids:0
+#: field:edu.record,message_ids:0
+#: field:edu.record.line,message_ids:0
+#: field:edu.schedule,message_ids:0
+#: field:edu.schedule.line,message_ids:0
+#: field:edu.seance,message_ids:0
+#: field:edu.student.program,message_ids:0
+#: field:edu.time,message_ids:0
+#: field:edu.work,message_ids:0
+#: field:edu.work.order,message_ids:0
+msgid "Messages"
+msgstr "Сообщения"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: field:edu.module,child_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_module_children
+msgid "Child Modules"
+msgstr "Заменяющие модули"
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Module Program"
+msgstr "Программа модуля"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_student_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_student_updated
+msgid "Карточка обучающегося обновлена"
+msgstr "Карточка обучающегося обновлена"
+
+#. module: irsid_edu
+#: field:edu.module.record,recordtype:0
+msgid "Record Type"
+msgstr "Вид аттестации"
+
+#. module: irsid_edu
+#: view:edu.program:0
+#: field:edu.program,rprog:0
+msgid "Reduced"
+msgstr "Сокращённая"
+
+#. module: irsid_edu
+#: report:edu.order:0
+#: report:edu.order.line:0
+msgid "Стадия обучающегося:"
+msgstr "Стадия обучающегося:"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_program_order
+msgid "Orders By Program"
+msgstr "Приказы по программе"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_student_program_grade_line
+msgid "Grade Lines By Program"
+msgstr "Успеваемость"
+
+#. module: irsid_edu
+#: field:edu.student.program,color:0
+msgid "Color Index"
+msgstr "Цвет"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_applicant
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new applicant.</p>\n"
+"                <p>\n"
+"                    Created record holds necessary information about "
+"applicant. If you are going to admit\n"
+"                    then just click \"Create\" to fill in information about "
+"yourself,\n"
+"                    then go to \"Admission Applications\" menu entry. If you "
+"are representative\n"
+"                    (parent, employee) then you can create several "
+"applicants. You\n"
+"                    need to attach copies of legal documents to each "
+"applicant. Please\n"
+"                    fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    When all applicants are entered, you can create an "
+"application for admission on them\n"
+"                    using \"Admission Applications\" menu entry. The social "
+"feature\n"
+"                    helps you organize discussions on applicants and allows "
+"you to\n"
+"                    keep track of their current admission state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new applicant.</p>\n"
+"                <p>\n"
+"                    Created record holds necessary information about "
+"applicant. If you are going to admit\n"
+"                    then just click \"Create\" to fill in information about "
+"yourself,\n"
+"                    then go to \"Admission Applications\" menu entry. If you "
+"are representative\n"
+"                    (parent, employee) then you can create several "
+"applicants. You\n"
+"                    need to attach copies of legal documents to each "
+"applicant. Please\n"
+"                    fill in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    When all applicants are entered, you can create an "
+"application for admission on them\n"
+"                    using \"Admission Applications\" menu entry. The social "
+"feature\n"
+"                    helps you organize discussions on applicants and allows "
+"you to\n"
+"                    keep track of their current admission state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: field:edu.statement,app_final_text:0
+msgid "Application Responsibility Text"
+msgstr "Ответственность заявления"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "ВЕДОМОСТЬ УСПЕВАЕМОСТИ"
+msgstr "ВЕДОМОСТЬ УСПЕВАЕМОСТИ"
+
+#. module: irsid_edu
+#: model:res.groups,name:irsid_edu.group_edu_teacher
+msgid "Teacher"
+msgstr "Преподаватель"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+msgid "Образовательная программа"
+msgstr "Образовательная программа"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: view:edu.seance:0
+#: field:edu.student.program,grade_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_grade
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_grade
+msgid "Grades"
+msgstr "Успеваемость"
+
+#. module: irsid_edu
+#: view:edu.statement:0
+#: model:ir.model,name:irsid_edu.model_edu_statement
+msgid "Academic Statement"
+msgstr "Учебная формулировка"
+
+#. module: irsid_edu
+#: selection:edu.journal,recordtype:0
+#: selection:edu.module.record,recordtype:0
+msgid "Final Exam"
+msgstr "Итоговый (гос.) экзамен"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: view:edu.admission.line:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.module:0
+#: view:edu.module.record:0
+#: view:edu.module.seance:0
+#: view:edu.module.section:0
+#: view:edu.module.task:0
+#: view:edu.module.work:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.plan:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.program:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: view:edu.seance:0
+#: view:edu.time:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+msgid "Confirm"
+msgstr "Направить на рассмотрение"
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Section"
+msgstr "Раздел (цикл)"
+
+#. module: irsid_edu
+#: view:edu.grade.line:0
+#: field:edu.grade.line,mark_id:0
+#: view:edu.record.line:0
+msgid "Mark"
+msgstr "Оценка"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: field:edu.application.line,application_id:0
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_application
+#: model:ir.model,name:irsid_edu.model_edu_application
+msgid "Application"
+msgstr "Заявление"
+
+#. module: irsid_edu
+#: field:edu.admission,message_follower_ids:0
+#: field:edu.admission.line,message_follower_ids:0
+#: field:edu.application,message_follower_ids:0
+#: field:edu.application.line,message_follower_ids:0
+#: field:edu.doc,message_follower_ids:0
+#: field:edu.grade,message_follower_ids:0
+#: field:edu.grade.line,message_follower_ids:0
+#: field:edu.module,message_follower_ids:0
+#: field:edu.module.record,message_follower_ids:0
+#: field:edu.module.seance,message_follower_ids:0
+#: field:edu.module.section,message_follower_ids:0
+#: field:edu.module.task,message_follower_ids:0
+#: field:edu.module.work,message_follower_ids:0
+#: field:edu.order,message_follower_ids:0
+#: field:edu.order.line,message_follower_ids:0
+#: field:edu.plan,message_follower_ids:0
+#: field:edu.pricelist,message_follower_ids:0
+#: field:edu.pricelist.line,message_follower_ids:0
+#: field:edu.program,message_follower_ids:0
+#: field:edu.record,message_follower_ids:0
+#: field:edu.record.line,message_follower_ids:0
+#: field:edu.schedule,message_follower_ids:0
+#: field:edu.schedule.line,message_follower_ids:0
+#: field:edu.seance,message_follower_ids:0
+#: field:edu.student.program,message_follower_ids:0
+#: field:edu.time,message_follower_ids:0
+#: field:edu.work,message_follower_ids:0
+#: field:edu.work.order,message_follower_ids:0
+msgid "Followers"
+msgstr "Подписчики"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,employee_id:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,employee_id:0
+#: view:edu.module:0
+#: field:edu.module,employee_id:0
+#: field:edu.module.seance,employee_id:0
+#: view:edu.module.work:0
+#: field:edu.module.work,employee_id:0
+#: field:edu.record,employee_id:0
+#: view:edu.seance:0
+#: field:edu.seance,employee_id:0
+#: view:edu.work:0
+#: field:edu.work,employee_id:0
+#: model:res.groups,name:irsid_edu.group_edu_employee
+msgid "Employee"
+msgstr "Сотрудник"
+
+#. module: irsid_edu
+#: selection:edu.admission,state:0
+#: selection:edu.admission.line,state:0
+#: selection:edu.application,state:0
+#: selection:edu.application.line,state:0
+#: selection:edu.doc,state:0
+#: selection:edu.grade,state:0
+#: selection:edu.grade.line,state:0
+#: selection:edu.module,state:0
+#: selection:edu.module.record,state:0
+#: selection:edu.module.seance,state:0
+#: selection:edu.module.section,state:0
+#: selection:edu.module.task,state:0
+#: selection:edu.module.work,state:0
+#: selection:edu.order,state:0
+#: selection:edu.order.line,state:0
+#: selection:edu.plan,state:0
+#: selection:edu.pricelist,state:0
+#: selection:edu.pricelist.line,state:0
+#: selection:edu.program,state:0
+#: selection:edu.record,state:0
+#: selection:edu.record.line,state:0
+#: selection:edu.schedule,state:0
+#: selection:edu.schedule.line,state:0
+#: selection:edu.seance,state:0
+#: selection:edu.stage,state:0
+#: selection:edu.student.program,state:0
+#: selection:edu.time,state:0
+#: selection:edu.work,state:0
+#: selection:edu.work.order,state:0
+msgid "New"
+msgstr "Новый"
+
+#. module: irsid_edu
+#: field:edu.statement,order_intro_text:0
+msgid "Order Reason Text"
+msgstr "Основание приказа"
+
+#. module: irsid_edu
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_entrance_order
+msgid "Entrance             Orders"
+msgstr "Entrance             Orders"
+
+#. module: irsid_edu
+#: view:edu.order:0
+msgid "Place decision text here..."
+msgstr "Укажите здесь текст решения..."
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_module_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_program_module_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_program_module_updated
+msgid "Модуль обновлён"
+msgstr "Модуль обновлён"
+
+#. module: irsid_edu
+#: report:edu.work.order:0
+msgid "Время"
+msgstr "Время"
+
+#. module: irsid_edu
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_configuration
+msgid "Configuration"
+msgstr "Настройки"
+
+#. module: irsid_edu
+#: view:edu.application.line:0
+#: field:edu.application.line,status:0
+#: view:edu.order.line:0
+#: field:edu.order.line,status:0
+#: view:edu.student.program:0
+#: field:edu.student.program,status:0
+msgid "Status"
+msgstr "Статус"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_pricelist_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_pricelist_updated
+msgid "Прейскурант обновлён"
+msgstr "Прейскурант обновлён"
+
+#. module: irsid_edu
+#: view:edu.application:0
+msgid "I ASK"
+msgstr "ПРОШУ"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_order_admission
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_order_admission
+msgid "Orders For Admission"
+msgstr "Приём"
+
+#. module: irsid_edu
+#: view:edu.schedule.line:0
+#: model:ir.model,name:irsid_edu.model_edu_schedule_line
+msgid "Schedule Line"
+msgstr "Строка графика"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Applicant"
+msgstr "Поступающий"
+
+#. module: irsid_edu
+#: view:edu.module.work:0
+#: view:edu.work:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_module_work_seance
+#: model:ir.actions.act_window,name:irsid_edu.action_active_work_seance
+msgid "Seances By Work"
+msgstr "Занятия"
+
+#. module: irsid_edu
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+msgid "УЧЕБНЫЙ ГРАФИК"
+msgstr "УЧЕБНЫЙ ГРАФИК"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_module_module_seance_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_module_seance_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_seance_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_module_seance_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_module_seance_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_seance_updated
+msgid "Занятие обновлено"
+msgstr "Занятие обновлено"
+
+#. module: irsid_edu
+#: report:edu.schedule:0
+msgid "Учебное время"
+msgstr "Учебное время"
+
+#. module: irsid_edu
+#: view:edu.qualification:0
+#: field:edu.speciality,qualification_id:0
+#: model:ir.model,name:irsid_edu.model_edu_qualification
+msgid "Qualification"
+msgstr "Квалификация"
+
+#. module: irsid_edu
+#: field:edu.application,main_text:0
+msgid "Petition Text"
+msgstr "Просьба"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Full Name"
+msgstr "Фамилия Имя Отчество"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "(edit customer address)"
+msgstr "(изменить адрес заказчика)"
+
+#. module: irsid_edu
+#: view:edu.module.seance:0
+#: field:edu.module.seance,task_ids:0
+msgid "Tasks"
+msgstr "Задания"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_application_application_line_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_application_line_updated
+#: model:mail.message.subtype,description:irsid_edu.mt_student_program_application_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_application_application_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_application_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_student_program_application_line_updated
+msgid "Строка заявления обновлена"
+msgstr "Строка заявления обновлена"
+
+#. module: irsid_edu
+#: report:edu.plan:0
+msgid "Специальность:"
+msgstr "Специальность:"
+
+#. module: irsid_edu
+#: selection:edu.admission,state:0
+#: selection:edu.admission.line,state:0
+#: selection:edu.application,state:0
+#: selection:edu.application.line,state:0
+#: selection:edu.doc,state:0
+#: selection:edu.grade,state:0
+#: selection:edu.grade.line,state:0
+#: selection:edu.module,state:0
+#: selection:edu.module.record,state:0
+#: selection:edu.module.seance,state:0
+#: selection:edu.module.section,state:0
+#: selection:edu.module.task,state:0
+#: selection:edu.module.work,state:0
+#: selection:edu.order,state:0
+#: selection:edu.order.line,state:0
+#: selection:edu.plan,state:0
+#: selection:edu.pricelist,state:0
+#: selection:edu.pricelist.line,state:0
+#: selection:edu.program,state:0
+#: selection:edu.record,state:0
+#: selection:edu.record.line,state:0
+#: selection:edu.schedule,state:0
+#: selection:edu.schedule.line,state:0
+#: selection:edu.seance,state:0
+#: selection:edu.time,state:0
+#: selection:edu.work,state:0
+#: selection:edu.work.order,state:0
+msgid "Canceled"
+msgstr "Отменен"
+
+#. module: irsid_edu
+#: field:edu.seance,emp_hours_pre:0
+#: field:edu.work,emp_hours_pre:0
+msgid "Preliminary Employee Hours"
+msgstr "Предв. часов сотрудника"
+
+#. module: irsid_edu
+#: view:edu.admission.line:0
+#: field:edu.admission.line,seats:0
+#: field:edu.location,seats:0
+msgid "Seats"
+msgstr "Мест"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: view:edu.module:0
+#: view:edu.record:0
+#: field:edu.seance,work_id:0
+#: field:edu.student.program,work_ids:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+#: field:edu.work.order,work_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_work
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_work
+msgid "Training Work"
+msgstr "Учебная работа"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_order_admission
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"admission.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected admission line(s).\n"
+"                    Before creating order make sure you have record(s) under "
+"\"Applicants\"\n"
+"                    menu entry for applicant(s). If it's true just click "
+"\"Create\"\n"
+"                    to fill in order form, then press \"Confirm\" button. "
+"Please fill\n"
+"                    in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    You can choose several admission lines in one order. The "
+"social feature helps you\n"
+"                    organize discussions on order and allows you to keep "
+"track of\n"
+"                    its current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new order for "
+"admission.</p>\n"
+"                <p>\n"
+"                    Created record holds information about applicant(s) and "
+"selected admission line(s).\n"
+"                    Before creating order make sure you have record(s) under "
+"\"Applicants\"\n"
+"                    menu entry for applicant(s). If it's true just click "
+"\"Create\"\n"
+"                    to fill in order form, then press \"Confirm\" button. "
+"Please fill\n"
+"                    in all forms carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    You can choose several admission lines in one order. The "
+"social feature helps you\n"
+"                    organize discussions on order and allows you to keep "
+"track of\n"
+"                    its current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: view:edu.module:0
+msgid "Main Features"
+msgstr "Основные сведения"
+
+#. module: irsid_edu
+#: selection:edu.module,replace_method:0
+msgid "Cumulative"
+msgstr "Совокупный"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,st_hours:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,st_hours:0
+#: view:edu.module:0
+#: field:edu.module,st_hours:0
+#: view:edu.module.record:0
+#: field:edu.module.record,st_hours:0
+#: view:edu.module.seance:0
+#: field:edu.module.seance,st_hours:0
+#: view:edu.module.work:0
+#: field:edu.module.work,st_hours:0
+#: view:edu.plan:0
+#: view:edu.program:0
+#: view:edu.record:0
+#: field:edu.record,st_hours:0
+#: view:edu.seance:0
+#: field:edu.seance,st_hours:0
+#: view:edu.work:0
+#: field:edu.work,st_hours:0
+#: view:edu.work.order:0
+#: field:edu.work.type,st_hours:0
+msgid "Student Hours"
+msgstr "Часов обучения"
+
+#. module: irsid_edu
+#: view:edu.program:0
+msgid "Elective Modules"
+msgstr "Модули по выбору"
+
+#. module: irsid_edu
+#: view:edu.record.line:0
+msgid "Search Record Lines"
+msgstr "Search Record Lines"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "Учебный год:"
+msgstr "Учебный год:"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+#: report:edu.plan:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+msgid "Наименование"
+msgstr "Наименование"
+
+#. module: irsid_edu
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_order_line
+msgid "Academic Order Extract"
+msgstr "Выписка из приказа"
+
+#. module: irsid_edu
+#: model:ir.module.category,name:irsid_edu.module_category_education_management
+msgid "Education Management"
+msgstr "Управление обучением"
+
+#. module: irsid_edu
+#: field:edu.record,year_id:0
+msgid "Education Year"
+msgstr "Учебный год"
+
+#. module: irsid_edu
+#: report:edu.plan:0
+#: report:edu.work.order:0
+msgid "Часов занятий"
+msgstr "Часов занятий"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_admission_line_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_admission_line_updated
+msgid "Направление приёма обновлено"
+msgstr "Направление приёма обновлено"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,help:irsid_edu.action_edu_application_other
+msgid ""
+"<p class=\"oe_view_nocontent_create\">Click to create new arbitrary "
+"application.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"petition in arbitrary form.\n"
+"                    This application doesn't change student program, stage, "
+"plan or\n"
+"                    status. Just click \"Create\" to fill in application "
+"form, then\n"
+"                    press \"Confirm\" button. Please fill in all forms "
+"carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several students\n"
+"                    in one application. The social feature helps you organize "
+"discussions\n"
+"                    on application and allows you to keep track of its "
+"current state.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">Click to create new arbitrary "
+"application.</p>\n"
+"                <p>\n"
+"                    Created record holds information about student(s) and "
+"petition in arbitrary form.\n"
+"                    This application doesn't change student program, stage, "
+"plan or\n"
+"                    status. Just click \"Create\" to fill in application "
+"form, then\n"
+"                    press \"Confirm\" button. Please fill in all forms "
+"carefully!\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you are representative (parent, employee) then you can "
+"choose several students\n"
+"                    in one application. The social feature helps you organize "
+"discussions\n"
+"                    on application and allows you to keep track of its "
+"current state.\n"
+"                </p>\n"
+"            "
+
+#. module: irsid_edu
+#: report:edu.plan:0
+msgid "Раздел/Цикл"
+msgstr "Раздел/Цикл"
+
+#. module: irsid_edu
+#: field:edu.application.line,st_program_id:0
+#: view:edu.grade.line:0
+#: field:edu.grade.line,st_program_id:0
+#: field:edu.order.line,st_program_id:0
+#: view:edu.record:0
+#: view:edu.record.line:0
+#: field:edu.record.line,st_program_id:0
+#: view:edu.student.program:0
+#: model:ir.model,name:irsid_edu.model_edu_student_program
+msgid "Student Program"
+msgstr "Программа обучающегося"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+msgid "Grade Sheet: "
+msgstr "Ведомость успеваемости: "
+
+#. module: irsid_edu
+#: field:edu.statement,order_final_text:0
+msgid "Order Responsibility Text"
+msgstr "Ответственность приказа"
+
+#. module: irsid_edu
+#: report:edu.work.order:0
+msgid "ЗАКАЗ"
+msgstr "ЗАКАЗ"
+
+#. module: irsid_edu
+#: view:edu.pricelist:0
+msgid "Pricelist: "
+msgstr "Прейскурант: "
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_schedule_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_schedule_updated
+msgid "Учебный график обновлён"
+msgstr "Учебный график обновлён"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.pricelist:0
+msgid "Примечание"
+msgstr "Примечание"
+
+#. module: irsid_edu
+#: view:edu.application:0
+#: field:edu.application,line_ids:0
+#: view:edu.application.line:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_application_line
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_application_line
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_application_line
+msgid "Application Lines"
+msgstr "Позиции заявления"
+
+#. module: irsid_edu
+#: field:edu.application,year_id:0
+#: field:edu.application.line,year_id:0
+#: field:edu.grade,year_id:0
+#: field:edu.order,year_id:0
+#: field:edu.order.line,year_id:0
+#: field:edu.pricelist,year_id:0
+#: field:edu.pricelist.line,year_id:0
+#: field:edu.schedule,year_id:0
+#: field:edu.seance,year_id:0
+#: field:edu.work,year_id:0
+#: field:edu.work.order,year_id:0
+#: view:edu.year:0
+#: model:ir.model,name:irsid_edu.model_edu_year
+msgid "Academic Year"
+msgstr "Учебный год"
+
+#. module: irsid_edu
+#: view:edu.admission.line:0
+#: field:edu.admission.line,note:0
+#: view:edu.application.line:0
+#: field:edu.application.line,note:0
+#: view:edu.order.line:0
+#: field:edu.order.line,note:0
+#: view:edu.pricelist.line:0
+#: field:edu.pricelist.line,note:0
+msgid "Note"
+msgstr "Примечание"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.student.program.list:0
+msgid "Программа обучающегося"
+msgstr "Программа обучающегося"
+
+#. module: irsid_edu
+#: selection:edu.module.task,type:0
+msgid "Survey"
+msgstr "Тестирование"
+
+#. module: irsid_edu
+#: view:edu.schedule:0
+#: field:edu.schedule.line,schedule_id:0
+msgid "Training Schedule"
+msgstr "Учебный график"
+
+#. module: irsid_edu
+#: view:edu.program:0
+#: field:edu.program,elearning:0
+msgid "E-Learning"
+msgstr "Дистанционная"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Сотрудник:"
+msgstr "Сотрудник:"
+
+#. module: irsid_edu
+#: view:edu.student.program:0
+msgid "Grade Extract"
+msgstr "Успеваемость"
+
+#. module: irsid_edu
+#: view:edu.location:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_location
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_location
+msgid "Locations"
+msgstr "Места проведения"
+
+#. module: irsid_edu
+#: view:edu.grade:0
+#: field:edu.grade,line_ids:0
+#: view:edu.grade.line:0
+#: view:edu.record.line:0
+#: field:edu.record.line,gradeline_ids:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_grade_line
+msgid "Grade Lines"
+msgstr "Позиции ведомости успеваемости"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_work_order_work
+msgid "Work By Order"
+msgstr "Работа по заказу"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_module_hierarchy
+msgid "Module Hierarchy"
+msgstr "Иерархия модулей"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_active_schedule_line
+msgid "Lines By Schedule"
+msgstr "Строки по графику"
+
+#. module: irsid_edu
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_training_order
+msgid "Training             Orders"
+msgstr "Training             Orders"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_module_seance
+msgid "Seances By Module"
+msgstr "Занятия"
+
+#. module: irsid_edu
+#: report:edu.order:0
+msgid "ПРИКАЗ"
+msgstr "ПРИКАЗ"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: field:edu.admission.line,admission_id:0
+msgid "Admission Plan"
+msgstr "План приёма"
+
+#. module: irsid_edu
+#: field:edu.work,order_id:0
+#: view:edu.work.order:0
+#: model:ir.actions.report.xml,name:irsid_edu.report_edu_work_order
+msgid "Work Order"
+msgstr "Заказ"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "Дата составления"
+msgstr "Дата составления"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: field:edu.admission,description:0
+#: field:edu.competence,description:0
+#: field:edu.grade.type,description:0
+#: field:edu.group,description:0
+#: view:edu.module.seance:0
+#: field:edu.module.seance,description:0
+#: field:edu.module.section,description:0
+#: view:edu.seance:0
+#: field:edu.seance,description:0
+#: field:edu.stage,description:0
+msgid "Description"
+msgstr "Описание"
+
+#. module: irsid_edu
+#: view:edu.module.seance:0
+#: field:edu.module.section,seance_ids:0
+msgid "Module Seances"
+msgstr "Занятия модуля"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Internal Notes"
+msgstr "Внутренние примечания"
+
+#. module: irsid_edu
+#: view:edu.order:0
+msgid "Order: "
+msgstr "Приказ: "
+
+#. module: irsid_edu
+#: view:edu.application.line:0
+#: selection:edu.application.line,status:0
+#: field:edu.application.line,student_id:0
+#: view:edu.order.line:0
+#: selection:edu.order.line,status:0
+#: field:edu.order.line,student_id:0
+#: view:edu.student.program:0
+#: selection:edu.student.program,status:0
+#: field:edu.student.program,student_id:0
+#: field:res.partner,student:0
+msgid "Student"
+msgstr "Обучающийся"
+
+#. module: irsid_edu
+#: model:ir.actions.server,name:irsid_edu.action_server_orders_to_work_orders
+msgid "Orders To Work Orders"
+msgstr "Приказы в заказы"
+
+#. module: irsid_edu
+#: report:edu.application:0
+#: report:edu.grade:0
+#: report:edu.order:0
+#: report:edu.order.line:0
+#: report:edu.plan:0
+#: report:edu.pricelist:0
+#: report:edu.schedule:0
+#: report:edu.schedule.short:0
+#: report:edu.work.order:0
+msgid "наименование организации"
+msgstr "наименование организации"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Customer"
+msgstr "Заказчик"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "e.g. +32.81.81.37.00"
+msgstr "пример: +7.3812.81.37.00"
+
+#. module: irsid_edu
+#: view:edu.pricelist.line:0
+#: model:ir.model,name:irsid_edu.model_edu_pricelist_line
+msgid "Pricelist Line"
+msgstr "Строка прейскуранта"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Country"
+msgstr "Страна"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_application_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_application_updated
+msgid "Заявление обновлено"
+msgstr "Заявление обновлено"
+
+#. module: irsid_edu
+#: field:edu.module,section_id:0
+#: model:ir.model,name:irsid_edu.model_edu_program_section
+msgid "Program Section"
+msgstr "Раздел программы"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_schedule
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_schedule
+msgid "Time Schedules"
+msgstr "Учебные графики"
+
+#. module: irsid_edu
+#: view:edu.schedule.line:0
+msgid "Schedule                     Lines"
+msgstr "Schedule                     Lines"
+
+#. module: irsid_edu
+#: view:edu.module:0
+#: model:ir.actions.act_window,name:irsid_edu.action_active_module_task
+msgid "Tasks By Module"
+msgstr "Задания по модулю"
+
+#. module: irsid_edu
+#: report:edu.grade:0
+msgid "Оценка"
+msgstr "Оценка"
+
+#. module: irsid_edu
+#: selection:edu.journal,recordtype:0
+#: selection:edu.module.record,recordtype:0
+msgid "Graduate Work"
+msgstr "Выпускная квалиф. работа"
+
+#. module: irsid_edu
+#: view:edu.program:0
+msgid "Training Regime"
+msgstr "Режим обучения"
+
+#. module: irsid_edu
+#: field:edu.module.seance,sequence:0
+#: field:edu.module.section,sequence:0
+#: field:edu.module.task,sequence:0
+#: field:edu.program.section,sequence:0
+#: field:edu.program.subsection,sequence:0
+#: field:edu.seance,sequence:0
+#: field:edu.stage,sequence:0
+#: field:edu.time,sequence:0
+msgid "Sequence"
+msgstr "Порядок"
+
+#. module: irsid_edu
+#: report:edu.work.order:0
+msgid "Сотрудник"
+msgstr "Сотрудник"
+
+#. module: irsid_edu
+#: model:mail.message.subtype,description:irsid_edu.mt_program_updated
+#: model:mail.message.subtype,name:irsid_edu.mt_program_updated
+msgid "Программа обновлена"
+msgstr "Программа обновлена"
+
+#. module: irsid_edu
+#: view:res.partner:0
+msgid "Search Student"
+msgstr "Поиск обучающегося"
+
+#. module: irsid_edu
+#: field:edu.work,interval1:0
+msgid "Interval 1 (days)"
+msgstr "Интервал 1 (дней)"
+
+#. module: irsid_edu
+#: field:edu.speciality,licensed:0
+msgid "Licensed"
+msgstr "Лицензирована"
+
+#. module: irsid_edu
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_applicant_program
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_applicant_program
+msgid "Applicant Programs"
+msgstr "Программы поступающих"
+
+#. module: irsid_edu
+#: view:edu.admission:0
+#: field:edu.admission,year_id:0
+#: view:edu.application:0
+#: view:edu.application.line:0
+#: view:edu.grade:0
+#: view:edu.order:0
+#: view:edu.order.line:0
+#: view:edu.pricelist:0
+#: view:edu.pricelist.line:0
+#: view:edu.record:0
+#: view:edu.schedule:0
+#: view:edu.schedule.line:0
+#: field:edu.schedule.line,year_id:0
+#: view:edu.seance:0
+#: view:edu.work:0
+#: view:edu.work.order:0
+msgid "Year"
+msgstr "Год"
+
+#. module: irsid_edu
+#: view:edu.admission.target:0
+#: model:ir.actions.act_window,name:irsid_edu.action_edu_admission_target
+#: model:ir.ui.menu,name:irsid_edu.menu_edu_admission_target
+msgid "Admission Targets"
+msgstr "Цели приёма"
+
+#. module: irsid_edu
+#: view:edu.order:0
+#: view:edu.student.program:0
+#: view:res.partner:0
+msgid "Orders"
+msgstr "Приказы"
+
+

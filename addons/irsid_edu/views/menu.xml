@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <menuitem
+            id="menu_edu_root"
+            icon="terp-hr"
+            name="Education"
+            sequence="20"/>
+
+        <menuitem
+            id="menu_edu_partners"
+            name="Partners"
+            parent="menu_edu_root"
+            sequence="20"/>
+
+        <menuitem
+            id="menu_edu_entrance"
+            name="Entrance"
+            parent="menu_edu_root"
+            sequence="30"/>
+
+        <menuitem
+            id="menu_edu_training"
+            name="Training"
+            parent="menu_edu_root"
+            sequence="40"/>
+
+        <menuitem
+            id="menu_edu_programs"
+            name="Programs"
+            parent="menu_edu_root"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_edu_configuration"
+            name="Configuration"
+            parent="menu_edu_root"
+            sequence="50"
+            groups="group_edu_manager"/>
+
+        <menuitem
+            id="menu_edu_configuration_admissions"
+            name="Admissions"
+            parent="menu_edu_configuration"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_edu_configuration_training"
+            name="Training"
+            parent="menu_edu_configuration"
+            sequence="20"/>
+
+        <menuitem
+            id="menu_edu_configuration_programs"
+            name="Programs"
+            parent="menu_edu_configuration"
+            sequence="30"/>
+
+        <menuitem
+            id="menu_edu_configuration_grade"
+            name="Grade"
+            parent="menu_edu_configuration"
+            sequence="40"/>
+
+        <menuitem
+            id="menu_edu_report"
+            name="Education"
+            groups="group_edu_manager"
+            parent="base.menu_reporting"
+            sequence="25"/>
+
+    </data>
+</openerp>

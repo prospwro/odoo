@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Application Line Subtypes -->
+
+        <record
+            id="mt_application_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция заявления обновлена</field>
+            <field name="res_model">edu.application.line</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция заявления обновлена</field>
+        </record>
+
+        <!-- Application Subtypes -->
+
+        <record
+            id="mt_application_updated"
+            model="mail.message.subtype">
+            <field name="name">Заявление обновлено</field>
+            <field name="res_model">edu.application</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Заявление обновлено</field>
+        </record>
+
+        <record
+            id="mt_application_application_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция заявления обновлена</field>
+            <field name="res_model">edu.application</field>
+            <field
+                name="parent_id"
+                ref="mt_application_line_updated"/>
+            <field name="relation_field">application_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция заявления обновлена</field>
+        </record>
+
+        <!-- Order Line Subtypes -->
+
+        <record
+            id="mt_order_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция приказа обновлена</field>
+            <field name="res_model">edu.order.line</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция приказа обновлена</field>
+        </record>
+
+        <!-- Order Subtypes -->
+
+        <record
+            id="mt_order_updated"
+            model="mail.message.subtype">
+            <field name="name">Приказ обновлён</field>
+            <field name="res_model">edu.order</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Приказ обновлён</field>
+        </record>
+
+        <record
+            id="mt_order_order_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция приказа обновлена</field>
+            <field name="res_model">edu.order</field>
+            <field
+                name="parent_id"
+                ref="mt_order_line_updated"/>
+            <field name="relation_field">order_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция приказа обновлена</field>
+        </record>
+
+        <!-- Student Program Subtypes -->
+
+        <record
+            id="mt_student_program_updated"
+            model="mail.message.subtype">
+            <field name="name">Программа обучающегося обновлена</field>
+            <field name="res_model">edu.student.program</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Программа обучающегося обновлена</field>
+        </record>
+
+        <record
+            id="mt_student_program_application_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция заявления обновлена</field>
+            <field name="res_model">edu.student.program</field>
+            <field
+                name="parent_id"
+                ref="mt_application_line_updated"/>
+            <field name="relation_field">st_program_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция заявления обновлена</field>
+        </record>
+
+        <record
+            id="mt_student_program_order_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция приказа обновлена</field>
+            <field name="res_model">edu.student.program</field>
+            <field
+                name="parent_id"
+                ref="mt_order_line_updated"/>
+            <field name="relation_field">st_program_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция приказа обновлена</field>
+        </record>
+
+        <!-- Student Subtypes -->
+
+        <record
+            id="mt_student_updated"
+            model="mail.message.subtype">
+            <field name="name">Карточка обучающегося обновлена</field>
+            <field name="res_model">res.partner</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Карточка обучающегося обновлена</field>
+        </record>
+
+        <record
+            id="mt_student_student_program_updated"
+            model="mail.message.subtype">
+            <field name="name">Программа обучающегося обновлена</field>
+            <field name="res_model">res.partner</field>
+            <field
+                name="parent_id"
+                ref="mt_student_program_updated"/>
+            <field name="relation_field">student_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Программа обучающегося обновлена</field>
+        </record>
+
+        <!-- Work Subtypes -->
+
+        <record
+            id="mt_work_updated"
+            model="mail.message.subtype">
+            <field name="name">Учебная работа обновлена</field>
+            <field name="res_model">edu.work</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Учебная работа обновлена</field>
+        </record>
+
+        <!-- Work Order Subtypes -->
+
+        <record
+            id="mt_work_order_updated"
+            model="mail.message.subtype">
+            <field name="name">Заказ обновлён</field>
+            <field name="res_model">edu.work.order</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Заказ обновлён</field>
+        </record>
+
+        <record
+            id="mt_work_order_work_updated"
+            model="mail.message.subtype">
+            <field name="name">Учебная работа обновлена</field>
+            <field name="res_model">edu.work.order</field>
+            <field
+                name="parent_id"
+                ref="mt_work_updated"/>
+            <field name="relation_field">order_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Учебная работа обновлена</field>
+        </record>
+
+        <!-- Schedule Line Subtypes -->
+
+        <record
+            id="mt_schedule_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция графика обновлена</field>
+            <field name="res_model">edu.schedule.line</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция графика обновлена</field>
+        </record>
+
+        <!-- Schedule Subtypes -->
+
+        <record
+            id="mt_schedule_updated"
+            model="mail.message.subtype">
+            <field name="name">Учебный график обновлён</field>
+            <field name="res_model">edu.schedule</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Учебный график обновлён</field>
+        </record>
+
+        <record
+            id="mt_schedule_schedule_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция графика обновлена</field>
+            <field name="res_model">edu.schedule</field>
+            <field
+                name="parent_id"
+                ref="mt_schedule_line_updated"/>
+            <field name="relation_field">schedule_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция графика обновлена</field>
+        </record>
+
+        <!-- Seance Subtypes -->
+
+        <record
+            id="mt_seance_updated"
+            model="mail.message.subtype">
+            <field name="name">Занятие обновлено</field>
+            <field name="res_model">edu.seance</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Занятие обновлено</field>
+        </record>
+
+        <!-- Grade Subtypes -->
+
+        <record
+            id="mt_grade_updated"
+            model="mail.message.subtype">
+            <field name="name">Ведомость обновлена</field>
+            <field name="res_model">edu.grade</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Ведомость обновлена</field>
+        </record>
+
+        <!-- Record Subtypes -->
+
+        <record
+            id="mt_record_updated"
+            model="mail.message.subtype">
+            <field name="name">Ведомость обновлена</field>
+            <field name="res_model">edu.record</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Ведомость обновлена</field>
+        </record>
+
+        <!-- Study Time Subtypes -->
+
+        <record
+            id="mt_time_updated"
+            model="mail.message.subtype">
+            <field name="name">Учебное время обновлено</field>
+            <field name="res_model">edu.time</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Учебное время обновлено</field>
+        </record>
+
+        <!-- Study Plan Subtypes -->
+
+        <record
+            id="mt_plan_updated"
+            model="mail.message.subtype">
+            <field name="name">План обновлён</field>
+            <field name="res_model">edu.plan</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">План обновлён</field>
+        </record>
+
+        <!-- Module Task Subtypes -->
+
+        <record
+            id="mt_module_task_updated"
+            model="mail.message.subtype">
+            <field name="name">Задание обновлено</field>
+            <field name="res_model">edu.module.task</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Задание обновлено</field>
+        </record>
+
+        <!-- Module Seance Subtypes -->
+
+        <record
+            id="mt_module_seance_updated"
+            model="mail.message.subtype">
+            <field name="name">Занятие обновлено</field>
+            <field name="res_model">edu.module.seance</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Занятие обновлено</field>
+        </record>
+
+        <!-- Module Work Subtypes -->
+
+        <record
+            id="mt_module_work_updated"
+            model="mail.message.subtype">
+            <field name="name">Работа обновлена</field>
+            <field name="res_model">edu.module.work</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Работа обновлена</field>
+        </record>
+
+        <!-- Module Section Subtypes -->
+
+        <record
+            id="mt_module_section_updated"
+            model="mail.message.subtype">
+            <field name="name">Раздел обновлён</field>
+            <field name="res_model">edu.module.section</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Раздел обновлён</field>
+        </record>
+
+        <!-- Module Record Subtypes -->
+
+        <record
+            id="mt_module_record_updated"
+            model="mail.message.subtype">
+            <field name="name">Аттестация обновлена</field>
+            <field name="res_model">edu.module.record</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Аттестация обновлена</field>
+        </record>
+
+        <!-- Training Module Subtypes -->
+
+        <record
+            id="mt_module_updated"
+            model="mail.message.subtype">
+            <field name="name">Модуль обновлён</field>
+            <field name="res_model">edu.module</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Модуль обновлён</field>
+        </record>
+
+        <record
+            id="mt_module_module_work_updated"
+            model="mail.message.subtype">
+            <field name="name">Работа обновлена</field>
+            <field name="res_model">edu.module</field>
+            <field
+                name="parent_id"
+                ref="mt_module_work_updated"/>
+            <field name="relation_field">module_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Работа обновлена</field>
+        </record>
+
+        <record
+            id="mt_module_module_record_updated"
+            model="mail.message.subtype">
+            <field name="name">Аттестация обновлена</field>
+            <field name="res_model">edu.module</field>
+            <field
+                name="parent_id"
+                ref="mt_module_record_updated"/>
+            <field name="relation_field">module_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Аттестация обновлена</field>
+        </record>
+
+        <record
+            id="mt_module_module_seance_updated"
+            model="mail.message.subtype">
+            <field name="name">Занятие обновлено</field>
+            <field name="res_model">edu.module</field>
+            <field
+                name="parent_id"
+                ref="mt_module_seance_updated"/>
+            <field name="relation_field">module_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Занятие обновлено</field>
+        </record>
+
+        <!-- Admission Line Subtypes -->
+
+        <record
+            id="mt_admission_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Направление приёма обновлено</field>
+            <field name="res_model">edu.admission.line</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Направление приёма обновлено</field>
+        </record>
+
+        <!-- Admission Plan Subtypes -->
+
+        <record
+            id="mt_admission_updated"
+            model="mail.message.subtype">
+            <field name="name">План приёма обновлён</field>
+            <field name="res_model">edu.admission</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">План приёма обновлён</field>
+        </record>
+
+        <!-- Education Program Subtypes -->
+
+        <record
+            id="mt_program_updated"
+            model="mail.message.subtype">
+            <field name="name">Программа обновлена</field>
+            <field name="res_model">edu.program</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Программа обновлена</field>
+        </record>
+
+        <record
+            id="mt_program_module_updated"
+            model="mail.message.subtype">
+            <field name="name">Модуль обновлён</field>
+            <field name="res_model">edu.program</field>
+            <field
+                name="parent_id"
+                ref="mt_module_updated"/>
+            <field name="relation_field">program_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Модуль обновлён</field>
+        </record>
+
+        <record
+            id="mt_program_time_updated"
+            model="mail.message.subtype">
+            <field name="name">Учебное время обновлено</field>
+            <field name="res_model">edu.program</field>
+            <field
+                name="parent_id"
+                ref="mt_time_updated"/>
+            <field name="relation_field">program_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Учебное время обновлено</field>
+        </record>
+
+        <record
+            id="mt_program_plan_updated"
+            model="mail.message.subtype">
+            <field name="name">Учебный план обновлён</field>
+            <field name="res_model">edu.program</field>
+            <field
+                name="parent_id"
+                ref="mt_plan_updated"/>
+            <field name="relation_field">program_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Учебный план обновлён</field>
+        </record>
+
+        <!-- Pricelist Line Subtypes -->
+
+        <record
+            id="mt_pricelist_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция прейскуранта обновлена</field>
+            <field name="res_model">edu.pricelist.line</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция прейскуранта обновлена</field>
+        </record>
+
+        <!-- Pricelist Subtypes -->
+
+        <record
+            id="mt_pricelist_updated"
+            model="mail.message.subtype">
+            <field name="name">Прейскурант обновлён</field>
+            <field name="res_model">edu.pricelist</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Прейскурант обновлён</field>
+        </record>
+
+        <record
+            id="mt_pricelist_pricelist_line_updated"
+            model="mail.message.subtype">
+            <field name="name">Позиция прейскуранта обновлена</field>
+            <field name="res_model">edu.pricelist</field>
+            <field
+                name="parent_id"
+                ref="mt_pricelist_line_updated"/>
+            <field name="relation_field">pricelist_id</field>
+            <field
+                name="default"
+                eval="True"/>
+            <field name="description">Позиция прейскуранта обновлена</field>
+        </record>
+
+    </data>
+</openerp>

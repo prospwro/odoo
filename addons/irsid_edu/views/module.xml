@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_module_filter"
+            model="ir.ui.view">
+            <field name="name">edu.module.filter</field>
+            <field name="model">edu.module</field>
+            <field
+                name="arch"
+                type="xml">
+                <search string="Modules">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="program_id"/>
+                    <field name="section_id"/>
+                    <field name="subsection_id"/>
+                    <field name="parent_id"/>
+                    <field name="employee_id"/>
+                    <field name="state"/>
+                    <filter
+                        string="Main Module"
+                        name="parentmodule"
+                        domain="[('parent_id','=',False)]"/>
+                    <filter
+                        string="Elective Module"
+                        name="electivemodule"
+                        domain="[('parent_id','!=',False)]"/>
+                    <filter
+                        string="Normal Module"
+                        name="normalmodule"
+                        domain="[('child_ids','=',False)]"/>
+                    <filter
+                        name="my_modules"
+                        string="My Modules"
+                        domain="[('employee_id.user_id','=',uid)]"
+                        icon="terp-personal"/>
+                    <group
+                        expand="1"
+                        string="Group By...">
+                        <filter
+                            name="gr_program_id"
+                            string="Program"
+                            domain="[]"
+                            context="{'group_by':'program_id'}"/>
+                        <filter
+                            name="gr_section_id"
+                            string="Section"
+                            domain="[]"
+                            context="{'group_by':'section_id'}"/>
+                        <filter
+                            name="gr_subsection_id"
+                            string="Subsection"
+                            domain="[]"
+                            context="{'group_by':'subsection_id'}"/>
+                        <filter
+                            string="Parent Module"
+                            domain="[]"
+                            context="{'group_by':'parent_id'}"/>
+                        <filter
+                            string="Employee"
+                            domain="[]"
+                            context="{'group_by':'employee_id'}"/>
+                        <filter
+                            name="gr_state"
+                            string="State"
+                            domain="[]"
+                            context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record
+            id="action_active_module_children"
+            model="ir.actions.act_window">
+            <field name="name">Child Modules</field>
+            <field name="res_model">edu.module</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_parent_id':active_id,
+                'group_by':False}
+            </field>
+            <field name="domain">[('parent_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_filter"/>
+        </record>
+
+        <record
+            id="action_active_module_record"
+            model="ir.actions.act_window">
+            <field name="name">Records By Module</field>
+            <field name="res_model">edu.module.record</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_module_id':active_id,
+                'group_by': False}
+            </field>
+            <field name="domain">[('module_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_record_filter"/>
+        </record>
+
+        <record
+            id="action_active_module_section"
+            model="ir.actions.act_window">
+            <field name="name">Sections By Module</field>
+            <field name="res_model">edu.module.section</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_module_id':active_id,
+                'group_by': False}
+            </field>
+            <field name="domain">[('module_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_section_filter"/>
+        </record>
+
+        <record
+            id="action_active_module_seance"
+            model="ir.actions.act_window">
+            <field name="name">Seances By Module</field>
+            <field name="res_model">edu.module.seance</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_module_id':active_id,
+                'group_by': False}
+            </field>
+            <field name="domain">[('module_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_seance_filter"/>
+        </record>
+
+        <record
+            id="action_active_module_task"
+            model="ir.actions.act_window">
+            <field name="name">Tasks By Module</field>
+            <field name="res_model">edu.module.task</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_module_id':active_id,
+                'group_by': False}
+            </field>
+            <field name="domain">[('module_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_task_filter"/>
+        </record>
+
+        <record
+            id="view_edu_module_tree"
+            model="ir.ui.view">
+            <field name="name">edu.module.tree</field>
+            <field name="model">edu.module</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Modules"
+                    colors="
+                        grey:state in ('canceled','done');
+                        blue:state in ('confirmed','validated');
+                        red:state in ('draft','rejected');
+                        green:state=='approved'">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="program_id"/>
+                    <field name="section_id"/>
+                    <field name="subsection_id"/>
+                    <field name="parent_id"/>
+                    <field name="employee_id"/>
+                    <field
+                        name="location_id"
+                        invisible="1"/>
+                    <field
+                        name="credits"
+                        sum="Credits"/>
+                    <field
+                        name="st_hours"
+                        sum="Student Hours"/>
+                    <field
+                        name="seance_hours"
+                        sum="Seance Hours"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_module_tree_1"
+            model="ir.ui.view">
+            <field name="name">edu.module.tree.1</field>
+            <field name="model">edu.module</field>
+            <field
+                name="priority"
+                eval="9999"/>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Modules"
+                    colors="
+                        grey:state in ('canceled','done');
+                        blue:state in ('confirmed','validated');
+                        red:state in ('draft','rejected');
+                        green:state=='approved'">
+                    <field name="name"/>
+                    <field name="section_id"/>
+                    <field name="subsection_id"/>
+                    <field
+                        name="credits"
+                        sum="Credits"/>
+                    <field
+                        name="st_hours"
+                        sum="Student Hours"/>
+                    <field
+                        name="seance_hours"
+                        sum="Seance Hours"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_module_form"
+            model="ir.ui.view">
+            <field name="name">edu.module.form</field>
+            <field name="model">edu.module</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Training Module"
+                    version="7.0">
+                    <header>
+                        <button
+                            name="set_confirmed"
+                            string="Confirm"
+                            type="object"
+                            states="draft"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_teacher"/>
+                        <button
+                            name="set_validated"
+                            string="Validate"
+                            type="object"
+                            states="confirmed"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_approved"
+                            string="Approve"
+                            type="object"
+                            states="validated"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="confirmed"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="validated,approved"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_case_default"
+                            string="Set Default"
+                            type="object"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"
+                            attrs="{'invisible': [('case_default','=',True)]}"/>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,confirmed,validated,approved"
+                            readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div
+                            class="oe_right oe_button_box"
+                            name="buttons">
+                            <button
+                                name="%(action_active_module_work)d"
+                                string="Work By Module"
+                                type="action"/>
+                            <button
+                                name="%(action_active_module_record)d"
+                                string="Records By Module"
+                                type="action"/>
+                            <button
+                                name="%(action_active_module_section)d"
+                                string="Sections By Module"
+                                type="action"/>
+                            <button
+                                name="%(action_active_module_seance)d"
+                                string="Seances By Module"
+                                type="action"/>
+                            <button
+                                name="%(action_active_module_task)d"
+                                string="Tasks By Module"
+                                type="action"/>
+                            <button
+                                name="%(action_active_module_children)d"
+                                string="Child Modules"
+                                type="action"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <label string="Module: "/>
+                                <field
+                                    name="code"
+                                    class="oe_inline"
+                                    readonly="1"/>
+                            </h1>
+                            <label
+                                for="name"
+                                class="oe_edit_only"/>
+                            <h2>
+                                <field name="name"/>
+                            </h2>
+                        </div>
+                        <group>
+                            <field name="program_id"/>
+                            <field name="section_id"/>
+                            <field name="subsection_id"/>
+                            <field name="employee_id"/>
+                            <field name="location_id"/>
+                            <field
+                                name="parent_id"
+                                domain="[('program_id','=',program_id)]"
+                                on_change="onchange_parent_id(parent_id)"/>
+                            <field name="replace_method"/>
+                            <field
+                                name="case_default"
+                                readonly="1"/>
+                        </group>
+                        <group string="Training Work">
+                            <group>
+                                <field name="credits"/>
+                                <field name="st_hours"/>
+                                <field name="seance_hours"/>
+                            </group>
+                            <group>
+                                <field name="eff_credits"/>
+                                <field name="eff_st_hours"/>
+                                <field name="eff_seance_hours"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Main Features">
+                                <notebook>
+                                    <page string="Characterization">
+                                        <field name="description"/>
+                                    </page>
+                                    <page string="Competences">
+                                        <field
+                                            name="competence_ids"
+                                            domain="[('program_ids','=',program_id)]">
+                                            <tree string="Competences">
+                                                <field name="code"/>
+                                                <field name="description"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                    <page string="Prior Modules">
+                                        <field name="prior_ids"/>
+                                    </page>
+                                    <page string="Posterior Modules">
+                                        <field name="posterior_ids"/>
+                                    </page>
+                                    <page string="Child Modules">
+                                        <field
+                                            name="child_ids"
+                                            readonly="1"/>
+                                    </page>
+                                </notebook>
+                            </page>
+                            <page string="Module Program">
+                                <notebook>
+                                    <page string="Training Work">
+                                        <field
+                                            name="work_ids"
+                                            context="{'default_module_id': active_id}"
+                                            readonly="1">
+                                            <tree string="Module Work">
+                                                <field name="time_id"/>
+                                                <field name="type_id"/>
+                                                <field
+                                                    name="st_hours"
+                                                    sum="Student Hours"/>
+                                                <field
+                                                    name="seance_hours"
+                                                    sum="Seance Hours"/>
+                                                <field name="state"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                    <page string="Products">
+                                        <field name="product_ids"/>
+                                    </page>
+                                </notebook>
+                            </page>
+                            <page string="Plans">
+                                <field
+                                    name="plan_ids"
+                                    domain="[('program_id','=',program_id),('state','=','draft')]"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field
+                            name="message_follower_ids"
+                            widget="mail_followers"/>
+                        <field
+                            name="message_ids"
+                            widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_module"
+            model="ir.actions.act_window">
+            <field name="name">Modules</field>
+            <field name="res_model">edu.module</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">
+                {'search_default_gr_program_id':1,'search_default_gr_section_id':1,'search_default_gr_subsection_id':1}
+            </field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_module"
+            action="action_edu_module"
+            sequence="3"
+            parent="menu_edu_programs"/>
+
+        <record
+            id="action_edu_module_my"
+            model="ir.actions.act_window">
+            <field name="name">My Modules</field>
+            <field name="res_model">edu.module</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('employee_id.user_id','=',uid)]</field>
+            <field name="context">{'search_default_gr_program_id':1}</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_module_my"
+            action="action_edu_module_my"
+            sequence="4"
+            parent="menu_edu_programs"
+            groups="group_edu_teacher"/>
+
+        <record
+            id="view_edu_module_tree2"
+            model="ir.ui.view">
+            <field name="name">edu.module.tree</field>
+            <field name="model">edu.module</field>
+            <field name="field_parent">child_ids</field>
+            <field
+                eval="20"
+                name="priority"/>
+            <field
+                name="arch"
+                type="xml">
+                <tree string="Modules">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="program_id"/>
+                    <field name="section_id"/>
+                    <field name="subsection_id"/>
+                    <field name="employee_id"/>
+                    <field
+                        name="location_id"
+                        invisible="1"/>
+                    <field
+                        name="credits"
+                        sum="Credits"/>
+                    <field
+                        name="st_hours"
+                        sum="Student Hours"/>
+                    <field
+                        name="seance_hours"
+                        sum="Seance Hours"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="action_module_hierarchy"
+            model="ir.actions.act_window">
+            <field name="name">Module Hierarchy</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">edu.module</field>
+            <field name="domain">[('id','in',active_ids)]</field>
+            <field name="view_type">tree</field>
+            <field
+                name="view_id"
+                ref="view_edu_module_tree2"/>
+        </record>
+
+        <record
+            id="action_menu_module_hierarchy"
+            model="ir.values">
+            <field name="name">Module Hierarchy</field>
+            <field
+                name="action_id"
+                ref="action_module_hierarchy"/>
+            <field
+                name="value"
+                eval="'ir.actions.act_window,'+str(ref('action_module_hierarchy'))"/>
+            <field name="key">action</field>
+            <field
+                name="model_id"
+                ref="model_edu_module"/>
+            <field name="model">edu.module</field>
+            <field name="key2">client_action_multi</field>
+        </record>
+
+    </data>
+</openerp>

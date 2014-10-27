@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_qualification_tree"
+            model="ir.ui.view">
+            <field name="name">edu.qualification.tree</field>
+            <field name="model">edu.qualification</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Qualifications"
+                    version="7.0"
+                    editable="bottom">
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_qualification_form"
+            model="ir.ui.view">
+            <field name="name">edu.qualification.form</field>
+            <field name="model">edu.qualification</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Qualification"
+                    version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_qualification"
+            model="ir.actions.act_window">
+            <field name="name">Qualifications</field>
+            <field name="res_model">edu.qualification</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_qualification"
+            action="action_edu_qualification"
+            sequence="2"
+            parent="menu_edu_configuration_programs"/>
+
+    </data>
+</openerp>

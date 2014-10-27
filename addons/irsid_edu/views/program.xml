@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="action_program_time"
+            model="ir.actions.act_window">
+            <field name="name">Program Training Time</field>
+            <field name="res_model">edu.time</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_program_id':active_id,
+                'group_by':False,
+                'search_default_gr_stage_id':1,
+                'search_default_gr_period_id':1}
+            </field>
+            <field name="domain">[('program_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_time_filter"/>
+        </record>
+
+        <record
+            id="action_program_module"
+            model="ir.actions.act_window">
+            <field name="name">Program Modules</field>
+            <field name="res_model">edu.module</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_program_id':active_id,
+                'group_by':False,
+                'search_default_gr_section_id':1,
+                'search_default_gr_subsection_id':1}
+            </field>
+            <field name="domain">[('program_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_module_filter"/>
+        </record>
+
+        <record
+            id="view_edu_program_tree"
+            model="ir.ui.view">
+            <field name="name">edu.program.tree</field>
+            <field name="model">edu.program</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Programs"
+                    colors="
+                        grey:state in ('canceled','done');
+                        blue:state in ('confirmed','validated');
+                        red:state in ('draft','rejected');
+                        green:state=='approved'">
+                    <field name="code"/>
+                    <field name="short_name"/>
+                    <field name="name"/>
+                    <field name="speciality_id"/>
+                    <field name="department_id"/>
+                    <field name="mode_id"/>
+                    <field name="rprog"/>
+                    <field name="eprog"/>
+                    <field name="elearning"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_program_form"
+            model="ir.ui.view">
+            <field name="name">edu.program.form</field>
+            <field name="model">edu.program</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Program"
+                    version="7.0">
+                    <header>
+                        <button
+                            name="set_confirmed"
+                            string="Confirm"
+                            type="object"
+                            states="draft"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_validated"
+                            string="Validate"
+                            type="object"
+                            states="confirmed"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_approved"
+                            string="Approve"
+                            type="object"
+                            states="validated"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <button
+                            name="set_canceled"
+                            string="Cancel"
+                            type="object"
+                            states="approved"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="confirmed"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="validated,approved,canceled"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,confirmed,validated,approved"
+                            readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div
+                            class="oe_right oe_button_box"
+                            name="buttons">
+                            <button
+                                name="%(action_program_time)d"
+                                string="Training Time"
+                                type="action"/>
+                            <button
+                                name="%(action_program_module)d"
+                                string="Modules"
+                                type="action"/>
+                        </div>
+                        <h1>
+                            <label string="Education Program: "/>
+                            <field
+                                name="code"
+                                class="oe_inline"
+                                readonly="1"/>
+                        </h1>
+                        <label
+                            for="name"
+                            class="oe_edit_only"/>
+                        <h2>
+                            <label string="["/>
+                            <field
+                                name="short_name"
+                                class="oe_inline"
+                                placeholder="Short Title..."/>
+                            <label
+                                string="] "
+                                class="oe_inline"/>
+                            <field
+                                name="name"
+                                class="oe_inline"
+                                placeholder="Full Title..."/>
+                        </h2>
+                        <group>
+                            <field
+                                name="speciality_id"
+                                on_change="onchange_speciality_id(speciality_id)"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group string="Training Regime">
+                            <group>
+                                <field name="mode_id"/>
+                                <field name="elearning"/>
+                            </group>
+                            <group>
+                                <field name="eprog"/>
+                                <field name="rprog"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Training Time">
+                                <field name="time_ids">
+                                    <tree string="Time">
+                                        <field
+                                            name="sequence"
+                                            widget="handle"/>
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="category_id"/>
+                                        <field name="period_id"/>
+                                        <field
+                                            name="weeks"
+                                            sum="Weeks"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Main Modules">
+                                <field name="mainmodule_ids">
+                                    <tree string="Main Modules">
+                                        <field name="section_id"/>
+                                        <field name="subsection_id"/>
+                                        <field name="name"/>
+                                        <field
+                                            name="credits"
+                                            sum="Credits"/>
+                                        <field
+                                            name="st_hours"
+                                            sum="Student Hours"/>
+                                        <field
+                                            name="seance_hours"
+                                            sum="Seance Hours"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Elective Modules">
+                                <field name="electivemodule_ids">
+                                    <tree string="Elective Modules">
+                                        <field name="section_id"/>
+                                        <field name="subsection_id"/>
+                                        <field name="name"/>
+                                        <field name="parent_id"/>
+                                        <field
+                                            name="credits"
+                                            sum="Credits"/>
+                                        <field
+                                            name="st_hours"
+                                            sum="Student Hours"/>
+                                        <field
+                                            name="seance_hours"
+                                            sum="Seance Hours"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Stages">
+                                <field name="stage_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Characterization">
+                                <field name="description"/>
+                            </page>
+                            <page string="Competences">
+                                <field
+                                    name="competence_ids"
+                                    domain="[('speciality_id','=',speciality_id)]">
+                                    <tree string="Competences">
+                                        <field name="code"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field
+                            name="message_follower_ids"
+                            widget="mail_followers"/>
+                        <field
+                            name="message_ids"
+                            widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_program_filter"
+            model="ir.ui.view">
+            <field name="name">edu.program.filter</field>
+            <field name="model">edu.program</field>
+            <field
+                name="arch"
+                type="xml">
+                <search string="Programs">
+                    <field name="name"/>
+                    <field name="short_name"/>
+                    <field name="code"/>
+                    <field name="speciality_id"/>
+                    <field name="mode_id"/>
+                    <field name="state"/>
+                    <filter
+                        string="Reduced"
+                        domain="[('rprog','=',True)]"/>
+                    <filter
+                        string="Express"
+                        domain="[('eprog','=',True)]"/>
+                    <filter
+                        string="E-Learning"
+                        domain="[('elearning','=',True)]"/>
+                    <group
+                        expand="1"
+                        string="Group By...">
+                        <filter
+                            string="Speciality"
+                            domain="[]"
+                            context="{'group_by':'speciality_id'}"/>
+                        <filter
+                            string="Mode"
+                            domain="[]"
+                            context="{'group_by':'mode_id'}"/>
+                        <filter
+                            string="State"
+                            domain="[]"
+                            context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_program"
+            model="ir.actions.act_window">
+            <field name="name">Programs</field>
+            <field name="res_model">edu.program</field>
+            <field name="view_mode">tree,form</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_program_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_program"
+            action="action_edu_program"
+            sequence="1"
+            parent="menu_edu_programs"/>
+
+    </data>
+</openerp>

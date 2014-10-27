@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<document filename="Student Program (list).pdf">
+
+<template pageSize="(595.0,842.0)" title="Student Program (list)" author="IRSID" allowSplitting="20">
+
+<pageTemplate id="first">
+    <frame id="first" x1="70.0" y1="28.0" width="497" height="786"/>
+    <pageGraphics>
+        <setFont name="LiberationSans" size="8"/>
+        <drawRightString x="567" y="21"><pageNumber/>/<pageCount/></drawRightString>
+    </pageGraphics>
+</pageTemplate>
+
+</template>
+<!-- Таблица стилей документа-->
+<stylesheet>
+
+<blockTableStyle id="Underscript">
+    <blockAlignment value="CENTER"/>
+    <blockValign value="MIDDLE"/>
+    <lineStyle kind="LINEABOVE" colorName="black" start="0,-1" stop="-1,-1"/>  
+</blockTableStyle>
+
+<blockTableStyle id="CodeDate">
+    <blockAlignment value="CENTER"/>
+    <blockValign value="MIDDLE"/>
+    <lineStyle kind="GRID" colorName="black" start="5,0" stop="8,-1"/>  
+</blockTableStyle>
+
+<blockTableStyle id="Standard_Outline">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table1">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <blockBackground colorName="#e6e6e6" start="0,0" stop="0,0"/>
+    <blockBackground colorName="#e6e6e6" start="1,0" stop="1,0"/>
+    <blockBackground colorName="#e6e6e6" start="2,0" stop="2,0"/>
+    <blockBackground colorName="#e6e6e6" start="0,1" stop="0,1"/>
+    <blockBackground colorName="#e6e6e6" start="1,1" stop="1,1"/>
+    <blockBackground colorName="#e6e6e6" start="2,1" stop="2,1"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table_header_Content">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+</blockTableStyle>
+
+<blockTableStyle id="Tableau1">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <lineStyle kind="GRID" colorName="black"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table2">
+    <lineStyle kind="LINEBELOW" colorName="#000000" start="0,0" stop="-1,0"/>
+    <lineStyle kind="LINEBELOW" colorName="#000000" start="0,1" stop="-1,1"/>
+    <lineStyle kind="LINEBELOW" colorName="#e6e6e6" start="0,2" stop="-1,-1"/>
+    <blockValign value="TOP"/>
+    <blockAlignment value="LEFT" start="2,1" stop="-1,-1"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table8">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <lineStyle kind="LINEBEFORE" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+    <lineStyle kind="LINEABOVE" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+    <lineStyle kind="LINEAFTER" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+    <lineStyle kind="LINEBELOW" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+</blockTableStyle>
+
+<blockTableStyle id="Tableau3">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <lineStyle kind="GRID" colorName="black"/>
+</blockTableStyle>
+
+<initialize>
+    <paraStyle name="all" alignment="justify"/>
+</initialize>
+
+<paraStyle name="Header" fontName="LiberationSans-Bold" fontSize="12" leading="12" alignment="CENTER" spaceBefore="6" spaceAfter="6"/>
+<paraStyle name="MainText" fontName="LiberationSans" fontSize="10" leading="10" alignment="JUSTIFY" spaceBefore="5" spaceAfter="5"/>
+<paraStyle name="MainTextLeft" fontName="LiberationSans" fontSize="10" leading="10" alignment="LEFT" spaceBefore="5" spaceAfter="5"/>
+<paraStyle name="MainTextCentered" fontName="LiberationSans" fontSize="10" leading="10" alignment="CENTER" spaceBefore="5" spaceAfter="5"/>
+<paraStyle name="SmallTextCentered" fontName="LiberationSans" fontSize="6" leading="6" alignment="CENTER" spaceBefore="3" spaceAfter="3"/>
+
+</stylesheet>
+<!-- Содержимое документа -->
+<story>
+<pto>
+<blockTable colWidths="80.0,60.0,60.0,150.0,80.0,90.0" style="Tableau1" repeatRows="1">
+    <tr>
+        <td>
+            <para style="MainTextCentered">Обр. программа</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Стадия</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Группа</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Программа обучающегося</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">План</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Статус</para>
+        </td>
+    </tr>
+    <tr>
+        <para style="MainTextCentered">[[repeatIn(objects,'o')]]</para>
+        <td>
+            <para style="MainTextCentered">[[ o.program_id.code ]]:[[ o.program_id.short_name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ o.stage_id.name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ o.group_id.name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextLeft">[[ o.student_id.name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ o.plan_id.code ]]: [[ o.plan_id.name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ dict_status.get(o.status,'') ]]</para>
+        </td>
+     </tr>
+</blockTable>
+</pto>
+</story>
+</document>

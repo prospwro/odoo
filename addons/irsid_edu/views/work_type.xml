@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_work_type_tree"
+            model="ir.ui.view">
+            <field name="name">edu.work.type.tree</field>
+            <field name="model">edu.work.type</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Work Types"
+                    version="7.0"
+                    editable="bottom">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="st_hours"/>
+                    <field name="seance_hours"/>
+                    <field name="emp_hours"/>
+                    <field name="ind_work"/>
+                    <field name="gradetype_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_work_type"
+            model="ir.actions.act_window">
+            <field name="name">Work Types</field>
+            <field name="res_model">edu.work.type</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_work_type"
+            action="action_edu_work_type"
+            sequence="6"
+            parent="menu_edu_configuration_programs"/>
+
+    </data>
+</openerp>

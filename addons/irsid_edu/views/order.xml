@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="action_active_order_line"
+            model="ir.actions.act_window">
+            <field name="name">Lines By Order</field>
+            <field name="res_model">edu.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_order_id':active_id,
+                'group_by': False}
+            </field>
+            <field name="domain">[('order_id','=',active_id)]</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_line_filter"/>
+        </record>
+
+        <record
+            id="view_edu_order_tree"
+            model="ir.ui.view">
+            <field name="name">edu.order.tree</field>
+            <field name="model">edu.order</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Orders"
+                    colors="
+                        grey:state in ('canceled','done');
+                        blue:state in ('confirmed','validated');
+                        red:state in ('draft','rejected');
+                        green:state=='approved'">
+                    <field name="code"/>
+                    <field name="date"/>
+                    <field name="statement_id"/>
+                    <field name="year_id"/>
+                    <field name="program_id"/>
+                    <field name="stage_id"/>
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_order_form"
+            model="ir.ui.view">
+            <field name="name">edu.order.form</field>
+            <field name="model">edu.order</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Order"
+                    version="7.0">
+                    <header>
+                        <button
+                            name="set_confirmed"
+                            string="Confirm"
+                            type="object"
+                            states="draft"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_validated"
+                            string="Validate"
+                            type="object"
+                            states="confirmed"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_approved"
+                            string="Approve"
+                            type="object"
+                            states="validated"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <button
+                            name="set_done"
+                            string="Done"
+                            type="object"
+                            states="approved"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_canceled"
+                            string="Cancel"
+                            type="object"
+                            states="approved"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="confirmed"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="validated,approved,done,canceled"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,confirmed,validated,approved"
+                            readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div
+                            class="oe_right oe_button_box"
+                            name="buttons">
+                            <button
+                                name="%(action_active_order_line)d"
+                                string="Order Lines"
+                                type="action"/>
+                        </div>
+                        <h1>
+                            <label string="Order: "/>
+                            <field
+                                name="code"
+                                class="oe_inline"
+                                readonly="1"/>
+                            <label
+                                string=" On "
+                                class="oe_inline"/>
+                            <field
+                                name="date"
+                                class="oe_inline"/>
+                        </h1>
+                        <label
+                            for="name"
+                            class="oe_edit_only"/>
+                        <h2>
+                            <field
+                                name="statement_id"
+                                on_change="onchange_statement_id(statement_id)"/>
+                            <field
+                                name="name"
+                                invisible="1"/>
+                        </h2>
+                        <group>
+                            <group string="Summary">
+                                <field
+                                    name="year_id"
+                                    on_change="onchange_year_id(year_id)"/>
+                                <field
+                                    name="type"
+                                    readonly="1"/>
+                                <field
+                                    name="program_id"
+                                    on_change="onchange_program_id(program_id)"/>
+                                <field
+                                    name="stage_id"
+                                    domain="program_id and [('program_ids','=',program_id)] or []"/>
+                            </group>
+                            <group string="Period of Validity">
+                                <field name="date_start"/>
+                                <field name="date_stop"/>
+                            </group>
+                        </group>
+                        <label
+                            for="intro_text"
+                            class="oe_edit_only"/>
+                        <field
+                            name="intro_text"
+                            placeholder="Place reason text here (In connection ... etc)"/>
+                        <h2>
+                            <label string="I ORDER"/>
+                        </h2>
+                        <label
+                            for="main_text"
+                            class="oe_edit_only"/>
+                        <field
+                            name="main_text"
+                            placeholder="Place decision text here..."/>
+                        <field
+                            name="line_ids"
+                            context="{'default_type': type}"
+                            readonly="1">
+                            <tree string="Order Lines">
+                                <field name="student_id"/>
+                                <field
+                                    name="line_id"
+                                    invisible="context.get('default_type',False) not in ['admission']"
+                                    on_change="onchange_line_id(line_id)"/>
+                                <field
+                                    name="order_program_id"
+                                    invisible="1"/>
+                                <field
+                                    name="order_stage_id"
+                                    invisible="1"/>
+                                <field name="program_id"/>
+                                <field
+                                    name="stage_id"
+                                    invisible="context.get('default_type',False) in ['admission','other']"/>
+                                <field
+                                    name="plan_id"
+                                    invisible="context.get('default_type',False) in ['admission','dismissal','other']"/>
+                                <field
+                                    name="status"
+                                    invisible="context.get('default_type',False) in ['admission','dismissal','other']"/>
+                                <field name="note"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                        <label
+                            for="final_text"
+                            class="oe_edit_only"/>
+                        <field
+                            name="final_text"
+                            placeholder="Place obligation and responsibility text here..."/>
+                        <group>
+                            <field name="user_approved"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field
+                            name="message_follower_ids"
+                            widget="mail_followers"/>
+                        <field
+                            name="message_ids"
+                            widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_order_filter"
+            model="ir.ui.view">
+            <field name="name">edu.order.filter</field>
+            <field name="model">edu.order</field>
+            <field
+                name="arch"
+                type="xml">
+                <search string="Orders">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="line_ids"/>
+                    <field name="year_id"/>
+                    <field name="type"/>
+                    <field name="statement_id"/>
+                    <field name="program_id"/>
+                    <field name="stage_id"/>
+                    <field name="date"/>
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="state"/>
+                    <group
+                        expand="1"
+                        string="Group By...">
+                        <filter
+                            name="gr_year_id"
+                            string="Year"
+                            domain="[]"
+                            context="{'group_by':'year_id'}"/>
+                        <filter
+                            string="Type"
+                            domain="[]"
+                            context="{'group_by':'type'}"/>
+                        <filter
+                            string="Statement"
+                            domain="[]"
+                            context="{'group_by':'statement_id'}"/>
+                        <filter
+                            string="Program"
+                            domain="[]"
+                            context="{'group_by':'program_id'}"/>
+                        <filter
+                            string="Stage"
+                            domain="[]"
+                            context="{'group_by':'stage_id'}"/>
+                        <filter
+                            name="gr_state"
+                            string="State"
+                            domain="[]"
+                            context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_entrance_order"
+            model="ir.actions.act_window">
+            <field name="name">Entrance Orders</field>
+            <field name="res_model">edu.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','in',['admission','enrollment'])]</field>
+            <field name="context">{'search_default_gr_state':1}</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_entrance_order"
+            action="action_edu_entrance_order"
+            name="Entrance Orders"
+            parent="menu_edu_entrance"
+            sequence="60"/>
+
+        <record
+            id="action_edu_order_admission"
+            model="ir.actions.act_window">
+            <field name="name">Orders For Admission</field>
+            <field name="res_model">edu.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','=','admission')]</field>
+            <field name="context">{
+                'default_type': 'admission',
+                'search_default_gr_state':1,
+                'needaction_menu_ref':
+                'irsid_edu.menu_edu_entrance_order'
+                }
+            </field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_order_admission"
+            action="action_edu_order_admission"
+            sequence="10"
+            parent="menu_edu_entrance_order"/>
+
+        <record
+            id="action_edu_order_enrollment"
+            model="ir.actions.act_window">
+            <field name="name">Orders For Enrollment</field>
+            <field name="res_model">edu.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','=','enrollment')]</field>
+            <field name="context">{
+                'default_type': 'enrollment',
+                'search_default_gr_state':1,
+                'needaction_menu_ref':
+                'irsid_edu.menu_edu_entrance_order'
+                }
+            </field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_order_enrollment"
+            action="action_edu_order_enrollment"
+            sequence="20"
+            parent="menu_edu_entrance_order"/>
+
+        <record
+            id="action_edu_training_order"
+            model="ir.actions.act_window">
+            <field name="name">Training Orders</field>
+            <field name="res_model">edu.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','in',['transfer','dismissal','other'])]
+            </field>
+            <field name="context">{'search_default_gr_state':1}</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_training_order"
+            action="action_edu_training_order"
+            name="Training Orders"
+            parent="menu_edu_training"
+            sequence="90"/>
+
+        <record
+            id="action_edu_order_transfer"
+            model="ir.actions.act_window">
+            <field name="name">Orders For Transfer</field>
+            <field name="res_model">edu.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','=','transfer')]</field>
+            <field name="context">{
+                'default_type': 'transfer',
+                'search_default_gr_state':1,
+                'needaction_menu_ref':
+                'irsid_edu.menu_edu_training_order'
+                }
+            </field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_order_transfer"
+            action="action_edu_order_transfer"
+            sequence="10"
+            parent="menu_edu_training_order"/>
+
+        <record
+            id="action_edu_order_dismissal"
+            model="ir.actions.act_window">
+            <field name="name">Orders For Dismissal</field>
+            <field name="res_model">edu.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','=','dismissal')]</field>
+            <field name="context">{
+                'default_type': 'dismissal',
+                'search_default_gr_state':1,
+                'needaction_menu_ref':
+                'irsid_edu.menu_edu_training_order'}
+            </field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_order_dismissal"
+            action="action_edu_order_dismissal"
+            sequence="20"
+            parent="menu_edu_training_order"/>
+
+        <record
+            id="action_edu_order_other"
+            model="ir.actions.act_window">
+            <field name="name">Other Orders</field>
+            <field name="res_model">edu.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','=','other')]</field>
+            <field name="context">{
+                'default_type': 'other',
+                'search_default_gr_state':1,
+                'needaction_menu_ref':
+                'irsid_edu.menu_edu_training_order'}
+            </field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_order_other"
+            action="action_edu_order_other"
+            sequence="40"
+            parent="menu_edu_training_order"/>
+
+        <record
+            id="action_server_orders_to_work_orders"
+            model="ir.actions.server">
+            <field name="name">Orders To Work Orders</field>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field
+                name="model_id"
+                ref="model_edu_order"/>
+            <field name="state">code</field>
+            <field name="code">self.make_work_orders(cr,uid,context.get('active_ids',[]),context=context)
+            </field>
+        </record>
+
+        <record
+            id="action_orders_to_work_orders"
+            model="ir.values">
+            <field name="name">Orders To Work Orders</field>
+            <field
+                name="action_id"
+                ref="action_server_orders_to_work_orders"/>
+            <field
+                name="value"
+                eval="'ir.actions.server,'+str(ref('action_server_orders_to_work_orders'))"/>
+            <field name="key">action</field>
+            <field
+                name="model_id"
+                ref="model_edu_order"/>
+            <field name="model">edu.order</field>
+            <field name="key2">client_action_multi</field>
+        </record>
+
+    </data>
+</openerp>

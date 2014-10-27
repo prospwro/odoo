@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_order_line_tree"
+            model="ir.ui.view">
+            <field name="name">edu.order.line.tree</field>
+            <field name="model">edu.order.line</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Order Lines"
+                    colors="
+                        grey:state in ('canceled','done');
+                        blue:state in ('confirmed','validated');
+                        red:state in ('draft','rejected');
+                        green:state=='approved'">
+                    <field name="order_id"/>
+                    <field name="year_id"/>
+                    <field
+                        name="type"
+                        invisible="1"/>
+                    <field name="statement_id"/>
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field
+                        name="speciality_id"
+                        invisible="1"/>
+                    <field
+                        name="mode_id"
+                        invisible="1"/>
+                    <field name="stage_id"/>
+                    <field name="plan_id"/>
+                    <field
+                        name="status"
+                        groups="irsid_edu.group_edu_employee"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_order_line_form"
+            model="ir.ui.view">
+            <field name="name">edu.order.line.form</field>
+            <field name="model">edu.order.line</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Order Line"
+                    version="7.0">
+                    <header>
+                        <button
+                            name="set_confirmed"
+                            string="Confirm"
+                            type="object"
+                            states="draft"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_validated"
+                            string="Validate"
+                            type="object"
+                            states="confirmed"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_approved"
+                            string="Approve"
+                            type="object"
+                            states="validated"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <button
+                            name="set_done"
+                            string="Done"
+                            type="object"
+                            states="approved"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_canceled"
+                            string="Cancel"
+                            type="object"
+                            states="approved"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="confirmed"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="validated,approved,done,canceled"
+                            groups="irsid_edu.group_edu_rector"/>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,confirmed,validated,approved"
+                            readonly="1"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field
+                                name="order_id"
+                                domain="[('state','not in',['approved','done'])]"
+                                on_change="onchange_order_id(order_id)"/>
+                            <field name="origin"/>
+                            <field name="year_id"/>
+                            <field
+                                name="type"
+                                invisible="1"/>
+                            <field name="statement_id"/>
+                            <field
+                                name="order_program_id"
+                                invisible="1"/>
+                            <field
+                                name="order_stage_id"
+                                invisible="1"/>
+                            <field
+                                name="student_id"
+                                attrs="{'invisible': [('type','!=','admission')]}"/>
+                            <field
+                                name="line_id"
+                                domain="[order_program_id and ('program_id','=',order_program_id) or ('program_id','!=',False),('state','=','approved')]"
+                                attrs="{'invisible': [('type','!=', 'admission')]}"
+                                on_change="onchange_line_id(line_id)"/>
+                            <field
+                                name="st_program_id"
+                                domain="[order_program_id and ('program_id','=',order_program_id) or ('program_id','!=',False), order_stage_id and ('stage_id','=',order_stage_id) or ('stage_id','!=',False)]"
+                                attrs="{'invisible': [('type','=', 'admission')]}"
+                                on_change="onchange_st_program_id(st_program_id)"/>
+                            <field name="program_id"/>
+                            <field name="speciality_id"/>
+                            <field name="mode_id"/>
+                            <field
+                                name="stage_id"
+                                attrs="{'invisible': [('type','not in', ['enrollment','transfer','dismissal'])]}"
+                                domain="[('program_ids','=',program_id)]"/>
+                            <field
+                                name="plan_id"
+                                attrs="{'invisible': [('type','not in', ['enrollment','transfer'])]}"
+                                domain="[('program_id','=',program_id)]"/>
+                            <field
+                                name="status"
+                                attrs="{'invisible': [('type','not in', ['enrollment','transfer'])]}"/>
+                        </group>
+                        <notebook>
+                            <page string="Note">
+                                <field name="note"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field
+                            name="message_follower_ids"
+                            widget="mail_followers"/>
+                        <field
+                            name="message_ids"
+                            widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_order_line_filter"
+            model="ir.ui.view">
+            <field name="name">edu.order.line.filter</field>
+            <field name="model">edu.order.line</field>
+            <field
+                name="arch"
+                type="xml">
+                <search string="Order Lines">
+                    <field name="order_id"/>
+                    <field name="year_id"/>
+                    <field name="type"/>
+                    <field name="statement_id"/>
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field name="speciality_id"/>
+                    <field name="mode_id"/>
+                    <field name="stage_id"/>
+                    <field name="plan_id"/>
+                    <field name="status"/>
+                    <field name="state"/>
+                    <group
+                        expand="1"
+                        string="Group By...">
+                        <filter
+                            string="Order"
+                            domain="[]"
+                            context="{'group_by':'order_id'}"/>
+                        <filter
+                            string="Year"
+                            domain="[]"
+                            context="{'group_by':'year_id'}"/>
+                        <filter
+                            string="Type"
+                            domain="[]"
+                            context="{'group_by':'type'}"/>
+                        <filter
+                            string="Statement"
+                            domain="[]"
+                            context="{'group_by':'statement_id'}"/>
+                        <filter
+                            string="Student"
+                            domain="[]"
+                            context="{'group_by':'student_id'}"/>
+                        <filter
+                            string="Program"
+                            domain="[]"
+                            context="{'group_by':'program_id'}"/>
+                        <filter
+                            string="Speciality"
+                            domain="[]"
+                            context="{'group_by':'speciality_id'}"/>
+                        <filter
+                            string="Mode"
+                            domain="[]"
+                            context="{'group_by':'mode_id'}"/>
+                        <filter
+                            string="Stage"
+                            domain="[]"
+                            context="{'group_by':'stage_id'}"/>
+                        <filter
+                            string="Plan"
+                            domain="[]"
+                            context="{'group_by':'plan_id'}"/>
+                        <filter
+                            string="Status"
+                            domain="[]"
+                            context="{'group_by':'status'}"/>
+                        <filter
+                            string="State"
+                            domain="[]"
+                            context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_order_line"
+            model="ir.actions.act_window">
+            <field name="name">Order Lines</field>
+            <field name="res_model">edu.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_order_line_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_order_line"
+            action="action_edu_order_line"
+            sequence="80"
+            parent="menu_edu_report"/>
+
+    </data>
+</openerp>
