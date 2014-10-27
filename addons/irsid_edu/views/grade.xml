@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_grade_tree"
+            model="ir.ui.view">
+            <field name="name">edu.grade.tree</field>
+            <field name="model">edu.grade</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Grades"
+                    colors="
+                        grey:state in ('canceled','done');
+                        blue:state in ('confirmed','validated');
+                        red:state in ('draft','rejected');
+                        green:state=='approved'">
+                    <field name="year_id"/>
+                    <field name="program_id"/>
+                    <field name="time_id"/>
+                    <field name="module_id"/>
+                    <field name="seance_id"/>
+                    <field name="type_id"/>
+                    <field
+                        name="gradetype_id"
+                        invisible="1"/>
+                    <field name="employee_id"/>
+                    <field
+                        name="st_hours"
+                        sum="Student Hours"/>
+                    <field
+                        name="seance_hours"
+                        sum="Seance Hours"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_grade_form"
+            model="ir.ui.view">
+            <field name="name">edu.grade.form</field>
+            <field name="model">edu.grade</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Grade"
+                    version="7.0">
+                    <header>
+                        <button
+                            name="set_approved"
+                            string="Approve"
+                            type="object"
+                            states="draft"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_teacher"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="approved"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_canceled"
+                            string="Cancel"
+                            type="object"
+                            states="approved"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,approved"
+                            readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div
+                            class="oe_right oe_button_box"
+                            name="buttons">
+                            <button
+                                name="%(action_active_grade_line)d"
+                                string="Lines By Grade"
+                                type="action"/>
+                        </div>
+                        <h1>
+                            <label string="Grade Sheet: "/>
+                            <field
+                                name="code"
+                                class="oe_inline"
+                                readonly="1"/>
+                            <label
+                                string=" On "
+                                class="oe_inline"/>
+                            <field
+                                name="date"
+                                class="oe_inline"/>
+                        </h1>
+                        <label
+                            for="name"
+                            class="oe_edit_only"/>
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                        <group>
+                            <field
+                                name="seance_id"
+                                on_change="onchange_seance_id(seance_id)"/>
+                            <field name="employee_id"/>
+                        </group>
+                        <group>
+                            <group string="Summary">
+                                <field
+                                    name="year_id"
+                                    on_change="onchange_year_id(year_id)"/>
+                                <field name="program_id"/>
+                                <field name="module_id"/>
+                                <field name="time_id"/>
+                                <field name="type_id"/>
+                                <field name="gradetype_id"/>
+                                <field name="st_hours"/>
+                                <field name="seance_hours"/>
+                            </group>
+                            <group string="Period of Validity">
+                                <field name="date_start"/>
+                                <field name="date_stop"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Grade Lines">
+                                <field
+                                    name="line_ids"
+                                    readonly="1">
+                                    <tree string="Training Work">
+                                        <field name="st_program_id"/>
+                                        <field name="mark_id"/>
+                                        <field name="points"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Student Programs">
+                                <field name="st_program_ids">
+                                    <tree>
+                                        <field name="code"/>
+                                        <field name="student_id"/>
+                                        <field name="program_id"/>
+                                        <field name="stage_id"/>
+                                        <field name="plan_id"/>
+                                        <field name="group_id"/>
+                                        <field name="status"/>
+                                        <field
+                                            name="state"
+                                            invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group>
+                            <field name="user_approved"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field
+                            name="message_follower_ids"
+                            widget="mail_followers"/>
+                        <field
+                            name="message_ids"
+                            widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_grade_filter"
+            model="ir.ui.view">
+            <field name="name">edu.grade.filter</field>
+            <field name="model">edu.grade</field>
+            <field
+                name="arch"
+                type="xml">
+                <search string="Grades">
+                    <field name="name"/>
+                    <field name="seance_id"/>
+                    <field name="module_id"/>
+                    <field name="time_id"/>
+                    <field name="type_id"/>
+                    <field name="gradetype_id"/>
+                    <field name="employee_id"/>
+                    <field name="st_program_ids"/>
+                    <group
+                        expand="1"
+                        string="Group By...">
+                        <filter
+                            name="gr_year_id"
+                            string="Year"
+                            domain="[]"
+                            context="{'group_by':'year_id'}"/>
+                        <filter
+                            name="gr_program_id"
+                            string="Program"
+                            domain="[]"
+                            context="{'group_by':'program_id'}"/>
+                        <filter
+                            name="gr_time_id"
+                            string="Time"
+                            domain="[]"
+                            context="{'group_by':'time_id'}"/>
+                        <filter
+                            name="gr_module_id"
+                            string="Module"
+                            domain="[]"
+                            context="{'group_by':'module_id'}"/>
+                        <filter
+                            string="Seance"
+                            domain="[]"
+                            context="{'group_by':'seance_id'}"/>
+                        <filter
+                            string="Work Type"
+                            domain="[]"
+                            context="{'group_by':'type_id'}"/>
+                        <filter
+                            string="Grade Type"
+                            domain="[]"
+                            context="{'group_by':'gradetype_id'}"/>
+                        <filter
+                            string="Employee"
+                            domain="[]"
+                            context="{'group_by':'employee_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_grade"
+            model="ir.actions.act_window">
+            <field name="name">Grades</field>
+            <field name="res_model">edu.grade</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'search_default_gr_year_id':1,
+                'search_default_gr_program_id':1,
+                'search_default_gr_module_id':1
+                }
+            </field>
+            <field
+                name="search_view_id"
+                ref="view_edu_grade_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_grade"
+            action="action_edu_grade"
+            sequence="100"
+            parent="menu_edu_training"/>
+
+    </data>
+</openerp>

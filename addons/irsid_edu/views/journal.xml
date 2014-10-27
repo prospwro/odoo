@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_journal_tree"
+            model="ir.ui.view">
+            <field name="name">edu.journal.tree</field>
+            <field name="model">edu.journal</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Journals"
+                    version="7.0"
+                    editable="bottom">
+                    <field name="name"/>
+                    <field name="journaltype"/>
+                    <field name="recordtype"/>
+                    <field name="gradetype_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_journal"
+            model="ir.actions.act_window">
+            <field name="name">Journals</field>
+            <field name="res_model">edu.journal</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_journal"
+            action="action_edu_journal"
+            sequence="40"
+            parent="menu_edu_configuration_grade"/>
+
+    </data>
+</openerp>

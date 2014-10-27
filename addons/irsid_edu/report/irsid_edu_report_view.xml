@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="view_report_edu_module_work_tree" model="ir.ui.view">
+    <field name="name">report.edu.module.work.tree</field>
+    <field name="model">report.edu.module.work</field>
+    <field name="arch" type="xml">
+        <tree string="Module Work Analysis" create="false">
+            <field name="sequence" invisible="1"/>
+            <field name="program_id"/>
+            <field name="section_id"/>
+            <field name="subsection_id"/>
+            <field name="module_id"/>
+            <field name="period_id"/>
+            <field name="timecategory_id"/>
+            <field name="time"/>
+            <field name="type_id"/>
+            <field name="teacher_id"/>
+            <field name="location_id"/>
+            <field name="st_hours" sum="Student Hours"/>
+            <field name="seance_hours" sum="Seance Hours"/>
+        </tree>
+    </field>
+</record>
+
+<record id="view_report_edu_module_work_search" model="ir.ui.view">
+    <field name="name">report.edu.module.work.search</field>
+    <field name="model">report.edu.module.work</field>
+    <field name="arch" type="xml">
+        <search string="Module Work Analysis">
+            <field name="program_id"/>
+            <field name="section_id"/>
+            <field name="subsection_id"/>
+            <field name="module_id"/>
+            <field name="period_id"/>
+            <field name="timecategory_id"/>
+            <field name="time"/>
+            <field name="type_id"/>
+            <field name="teacher_id"/>
+            <field name="location_id"/>
+            <group expand="1" string="Group By...">
+                <filter string="Program" context="{'group_by':'program_id'}"/>
+                <filter string="Program Section" context="{'group_by':'section_id'}"/>
+                <filter string="Program Subsection" context="{'group_by':'subsection_id'}"/>
+                <filter string="Module" context="{'group_by':'module_id'}"/>
+                <filter string="Period" context="{'group_by':'period_id'}" />
+                <filter string="Time Category" context="{'group_by':'timecategory_id'}" />
+                <filter string="Time" context="{'group_by':'time'}" />
+                <filter string="Type" context="{'group_by':'type_id'}"/>
+                <filter string="Teacher" context="{'group_by':'teacher_id'}" />
+                <filter string="Location" context="{'group_by':'location_id'}" />
+            </group>
+        </search>
+    </field>
+</record>
+
+<record id="action_report_edu_module_work" model="ir.actions.act_window">
+    <field name="name">Module Work Analysis</field>
+    <field name="res_model">report.edu.module.work</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="search_view_id" ref="view_report_edu_module_work_search"/>
+</record>
+
+<menuitem action="action_report_edu_module_work" id="menu_report_edu_module_work" parent="menu_edu_report"/>
+
+</data>
+</openerp>

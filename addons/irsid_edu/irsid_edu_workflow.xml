@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Application -->
+
+        <record
+            id="wkf_edu_application"
+            model="workflow">
+            <field name="name">edu.application</field>
+            <field name="osv">edu.application</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <!-- Application Activity -->
+
+        <record
+            id="act_draft"
+            model="workflow.activity">
+            <field
+                name="wkf_id"
+                ref="wkf_edu_application"/>
+            <field name="name">draft</field>
+            <field name="flow_start">True</field>
+        </record>
+
+        <record
+            id="act_confirmed"
+            model="workflow.activity">
+            <field
+                name="wkf_id"
+                ref="wkf_edu_application"/>
+            <field name="name">confirmed</field>
+            <field name="kind">function</field>
+            <field name="action">set_confirmed()</field>
+        </record>
+
+        <record
+            id="act_validated"
+            model="workflow.activity">
+            <field
+                name="wkf_id"
+                ref="wkf_edu_application"/>
+            <field name="name">validated</field>
+            <field name="kind">function</field>
+            <field name="action">set_validated()</field>
+        </record>
+
+        <record
+            id="act_approved"
+            model="workflow.activity">
+            <field
+                name="wkf_id"
+                ref="wkf_edu_application"/>
+            <field name="name">approved</field>
+            <field name="kind">function</field>
+            <field name="action">set_approved()</field>
+        </record>
+
+        <record
+            id="act_done"
+            model="workflow.activity">
+            <field
+                name="wkf_id"
+                ref="wkf_edu_application"/>
+            <field name="name">done</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">function</field>
+            <field name="action">set_done()</field>
+        </record>
+
+        <record
+            id="act_rejected"
+            model="workflow.activity">
+            <field
+                name="wkf_id"
+                ref="wkf_edu_application"/>
+            <field name="name">rejected</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">function</field>
+            <field name="action">set_rejected()</field>
+        </record>
+
+        <record
+            id="act_canceled"
+            model="workflow.activity">
+            <field
+                name="wkf_id"
+                ref="wkf_edu_application"/>
+            <field name="name">canceled</field>
+            <field name="kind">stopall</field>
+            <field name="action">set_canceled()</field>
+        </record>
+
+        <!-- Application Transition -->
+
+        <record
+            id="trans_draft_confirmed"
+            model="workflow.transition">
+            <field
+                name="act_from"
+                ref="act_draft"/>
+            <field
+                name="act_to"
+                ref="act_confirmed"/>
+            <field name="signal">confirm</field>
+        </record>
+        <record
+            id="trans_confirmed_validated"
+            model="workflow.transition">
+            <field
+                name="act_from"
+                ref="act_confirmed"/>
+            <field
+                name="act_to"
+                ref="act_validated"/>
+            <field name="signal">validate</field>
+        </record>
+        <record
+            id="trans_validated_approved"
+            model="workflow.transition">
+            <field
+                name="act_from"
+                ref="act_validated"/>
+            <field
+                name="act_to"
+                ref="act_approved"/>
+            <field name="signal">approve</field>
+        </record>
+        <record
+            id="trans_approved_done"
+            model="workflow.transition">
+            <field
+                name="act_from"
+                ref="act_approved"/>
+            <field
+                name="act_to"
+                ref="act_done"/>
+            <field name="signal">subflow.approve</field>
+        </record>
+    </data>
+</openerp>

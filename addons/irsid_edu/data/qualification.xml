@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record
+            id="qual_62"
+            model="edu.qualification">
+            <field name="name">Бакалавр</field>
+            <field name="code">62</field>
+        </record>
+
+        <record
+            id="qual_65"
+            model="edu.qualification">
+            <field name="name">Специалист</field>
+            <field name="code">65</field>
+        </record>
+
+        <record
+            id="qual_68"
+            model="edu.qualification">
+            <field name="name">Магистр</field>
+            <field name="code">68</field>
+        </record>
+
+    </data>
+</openerp>

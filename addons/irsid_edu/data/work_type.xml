@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record
+            id="work_type_pr"
+            model="edu.work.type">
+            <field name="name">Практическое занятие</field>
+            <field name="code">ПР</field>
+            <field name="st_hours">2</field>
+            <field name="seance_hours">2</field>
+            <field name="emp_hours">2</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u10"/>
+            <field
+                name="ind_work"
+                eval="False"/>
+        </record>
+
+        <record
+            id="work_type_lb"
+            model="edu.work.type">
+            <field name="name">Лабораторное занятие</field>
+            <field name="code">ЛБ</field>
+            <field name="st_hours">2</field>
+            <field name="seance_hours">2</field>
+            <field name="emp_hours">2</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u10"/>
+            <field
+                name="ind_work"
+                eval="False"/>
+        </record>
+
+        <record
+            id="work_type_lk"
+            model="edu.work.type">
+            <field name="name">Лекционное занятие</field>
+            <field name="code">ЛК</field>
+            <field name="st_hours">2</field>
+            <field name="seance_hours">2</field>
+            <field name="emp_hours">2</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u1"/>
+            <field
+                name="ind_work"
+                eval="False"/>
+        </record>
+
+        <record
+            id="work_type_kr"
+            model="edu.work.type">
+            <field name="name">Курсовая работа</field>
+            <field name="code">КР</field>
+            <field name="st_hours">38</field>
+            <field name="seance_hours">2</field>
+            <field name="emp_hours">1</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u5"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_ref"
+            model="edu.work.type">
+            <field name="name">Реферат</field>
+            <field name="code">РЕФ</field>
+            <field name="st_hours">19</field>
+            <field name="seance_hours">1</field>
+            <field name="emp_hours">0.25</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u5"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_ref"
+            model="edu.work.type">
+            <field name="name">Статья(эссе)</field>
+            <field name="code">СТЭ</field>
+            <field name="st_hours">19</field>
+            <field name="seance_hours">1</field>
+            <field name="emp_hours">0.25</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u5"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_rgr"
+            model="edu.work.type">
+            <field name="name">Расчетно-графическая работа</field>
+            <field name="code">РГР</field>
+            <field name="st_hours">19</field>
+            <field name="seance_hours">1</field>
+            <field name="emp_hours">0.5</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u5"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_ktr"
+            model="edu.work.type">
+            <field name="name">Контрольная работа</field>
+            <field name="code">КТР</field>
+            <field name="st_hours">19</field>
+            <field name="seance_hours">1</field>
+            <field name="emp_hours">0.5</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u10"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_pass"
+            model="edu.work.type">
+            <field name="name">Зачёт</field>
+            <field name="code">ЗАЧ</field>
+            <field name="st_hours">38</field>
+            <field name="seance_hours">2</field>
+            <field name="emp_hours">0.25</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u2"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_exam"
+            model="edu.work.type">
+            <field name="name">Экзамен</field>
+            <field name="code">ЭКЗ</field>
+            <field name="st_hours">38</field>
+            <field name="seance_hours">2</field>
+            <field name="emp_hours">0.5</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u5"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_ie"
+            model="edu.work.type">
+            <field name="name">Итоговый (государственный) экзамен</field>
+            <field name="code">ИГЭ</field>
+            <field name="st_hours">108</field>
+            <field name="seance_hours">3</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u5"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+        <record
+            id="work_type_vkr"
+            model="edu.work.type">
+            <field name="name">Выпускная квалификационная работа</field>
+            <field name="code">ВКР</field>
+            <field name="st_hours">756</field>
+            <field name="seance_hours">21</field>
+            <field
+                name="gradetype_id"
+                ref="grade_type_u5"/>
+            <field
+                name="ind_work"
+                eval="True"/>
+        </record>
+
+    </data>
+</openerp>

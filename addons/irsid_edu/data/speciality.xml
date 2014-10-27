@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record
+            id="spec_210302_65"
+            model="edu.speciality">
+            <field name="name">Радиотехника</field>
+            <field name="code">210302.65</field>
+            <field
+                name="qualification_id"
+                ref="qual_65"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="True"/>
+        </record>
+
+        <record
+            id="spec_210400_62"
+            model="edu.speciality">
+            <field name="name">Радиотехника</field>
+            <field name="code">210400.62</field>
+            <field
+                name="qualification_id"
+                ref="qual_62"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="True"/>
+        </record>
+
+        <record
+            id="spec_080200_62"
+            model="edu.speciality">
+            <field name="name">Менеджмент</field>
+            <field name="code">080200.62</field>
+            <field
+                name="qualification_id"
+                ref="qual_62"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="True"/>
+        </record>
+
+        <record
+            id="spec_080502_65"
+            model="edu.speciality">
+            <field name="name">Экономика и управление на предприятии (по отраслям)</field>
+            <field name="code">080502.65</field>
+            <field
+                name="qualification_id"
+                ref="qual_65"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="True"/>
+        </record>
+
+        <record
+            id="spec_090302_65"
+            model="edu.speciality">
+            <field name="name">Информационная безопасность телекоммуникационных систем</field>
+            <field name="code">090302.65</field>
+            <field
+                name="qualification_id"
+                ref="qual_65"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="False"/>
+        </record>
+
+        <record
+            id="spec_200100_62"
+            model="edu.speciality">
+            <field name="name">Приборостроение</field>
+            <field name="code">200100.62</field>
+            <field
+                name="qualification_id"
+                ref="qual_62"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="True"/>
+        </record>
+
+        <record
+            id="spec_200102_65"
+            model="edu.speciality">
+            <field name="name">Приборы и методы контроля качества и диагностики</field>
+            <field name="code">200102.65</field>
+            <field
+                name="qualification_id"
+                ref="qual_65"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="True"/>
+        </record>
+
+        <record
+            id="spec_210601_65"
+            model="edu.speciality">
+            <field name="name">Радиоэлектронные системы и комплексы</field>
+            <field name="code">210601.65</field>
+            <field
+                name="qualification_id"
+                ref="qual_65"/>
+            <field
+                name="licensed"
+                eval="True"/>
+            <field
+                name="accredited"
+                eval="True"/>
+        </record>
+
+    </data>
+</openerp>

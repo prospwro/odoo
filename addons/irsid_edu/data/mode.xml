@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record
+            id="mode_1"
+            model="edu.mode">
+            <field name="name">Очная</field>
+            <field name="code">ОФ</field>
+        </record>
+
+        <record
+            id="mode_2"
+            model="edu.mode">
+            <field name="name">Очно-заочная</field>
+            <field name="code">ОЗФ</field>
+        </record>
+
+        <record
+            id="mode_3"
+            model="edu.mode">
+            <field name="name">Заочная</field>
+            <field name="code">ЗФ</field>
+        </record>
+
+    </data>
+</openerp>

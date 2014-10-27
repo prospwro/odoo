@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_statement_tree"
+            model="ir.ui.view">
+            <field name="name">edu.statement.tree</field>
+            <field name="model">edu.statement</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree string="Academic Statements">
+                    <field name="name"/>
+                    <field name="type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_statement_form"
+            model="ir.ui.view">
+            <field name="name">edu.statement.form</field>
+            <field name="model">edu.statement</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Academic Statement"
+                    version="7.0">
+                    <group>
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="app_intro_text"/>
+                        <field name="app_main_text"/>
+                        <field name="app_final_text"/>
+                        <field name="order_intro_text"/>
+                        <field name="order_main_text"/>
+                        <field name="order_final_text"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_statement"
+            model="ir.actions.act_window">
+            <field name="name">Statements</field>
+            <field name="res_model">edu.statement</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_statement"
+            action="action_edu_statement"
+            sequence="4"
+            parent="menu_edu_configuration_training"/>
+
+    </data>
+</openerp>

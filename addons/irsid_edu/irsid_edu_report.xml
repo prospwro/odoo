@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <report
+        id="report_edu_order"
+        string="Academic Order"
+        model="edu.order"
+        name="edu.order"
+        rml="irsid_edu/report/edu_order.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_order_line"
+        string="Academic Order Extract"
+        model="edu.order.line"
+        name="edu.order.line"
+        rml="irsid_edu/report/edu_order_line.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_work_order"
+        string="Work Order"
+        model="edu.work.order"
+        name="edu.work.order"
+        rml="irsid_edu/report/edu_work_order.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_application"
+        string="Application"
+        model="edu.application"
+        name="edu.application"
+        rml="irsid_edu/report/edu_application.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_schedule"
+        string="Academic Schedule"
+        model="edu.schedule"
+        name="edu.schedule"
+        rml="irsid_edu/report/edu_schedule.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_schedule_short"
+        string="Acadedmic Schedule (short)"
+        model="edu.schedule"
+        name="edu.schedule.short"
+        rml="irsid_edu/report/edu_schedule_short.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_plan"
+        string="Training Plan"
+        model="edu.plan"
+        name="edu.plan"
+        rml="irsid_edu/report/edu_plan.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_grade"
+        string="Grade Sheet"
+        model="edu.grade"
+        name="edu.grade"
+        rml="irsid_edu/report/edu_grade.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_pricelist"
+        string="Trainig Pricelist"
+        model="edu.pricelist"
+        name="edu.pricelist"
+        rml="irsid_edu/report/edu_pricelist.rml"
+        auto="False"
+    />
+    <report
+        id="report_edu_student_program_list"
+        string="Student Program (list)"
+        model="edu.student.program"
+        name="edu.student.program.list"
+        rml="irsid_edu/report/edu_student_program_list.rml"
+        auto="False"
+    />
+</data>
+</openerp>
