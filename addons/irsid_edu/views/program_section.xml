@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_program_section_tree"
+            model="ir.ui.view">
+            <field name="name">edu.program.section.tree</field>
+            <field name="model">edu.program.section</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Program Sections"
+                    version="7.0"
+                    editable="bottom">
+                    <field
+                        name="sequence"
+                        widget="handle"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_program_section"
+            model="ir.actions.act_window">
+            <field name="name">Program Sections</field>
+            <field name="res_model">edu.program.section</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_program_section"
+            action="action_edu_program_section"
+            sequence="4"
+            parent="menu_edu_configuration_programs"/>
+
+    </data>
+</openerp>

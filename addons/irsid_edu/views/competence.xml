@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_competence_tree"
+            model="ir.ui.view">
+            <field name="name">edu.competence.tree</field>
+            <field name="model">edu.competence</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree string="Competences">
+                    <field name="speciality_id"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="module_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_competence_form"
+            model="ir.ui.view">
+            <field name="name">edu.competence.form</field>
+            <field name="model">edu.competence</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Competence"
+                    version="7.0">
+                    <label
+                        for="code"
+                        class="oe_edit_only"/>
+                    <h1>
+                        <field
+                            name="code"
+                            readonly="1"/>
+                    </h1>
+                    <label
+                        for="name"
+                        class="oe_edit_only"/>
+                    <h2>
+                        <field name="name"/>
+                    </h2>
+                    <group>
+                        <field name="speciality_id"/>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Modules">
+                            <field name="module_ids"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_competence"
+            model="ir.actions.act_window">
+            <field name="name">Competences</field>
+            <field name="res_model">edu.competence</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_competence"
+            action="action_edu_competence"
+            sequence="3"
+            parent="menu_edu_configuration_programs"/>
+
+    </data>
+</openerp>

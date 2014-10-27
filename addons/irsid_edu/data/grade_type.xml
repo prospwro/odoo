@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record
+            id="grade_type_bo"
+            model="edu.grade.type">
+            <field name="name">Без оценки</field>
+            <field name="code">БО</field>
+            <field name="description">Уровни оценки не предусмотрены</field>
+        </record>
+
+        <record
+            id="grade_type_u1"
+            model="edu.grade.type">
+            <field name="name">Контроль посещаемости</field>
+            <field name="code">У1</field>
+            <field name="description">Применяется для видов работ, предусматривающих только контроль посещаемости</field>
+        </record>
+
+        <record
+            id="grade_type_u2"
+            model="edu.grade.type">
+            <field name="name">Двухуровневая система оценки</field>
+            <field name="code">У2</field>
+            <field name="description">Система оценки Зачтено|Не зачтено</field>
+        </record>
+
+        <record
+            id="grade_type_u5"
+            model="edu.grade.type">
+            <field name="name">Пятиуровневая система оценки</field>
+            <field name="code">У5</field>
+            <field name="description">Система оценки Отлично|Хорошо|Удовлетворительно|Неудовлетворительно|Неудовлетворительно без возможности пересдачи
+            </field>
+        </record>
+
+        <record
+            id="grade_type_u10"
+            model="edu.grade.type">
+            <field name="name">Десятиуровневая система оценки</field>
+            <field name="code">У10</field>
+            <field name="description">Оценка по десятибалльной шкале</field>
+        </record>
+
+    </data>
+</openerp>
