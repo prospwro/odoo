@@ -821,6 +821,7 @@ class product_product(osv.osv):
             price_type_currency_id = pricetype_obj.browse(cr,uid,price_type_id).currency_id.id
 
         res = {}
+        company_id = self.pool['res.users'].read(cr, uid, uid, ['company_id'], context=context)['company_id'][0]
         # standard_price field can only be seen by users in base.group_user
         # Thus, in order to compute the sale price from the cost price for users not in this group
         # We fetch the standard price as the superuser
@@ -828,7 +829,7 @@ class product_product(osv.osv):
             if ptype != 'standard_price':
                 res[product.id] = product[ptype] or 0.0
             else: 
-                res[product.id] = self.read(cr, SUPERUSER_ID, product.id, [ptype], context=context)[ptype] or 0.0
+                res[product.id] = self.read(cr, SUPERUSER_ID, product.id, [ptype], context=dict(context, force_company=company_id))[ptype] or 0.0
 
         product_uom_obj = self.pool.get('product.uom')
         for product in products:
@@ -876,6 +877,34 @@ class product_product(osv.osv):
                 'view_mode': 'form',
                 'res_id': product.product_tmpl_id.id,
                 'target': 'new'}
+
+    def _compute_uos_qty(self, cr, uid, ids, uom, qty, uos, context=None):
+        '''
+        Computes product's invoicing quantity in UoS from quantity in UoM.
+        Takes into account the
+        :param uom: Source unit
+        :param qty: Source quantity
+        :param uos: Target UoS unit.
+        '''
+        if not uom or not qty or not uos:
+            return qty
+        uom_obj = self.pool['product.uom']
+        product_id = ids[0] if isinstance(ids, (list, tuple)) else ids
+        product = self.browse(cr, uid, product_id, context=context)
+        if isinstance(uos, (int, long)):
+            uos = uom_obj.browse(cr, uid, uos, context=context)
+        if isinstance(uom, (int, long)):
+            uom = uom_obj.browse(cr, uid, uom, context=context)
+        if product.uos_id:  # Product has UoS defined
+            # We cannot convert directly between units even if the units are of the same category
+            # as we need to apply the conversion coefficient which is valid only between quantities
+            # in product's default UoM/UoS
+            qty_default_uom = uom_obj._compute_qty_obj(cr, uid, uom, qty, product.uom_id)  # qty in product's default UoM
+            qty_default_uos = qty_default_uom * product.uos_coeff
+            return uom_obj._compute_qty_obj(cr, uid, product.uos_id, qty_default_uos, uos)
+        else:
+            return uom_obj._compute_qty_obj(cr, uid, uom, qty, uos)
+
 
 
 class product_packaging(osv.osv):
