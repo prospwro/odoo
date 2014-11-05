@@ -469,6 +469,8 @@
     </div>
 </t>
 
+<div t-name="ActionManager" class="oe_application" />
+
 <div t-name="ViewManager" class="oe-view-manager">
     <div class="oe-view-manager-header container-fluid">
         <div class="row">
@@ -505,13 +507,9 @@
         </div>
     </div>
     <div class="oe-view-manager-content">
-        <div class="oe-view-manager-body">
-            <div class="oe-view-manager-views">
-                <t t-foreach="widget.views" t-as="view">
-                    <div t-attf-class="oe-view-manager-view-#{view}"/>
-                </t>
-            </div>
-        </div>
+        <t t-foreach="widget.views" t-as="view">
+            <div t-attf-class="oe-view-manager-view-#{view}"/>
+        </t>
     </div>
 </div>
 <t t-name="ViewManagerDebug">
@@ -570,7 +568,7 @@
         </table>
     </div>
 </t>
-<div t-name="ViewPager">
+<span t-name="ViewPager">
     <div class="oe_pager_value">
         <t t-raw="0"/>
     </div>
@@ -578,7 +576,7 @@
         <a class="fa fa-chevron-left btn btn-default oe-pager-button" type="button" data-pager-action="previous"></a>
         <a class="fa fa-chevron-right btn btn-default oe-pager-button" type="button" data-pager-action="next"></a>
     </div>
-</div>
+</span>
 
 <div t-name="Sidebar" class="oe_sidebar btn-group">
     <t t-foreach="widget.sections" t-as="section">
@@ -1483,21 +1481,12 @@
 
 <t t-name="AbstractFormPopup.render">
     <div>
-        <table style="width:100%">
-            <tr style="width:100%">
-                <td style="width:100%">
-                    <div class="oe-search-options btn-group"/>
-                    <div class="oe_popup_search"></div>
-                    <div class="oe_popup_list_pager"></div>
-                </td>
-            </tr>
-            <tr style="width:100%">
-                <td style="width:100%">
-                    <div class="oe_popup_list" style="width:100%"></div>
-                </td>
-            </tr>
-        </table>
-        <div class="oe_popup_form" style="width:100%"></div>
+        <div class="o-modal-header">
+            <div class="o-popup-search"/>
+            <div class="o-search-options oe-search-options"/>
+        </div>
+        <div class="oe_popup_list"/>
+        <div class="oe_popup_form"/>
     </div>
 </t>
 <t t-name="SelectCreatePopup.search.buttons">
@@ -1690,6 +1679,7 @@
 </div>
 <t t-name="SearchView.extended_search.proposition">
     <li class="oe-filter-condition">
+        <span class="o-or-filter">or</span>
         <span>
             <select class="searchview_extended_prop_field form-control">
                 <t t-foreach="widget.attrs.fields" t-as="field">
