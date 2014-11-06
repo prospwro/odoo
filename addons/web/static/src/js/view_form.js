@@ -2630,8 +2630,8 @@ instance.web.DateTimeWidget = instance.web.Widget.extend({
         var options = {
             pickTime: true,
             useSeconds: true,
-            startDate: new moment({ y: 1900 }),
-            endDate: new moment().add(200, "y"),
+            startDate: moment({ y: 1900 }),
+            endDate: moment().add(200, "y"),
             calendarWeeks: true,
             icons : {
                 time: 'fa fa-clock-o',
@@ -2640,13 +2640,13 @@ instance.web.DateTimeWidget = instance.web.Widget.extend({
                 down: 'fa fa-chevron-down'
                },
             language : moment.locale(),
-            format : instance.web.convert_to_moment_format(l10n.date_format +' '+ l10n.time_format),
+            format : instance.web.normalize_format(l10n.date_format +' '+ l10n.time_format),
         };
         this.$input = this.$el.find('input.oe_datepicker_master');
         if (this.type_of_date === 'date') {
             options['pickTime'] = false;
             options['useSeconds'] = false;
-            options['format'] = instance.web.convert_to_moment_format(l10n.date_format);
+            options['format'] = instance.web.normalize_format(l10n.date_format);
         }
         this.picker = this.$('.oe_datepicker_main').datetimepicker(options);
         this.set_readonly(false);
@@ -2690,7 +2690,7 @@ instance.web.DateTimeWidget = instance.web.Widget.extend({
         //when opening datetimepicker the date and time by default should be the one from
         //the input field if any or the current day otherwise
         if (this.type_of_date === 'datetime') {
-            value = new moment().second(0);
+            value = moment().second(0);
             if (this.$input.val().length !== 0 && this.is_valid_()){
                 var value = this.$input.val();
             }
@@ -4339,28 +4339,25 @@ instance.web.form.One2ManyListView = instance.web.ListView.extend({
         this.o2m.trigger_on_change();
     },
     is_valid: function () {
-        var editor = this.editor;
-        var form = editor.form;
-        // If no edition is pending, the listview can not be invalid (?)
-        if (!editor.record) {
-            return true;
-        }
-        // If the form has not been modified, the view can only be valid
-        // NB: is_dirty will also be set on defaults/onchanges/whatever?
-        // oe_form_dirty seems to only be set on actual user actions
-        if (!form.$el.is('.oe_form_dirty')) {
+        var self = this;
+        if (!this.fields_view || !this.editable()){
             return true;
         }
         this.o2m._dirty_flag = true;
-
-        // Otherwise validate internal form
-        return _(form.fields).chain()
-            .invoke(function () {
-                this._check_css_flags();
-                return this.is_valid();
-            })
-            .all(_.identity)
-            .value();
+        var r;
+        return _.every(this.records.records, function(record){
+            r = record;
+            _.each(self.editor.form.fields, function(field){
+                field._inhibit_on_change_flag = true;
+                field.set_value(r.attributes[field.name]);
+                field._inhibit_on_change_flag = false;
+            });
+            return _.every(self.editor.form.fields, function(field){
+                field.process_modifiers();
+                field._check_css_flags();
+                return field.is_valid();
+            });
+        });
     },
     do_add_record: function () {
         if (this.editable()) {
