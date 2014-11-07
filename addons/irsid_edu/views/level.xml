@@ -3,15 +3,15 @@
     <data>
 
         <record
-            id="view_edu_qualification_tree"
+            id="view_edu_level_tree"
             model="ir.ui.view">
-            <field name="name">edu.qualification.tree</field>
-            <field name="model">edu.qualification</field>
+            <field name="name">edu.level.tree</field>
+            <field name="model">edu.level</field>
             <field
                 name="arch"
                 type="xml">
                 <tree
-                    string="Qualifications"
+                    string="Levels"
                     version="7.0"
                     editable="bottom">
                     <field name="code"/>
@@ -21,15 +21,15 @@
         </record>
 
         <record
-            id="view_edu_qualification_form"
+            id="view_edu_level_form"
             model="ir.ui.view">
-            <field name="name">edu.qualification.form</field>
-            <field name="model">edu.qualification</field>
+            <field name="name">edu.level.form</field>
+            <field name="model">edu.level</field>
             <field
                 name="arch"
                 type="xml">
                 <form
-                    string="Qualification"
+                    string="Level"
                     version="7.0">
                     <sheet>
                         <group>
@@ -42,16 +42,16 @@
         </record>
 
         <record
-            id="action_edu_qualification"
+            id="action_edu_level"
             model="ir.actions.act_window">
-            <field name="name">Qualifications</field>
-            <field name="res_model">edu.qualification</field>
+            <field name="name">Levels</field>
+            <field name="res_model">edu.level</field>
             <field name="view_mode">tree,form</field>
         </record>
 
         <menuitem
-            id="menu_edu_qualification"
-            action="action_edu_qualification"
+            id="menu_edu_level"
+            action="action_edu_level"
             sequence="2"
             parent="menu_edu_configuration_programs"/>
 

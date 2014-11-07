@@ -20,26 +20,25 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_year(osv.Model):
+class edu_year(models.Model):
     _name = "edu.year"
     _description = "Academic Year"
 # Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 32,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 32,
-        ),
-        'date_start': fields.date(
-            'Start Date',
-        ),
-        'date_stop': fields.date(
-            'End Date',
-        ),
-    }
+    name = fields.Char(
+        string = 'Name',
+        required = True,
+    )
+    code = fields.Char(
+        string = 'Code',
+        required = True,
+    )
+    date_start = fields.Date(
+        string = 'Start Date',
+        index = True,
+    )
+    date_stop = fields.Date(
+        string = 'Stop Date',
+        index = True,
+    )

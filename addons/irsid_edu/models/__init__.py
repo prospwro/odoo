@@ -49,7 +49,7 @@ import pricelist_line
 import program
 import program_section
 import program_subsection
-import qualification
+import level
 import record
 import record_line
 import schedule

@@ -13,7 +13,7 @@
                 <tree string="Specialities">
                     <field name="code"/>
                     <field name="name"/>
-                    <field name="qualification_id"/>
+                    <field name="level"/>
                     <field name="rank"/>
                     <field name="licensed"/>
                     <field name="accredited"/>
@@ -46,17 +46,14 @@
                             <field name="name"/>
                         </h2>
                         <group>
-                            <field name="qualification_id"/>
+                            <field name="level"/>
                             <field name="rank"/>
                             <field name="licensed"/>
                             <field name="accredited"/>
                         </group>
                         <notebook>
-                            <page string="Characterization">
-                                <field name="description"/>
-                            </page>
                             <page string="Competences">
-                                <field name="competence_ids">
+                                <field name="competences">
                                     <form
                                         string="Competence"
                                         version="7.0">
@@ -73,7 +70,7 @@
                             </page>
                             <page string="Education Programs">
                                 <field
-                                    name="program_ids"
+                                    name="programs"
                                     readonly="1">
                                     <tree string="Education Programs">
                                         <field name="code"/>

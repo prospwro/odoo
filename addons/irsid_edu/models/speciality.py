@@ -26,7 +26,8 @@ class edu_speciality(models.Model):
     """ Speciality """
     _name = 'edu.speciality'
     _description = 'Speciality'
-# Naming Functions
+    _order = 'code asc'
+    # Naming Functions
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):
             return []
@@ -44,54 +45,35 @@ class edu_speciality(models.Model):
         string = 'Code',
         required = True,
     )
-    qualification = fields.Many2one(
-        'edu.qualification',
+    qualification = fields.Char(
         string = 'Qualification',
+        required = True,
     )
-    _columns={
-        'name': fields.char(
-            'Name',
-            size = 64,
-            required = True,
-            ),
-        'code': fields.char(
-            'Code',
-            size = 16,
-            required = True,
-            ),
-        'qualification_id': fields.many2one(
-            'edu.qualification',
-            'Qualification',
-            ),
-        'rank': fields.char(
-            'Special Rank',
-            size = 64,
-            ),
-        'licensed': fields.boolean(
-            'Licensed',
-            ),
-        'accredited': fields.boolean(
-            'Accredited',
-            ),
-        'description': fields.text(
-            'Characterization',
-            ),
-        'program_ids': fields.one2many(
-            'edu.program',
-            'speciality_id',
-            'Education Programs',
-            ),
-        'competence_ids':fields.one2many(
-            'edu.competence',
-            'speciality_id',
-            'Competences',
-            ),
-       }
-# Default Values
-    _defaults = {
-        'licensed': True,
-        'accredited': True,
-        }
-# Sorting Order
-    _order = 'code asc'
-
+    rank = fields.Char(
+        string = 'Special Rank',
+        required = True,
+    )
+    level = fields.Many2one(
+        'edu.level',
+        string = 'Level',
+    )
+    level_pre = fields.Many2one(
+        'edu.level',
+        string = 'Prerequisite Level',
+    )
+    programs = fields.One2many(
+        'edu.program',
+        'speciality_id',
+        string = 'Programs',
+    )
+    competences = fields.One2many(
+        'edu.competence',
+        'speciality_id',
+        string = 'Competences',
+    )
+    licensed = fields.Boolean(
+        string = 'Licensed',
+    )
+    accredited = fields.Boolean(
+        string = 'Accredited',
+    )

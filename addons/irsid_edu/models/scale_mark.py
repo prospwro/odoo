@@ -20,31 +20,26 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_qualification(osv.Model):
-    _name = 'edu.qualification'
-    _description = 'Qualification'
-# Naming Functions
-    def name_get(self, cr, uid, ids, context=None):
-        if not len(ids):
-            return []
-        records = self.read(cr, uid, ids, ['name','code'], context=context)
-        result = []
-        for r in records:
-            result.append((r['id'], r['code'] + ': ' + r['name']))
-        return result
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name', size = 32,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 4,
-            required = True,
-        ),
-    }
-# Sorting Order
-    _order = 'code asc'
+class edu_scale_mark(models.Model):
+    _name = 'edu.scale.mark'
+    _description = 'Mark'
+    _order = 'scale,value'
+    # Fields
+    name = fields.Char(
+        string = 'Name',
+        required = True,
+    )
+    code = fields.Char(
+        string = 'Code',
+        required = True,
+    )
+    value = fields.Boolean(
+        string = 'Value',
+        required = True,
+    )
+    scale = fields.Many2one(
+        'edu.scale',
+        string = 'Scale',
+    )

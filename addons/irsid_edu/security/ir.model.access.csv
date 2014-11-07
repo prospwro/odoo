@@ -1,8 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_edu_speciality_teacher,edu.speciality.teacher,model_edu_speciality,irsid_edu.group_edu_teacher,1,0,0,0
 access_edu_speciality_rector,edu.speciality.rector,model_edu_speciality,irsid_edu.group_edu_rector,1,1,1,1
-access_edu_qualification_teacher,edu.qualification.teacher,model_edu_qualification,irsid_edu.group_edu_teacher,1,0,0,0
-access_edu_qualification_rector,edu.qualification.rector,model_edu_qualification,irsid_edu.group_edu_rector,1,1,1,1
+access_edu_level_teacher,edu.level.teacher,model_edu_level,irsid_edu.group_edu_teacher,1,0,0,0
+access_edu_level_rector,edu.level.rector,model_edu_level,irsid_edu.group_edu_rector,1,1,1,1
 access_edu_mode_teacher,edu.mode.teacher,model_edu_mode,irsid_edu.group_edu_teacher,1,0,0,0
 access_edu_mode_rector,edu.mode.rector,model_edu_mode,irsid_edu.group_edu_rector,1,1,1,1
 access_edu_program_section_teacher,edu.program.section.teacher,model_edu_program_section,irsid_edu.group_edu_teacher,1,0,0,0
@@ -75,7 +75,7 @@ access_edu_pricelist_line_user,edu.pricelist.line.user,model_edu_pricelist_line,
 access_edu_pricelist_employee,edu.pricelist.employee,model_edu_pricelist,irsid_edu.group_edu_employee,1,1,1,1
 access_edu_pricelist_line_employee,edu.pricelist.line.employee,model_edu_pricelist_line,irsid_edu.group_edu_employee,1,1,1,1
 access_edu_speciality_portal,edu.speciality.portal,model_edu_speciality,base.group_portal,1,0,0,0
-access_edu_qualification_portal,edu.qualification.portal,model_edu_qualification,base.group_portal,1,0,0,0
+access_edu_level_portal,edu.level.portal,model_edu_level,base.group_portal,1,0,0,0
 access_edu_mode_portal,edu.mode.portal,model_edu_mode,base.group_portal,1,0,0,0
 access_edu_program_section_portal,edu.program.section.portal,model_edu_program_section,base.group_portal,1,0,0,0
 access_edu_program_subsection_portal,edu.program.subsection.portal,model_edu_program_subsection,base.group_portal,1,0,0,0

@@ -20,44 +20,24 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_work_type(osv.Model):
+class edu_work_type(models.Model):
     _name = 'edu.work.type'
     _description = 'Work Type'
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 64,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 16,
-            required = True,
-        ),
-#       Часов работы обучающегося
-        'st_hours': fields.float(
-            'Student Hours',
-            required = True,
-        ),
-#       Часов совместной работы обучающегося и преподавателя
-        'seance_hours': fields.float(
-            'Seance Hours',
-            required = True,
-        ),
-#       Часов работы преподавателя
-        'emp_hours': fields.float(
-            'Employee Hours',
-        ),
-        'ind_work': fields.boolean(
-            'Individual Work',
-        ),
-        'gradetype_id': fields.many2one(
-            'edu.grade.type',
-            'Grade Type',
-        ),
-    }
-# Sorting Order
-    _order = 'name'
+    # Fields
+    name = fields.Char(
+        string = 'Name',
+        required = True,
+    )
+    code = fields.Char(
+        string = 'Code',
+        required = True,
+    )
+    ind_work = fields.Boolean(
+        string = 'Individual Work',
+    )
+    scale = fields.Many2one(
+        'edu.scale',
+        string = 'Rating Scale',
+    )

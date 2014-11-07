@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record
+            id="level_do"
+            model="edu.level">
+            <field name="name">Дошкольное образование</field>
+            <field name="code">ДО</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record
+            id="level_noo"
+            model="edu.level">
+            <field name="name">Начальное общее образование</field>
+            <field name="code">НОО</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <record
+            id="level_ooo"
+            model="edu.level">
+            <field name="name">Основное общее образование</field>
+            <field name="code">ООО</field>
+            <field name="sequence">3</field>
+        </record>
+
+        <record
+            id="level_soo"
+            model="edu.level">
+            <field name="name">Среднее общее образование</field>
+            <field name="code">СОО</field>
+            <field name="sequence">4</field>
+        </record>
+
+        <record
+            id="level_spo"
+            model="edu.level">
+            <field name="name">Среднее профессиональное образование</field>
+            <field name="code">СПО</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record
+            id="level_vob"
+            model="edu.level">
+            <field name="name">Высшее образование - бакалавриат</field>
+            <field name="code">ВОБ</field>
+            <field name="sequence">6</field>
+        </record>
+
+        <record
+            id="level_vosm"
+            model="edu.level">
+            <field name="name">Высшее образование - специалитет, магистратура</field>
+            <field name="code">ВОСМ</field>
+            <field name="sequence">7</field>
+        </record>
+
+        <record
+            id="level_vopkvk"
+            model="edu.level">
+            <field name="name">Высшее образование - подготовка кадров высшей квалификации</field>
+            <field name="code">ВОПКВК</field>
+            <field name="sequence">8</field>
+        </record>
+
+    </data>
+</openerp>

@@ -20,32 +20,31 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_grade_mark(osv.Model):
-    _name = 'edu.grade.mark'
-    _description = 'Grade Mark'
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 128,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 16,
-            required = True,
-        ),
-        'type_id': fields.many2one(
-            'edu.grade.type',
-            'Type',
-            required = True,
-        ),
-        'value': fields.float(
-            'Value',
-            required = True,
-        ),
-    }
-# Sorting Order
-    _order = 'type_id,value'
+class edu_level(models.Model):
+    _name = 'edu.level'
+    _description = 'Education Level'
+    _order = 'sequence asc'
+    # Naming Functions
+    def name_get(self, cr, uid, ids, context=None):
+        if not len(ids):
+            return []
+        records = self.read(cr, uid, ids, ['name','code'], context=context)
+        result = []
+        for r in records:
+            result.append((r['id'], r['code'] + ': ' + r['name']))
+        return result
+    # Fields
+    name = fields.Char(
+        string = 'Name',
+        required = True,
+    )
+    code = fields.Char(
+        string = 'Code',
+        required = True,
+    )
+    sequence = fields.Integer(
+        string = "Sequence",
+        default = 1,
+    )

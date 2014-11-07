@@ -20,24 +20,37 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_grade_type(osv.Model):
-    _name = 'edu.grade.type'
-    _description = 'Grade Type'
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 64,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 16,
-            required = True,
-        ),
-        'description': fields.text(
-            'Description',
-        ),
-    }
+class edu_scale(models.Model):
+    _name = 'edu.scale'
+    _description = 'Rating Scale'
+    # Fields
+    name = fields.Char(
+        string = 'Name',
+        required = True,
+    )
+    code = fields.Char(
+        string = 'Code',
+        required = True,
+    )
+    description = fields.Text(
+        string = 'Description'
+    )
+    type = fields.Selection(
+        [
+            ('continuous','Continuous Scale'),
+            ('discrete','Discrete Scale'),
+        ],
+        string = 'Scale Type',
+    )
+    values = fields.Many2one(
+        'edu.scale.mark',
+        string = 'Marks',
+    )
+    min_value = fields.Float(
+        string = 'Minimal Value'
+    )
+    max_value = fields.Float(
+        string = 'Maximal Value'
+    )
