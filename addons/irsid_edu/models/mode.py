@@ -20,21 +20,18 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_mode(osv.Model):
+class edu_mode(models.Model):
+    """ Mode of Study """
     _name = 'edu.mode'
     _description = 'Mode of Study'
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 64,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 8,
-            required = True,
-        ),
-    }
+    # Fields
+    name = fields.Char(
+        string='Name',
+        required=True,
+    )
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )

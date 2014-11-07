@@ -20,9 +20,10 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_speciality(osv.Model):
+class edu_speciality(models.Model):
+    """ Speciality """
     _name = 'edu.speciality'
     _description = 'Speciality'
 # Naming Functions
@@ -34,7 +35,19 @@ class edu_speciality(osv.Model):
         for r in records:
             result.append((r['id'], r['code'] + ': ' + r['name']))
         return result
-# Fields
+    # Fields
+    name = fields.Char(
+        string = 'Name',
+        required = True,
+    )
+    code = fields.Char(
+        string = 'Code',
+        required = True,
+    )
+    qualification = fields.Many2one(
+        'edu.qualification',
+        string = 'Qualification',
+    )
     _columns={
         'name': fields.char(
             'Name',

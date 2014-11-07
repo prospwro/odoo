@@ -20,32 +20,31 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_location(osv.Model):
+class edu_location(models.Model):
+    """ Training Location"""
     _name = "edu.location"
     _description = "Training Location"
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 64,
-        ),
-        'address_id': fields.many2one(
-            'res.partner',
-            'Address',
-        ),
-        'parent_id': fields.many2one(
-            'edu.location',
-            'Parent Location',
-        ),
-        'seats': fields.float(
-            'Seats',
-        ),
-        'area': fields.float(
-            'Area',
-        ),
-        'beamer': fields.boolean(
-            'Has Beamer?',
-        ),
-    }
+    # Fields
+    name = fields.Char(
+        string='Name',
+        required=True,
+    )
+    address_id = fields.Many2one(
+        'res.partner',
+        string = 'Address',
+    )
+    parent_id = fields.Many2one(
+        'edu.location',
+        string = 'Parent Location',
+    )
+    seats = fields.Integer(
+        string = 'Seats',
+    )
+    area = fields.Float(
+        string = 'Area',
+    )
+    beamer = fields.Boolean(
+        string = 'Has Beamer?',
+    )
