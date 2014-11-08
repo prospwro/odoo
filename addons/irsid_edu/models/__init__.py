@@ -19,20 +19,10 @@
 #
 ##############################################################################
 
-import admission
-import admission_line
-import admission_target
-import application
-import application_line
 import competence
 import core
-import grade
-import grade_line
-import grade_mark
-import grade_type
-import group
-import journal
-import location
+import scale
+import scale_mark
 import mode
 import module
 import module_record
@@ -40,30 +30,14 @@ import module_seance
 import module_section
 import module_task
 import module_work
-import order
-import order_line
 import period
 import plan
-import pricelist
-import pricelist_line
 import program
 import program_section
 import program_subsection
 import level
-import record
-import record_line
-import schedule
-import schedule_line
-import seance
 import speciality
 import stage
-import statement
-import student
-import student_program
 import time
 import time_category
-import work
-import work_order
 import work_type
-import year
-

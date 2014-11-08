@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_stage_tree"
+            model="ir.ui.view">
+            <field name="name">edu.stage.tree</field>
+            <field name="model">edu.stage</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree string="Stages">
+                    <field
+                        name="sequence"
+                        widget="handle"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="case_default"/>
+                    <field name="fold"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_stage_form"
+            model="ir.ui.view">
+            <field name="name">edu.stage.form</field>
+            <field name="model">edu.stage</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Stage"
+                    version="7.0">
+                    <group>
+                        <field name="sequence"/>
+                        <field name="name"/>
+                        <field name="case_default"/>
+                        <field name="fold"/>
+                        <field name="state"/>
+                        <field name="description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_stage"
+            model="ir.actions.act_window">
+            <field name="name">Stages</field>
+            <field name="res_model">edu.stage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_stage"
+            action="action_edu_stage"
+            sequence="3"
+            parent="menu_edu_configuration_training"/>
+
+    </data>
+</openerp>

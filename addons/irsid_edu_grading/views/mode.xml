@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_mode_tree"
+            model="ir.ui.view">
+            <field name="name">edu.mode.tree</field>
+            <field name="model">edu.mode</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Modes of Study"
+                    version="7.0"
+                    editable="bottom">
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_mode"
+            model="ir.actions.act_window">
+            <field name="name">Modes of Study</field>
+            <field name="res_model">edu.mode</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_mode"
+            action="action_edu_mode"
+            sequence="3"
+            parent="menu_edu_configuration_programs"/>
+
+    </data>
+</openerp>

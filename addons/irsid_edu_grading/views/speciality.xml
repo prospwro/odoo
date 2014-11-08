@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_speciality_tree"
+            model="ir.ui.view">
+            <field name="name">edu.speciality.tree</field>
+            <field name="model">edu.speciality</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree string="Specialities">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="level"/>
+                    <field name="rank"/>
+                    <field name="licensed"/>
+                    <field name="accredited"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_speciality_form"
+            model="ir.ui.view">
+            <field name="name">edu.speciality.form</field>
+            <field name="model">edu.speciality</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Speciality"
+                    version="7.0">
+                    <sheet>
+                        <label
+                            for="code"
+                            class="oe_edit_only"/>
+                        <h1>
+                            <field name="code"/>
+                        </h1>
+                        <label
+                            for="name"
+                            class="oe_edit_only"/>
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                        <group>
+                            <field name="level"/>
+                            <field name="rank"/>
+                            <field name="licensed"/>
+                            <field name="accredited"/>
+                        </group>
+                        <notebook>
+                            <page string="Competences">
+                                <field name="competences">
+                                    <form
+                                        string="Competence"
+                                        version="7.0">
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="description"/>
+                                        </group>
+                                    </form>
+                                    <tree string="Competences">
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Education Programs">
+                                <field
+                                    name="programs"
+                                    readonly="1">
+                                    <tree string="Education Programs">
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="mode_id"/>
+                                        <field name="rprog"/>
+                                        <field name="eprog"/>
+                                        <field name="elearning"/>
+                                        <field name="date_approved"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_speciality"
+            model="ir.actions.act_window">
+            <field name="name">Specialities</field>
+            <field name="res_model">edu.speciality</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_edu_speciality"
+            action="action_edu_speciality"
+            sequence="1"
+            parent="menu_edu_configuration_programs"/>
+
+    </data>
+</openerp>

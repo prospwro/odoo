@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="1">
+
+<!-- Sequences for edu.application -->
+
+<record id="seq_type_edu_application" model="ir.sequence.type">
+    <field name="name">Академические заявления</field>
+    <field name="code">edu.application</field>
+</record>
+
+<record id="seq_edu_application" model="ir.sequence">
+    <field name="name">Академическое заявление</field>
+    <field name="code">edu.application</field>
+    <field name="prefix">АкЗаяв</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.order -->
+
+<record id="seq_type_edu_order" model="ir.sequence.type">
+    <field name="name">Академические приказы</field>
+    <field name="code">edu.order</field>
+</record>
+
+<record id="seq_edu_order" model="ir.sequence">
+    <field name="name">Академический приказ</field>
+    <field name="code">edu.order</field>
+    <field name="prefix">АкПр</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.work.order -->
+
+<record id="seq_type_edu_work_order" model="ir.sequence.type">
+    <field name="name">Академические заказы</field>
+    <field name="code">edu.work.order</field>
+</record>
+
+<record id="seq_edu_work_order" model="ir.sequence">
+    <field name="name">Академический заказ</field>
+    <field name="code">edu.work.order</field>
+    <field name="prefix">АкЗак</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.module -->
+
+<record id="seq_type_edu_module" model="ir.sequence.type">
+    <field name="name">Учебные модули</field>
+    <field name="code">edu.module</field>
+</record>
+
+<record id="seq_edu_module" model="ir.sequence">
+    <field name="name">Учебный модуль</field>
+    <field name="code">edu.module</field>
+    <field name="prefix">УчМ</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.student.program -->
+
+<record id="seq_type_edu_student_program" model="ir.sequence.type">
+    <field name="name">Программы обучающихся</field>
+    <field name="code">edu.student.program</field>
+</record>
+
+<record id="seq_edu_student_program" model="ir.sequence">
+    <field name="name">Программа обучающегося</field>
+    <field name="code">edu.student.program</field>
+    <field name="prefix">ПрОб</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.plan -->
+
+<record id="seq_type_edu_plan" model="ir.sequence.type">
+    <field name="name">Учебные планы</field>
+    <field name="code">edu.plan</field>
+</record>
+
+<record id="seq_edu_plan" model="ir.sequence">
+    <field name="name">Учебный план</field>
+    <field name="code">edu.plan</field>
+    <field name="prefix">УчПл</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.program -->
+
+<record id="seq_type_edu_program" model="ir.sequence.type">
+    <field name="name">Образовательные программы</field>
+    <field name="code">edu.program</field>
+</record>
+
+<record id="seq_edu_program" model="ir.sequence">
+    <field name="name">Образовательная программа</field>
+    <field name="code">edu.program</field>
+    <field name="prefix">ОП</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.schedule -->
+
+<record id="seq_type_edu_schedule" model="ir.sequence.type">
+    <field name="name">Учебные графики</field>
+    <field name="code">edu.schedule</field>
+</record>
+
+<record id="seq_edu_schedule" model="ir.sequence">
+    <field name="name">Учебный график</field>
+    <field name="code">edu.schedule</field>
+    <field name="prefix">УчГр</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.record -->
+
+<record id="seq_type_edu_record" model="ir.sequence.type">
+    <field name="name">Ведомости аттестации</field>
+    <field name="code">edu.record</field>
+</record>
+
+<record id="seq_edu_record" model="ir.sequence">
+    <field name="name">Ведомость аттестации</field>
+    <field name="code">edu.record</field>
+    <field name="prefix">ВдАт</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.grade -->
+
+<record id="seq_type_edu_grade" model="ir.sequence.type">
+    <field name="name">Ведомости успеваемости</field>
+    <field name="code">edu.grade</field>
+</record>
+
+<record id="seq_edu_grade" model="ir.sequence">
+    <field name="name">Ведомость успеваемости</field>
+    <field name="code">edu.grade</field>
+    <field name="prefix">ВдУсп</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.admission -->
+
+<record id="seq_type_edu_admission" model="ir.sequence.type">
+    <field name="name">Планы приема</field>
+    <field name="code">edu.admission</field>
+</record>
+
+<record id="seq_edu_admission" model="ir.sequence">
+    <field name="name">План приема</field>
+    <field name="code">edu.admission</field>
+    <field name="prefix">ПлПр</field>
+    <field name="padding">3</field>
+</record>
+
+<!-- Sequences for edu.pricelist -->
+
+<record id="seq_type_edu_pricelist" model="ir.sequence.type">
+    <field name="name">Прейскуранты на обучение</field>
+    <field name="code">edu.pricelist</field>
+</record>
+
+<record id="seq_edu_pricelist" model="ir.sequence">
+    <field name="name">Прейскурант на обучение</field>
+    <field name="code">edu.pricelist</field>
+    <field name="prefix">ПЦ</field>
+    <field name="padding">3</field>
+</record>
+
+</data>
+</openerp>

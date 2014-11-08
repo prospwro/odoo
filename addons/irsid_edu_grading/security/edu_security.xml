@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    
+    <data noupdate="0">
+        
+        <!-- Module Category -->
+        
+        <record model="ir.module.category" id="module_category_education_management">
+            <field name="name">Education Management</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- Groups for Education Management -->
+        
+        <record id="group_edu_teacher" model="res.groups">
+            <field name="name">Teacher</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_education_management"/>
+        </record>
+        
+        <record id="group_edu_employee" model="res.groups">
+            <field name="name">Employee</field>
+            <field name="category_id" ref="module_category_education_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_edu_teacher'))]"/>
+        </record>
+        
+        <record id="group_edu_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_education_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_edu_employee'))]"/>
+        </record>
+        
+        <record id="group_edu_prorector" model="res.groups">
+            <field name="name">Prorector</field>
+            <field name="category_id" ref="module_category_education_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_edu_manager'))]"/>
+        </record>
+        
+        <record id="group_edu_rector" model="res.groups">
+            <field name="name">Rector</field>
+            <field name="category_id" ref="module_category_education_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_edu_prorector'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+        
+        <!-- Training Module: rules -->
+        
+        <record id="edu_module_teacher_rule" model="ir.rule">
+            <field name="name">Учебные модули преподавателя</field>
+            <field name="model_id" ref="model_edu_module"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_edu_teacher'))]"/>
+        </record>
+        
+        <record id="edu_module_employee_rule" model="ir.rule">
+            <field name="name">Все учебные модули</field>
+            <field name="model_id" ref="model_edu_module"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('group_edu_employee'))]"/>
+        </record>
+        
+        <!-- Seance: rules -->
+        
+        <record id="edu_seance_teacher_rule" model="ir.rule">
+            <field name="name">Занятия преподавателя</field>
+            <field name="model_id" ref="model_edu_seance"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_edu_teacher'))]"/>
+        </record>
+        
+        <record id="edu_seance_employee_rule" model="ir.rule">
+            <field name="name">Все занятия</field>
+            <field name="model_id" ref="model_edu_seance"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('group_edu_employee'))]"/>
+        </record>
+        
+        <record id="edu_seance_personal_rule" model="ir.rule">
+            <field name="name">Занятия обучающегося</field>
+            <field name="model_id" ref="model_edu_seance"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('st_program_ids.student_id','in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <!-- Partner: rules <record id="edu_partner_user_rule" model="ir.rule"> <field name="name">Менеджер
+            партнёров</field> <field name="model_id" ref="model_res_partner"/> <field
+            name="perm_read" eval="True"/> <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/> <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('user_id','=', user.id)]</field> <field name="groups"
+            eval="[(4, ref('base.group_portal'))]"/> </record> <record id="edu_partner_personal_rule"
+            model="ir.rule"> <field name="name">Партнёр пользователя</field> <field
+            name="model_id" ref="model_res_partner"/> <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/> <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/> <field name="domain_force">[('user_ids','in',
+            [user.id])]</field> <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            </record> -->
+        <!-- Application: rules -->
+        
+        <record id="edu_application_author_rule" model="ir.rule">
+            <field name="name">Автор заявления</field>
+            <field name="model_id" ref="model_edu_application"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('author_id','=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_application_line_author_rule" model="ir.rule">
+            <field name="name">Автор строк заявления</field>
+            <field name="model_id" ref="model_edu_application_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('application_id.author_id','=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <!-- Student Program: rules -->
+        
+        <record id="edu_student_program_student_follower_rule" model="ir.rule">
+            <field name="name">Программы обучающегося через подписку</field>
+            <field name="model_id" ref="model_edu_student_program"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('student_id.message_follower_ids','in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_student_program_personal_rule" model="ir.rule">
+            <field name="name">Образовательные программы обучающегося</field>
+            <field name="model_id" ref="model_edu_student_program"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('student_id','=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <!-- Order: rules -->
+        
+        <record id="edu_order_student_follower_rule" model="ir.rule">
+            <field name="name">Приказы через подписку</field>
+            <field name="model_id" ref="model_edu_order"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('line_ids.student_id.message_follower_ids','in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_order_personal_rule" model="ir.rule">
+            <field name="name">Приказы по обучающемуся</field>
+            <field name="model_id" ref="model_edu_order"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('line_ids.student_id','in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <!-- Record: rules -->
+        
+        <record id="edu_record_follower_rule" model="ir.rule">
+            <field name="name">Ведомость аттестации: Подписка</field>
+            <field name="model_id" ref="model_edu_record"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">
+                [('line_ids.st_program_id.student_id.message_follower_ids','in', [user.partner_id.id])]
+            </field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_record_personal_rule" model="ir.rule">
+            <field name="name">Ведомость аттестации: Обучающийся</field>
+            <field name="model_id" ref="model_edu_record"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('line_ids.st_program_id.student_id','=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_record_teacher_rule" model="ir.rule">
+            <field name="name">Ведомость аттестации: Преподаватель</field>
+            <field name="model_id" ref="model_edu_record"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_edu_teacher'))]"/>
+        </record>
+        
+        <record id="edu_record_employee_rule" model="ir.rule">
+            <field name="name">Ведомость аттестации: Сотрудник</field>
+            <field name="model_id" ref="model_edu_record"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('group_edu_employee'))]"/>
+        </record>
+        
+        <!-- Record Line: rules -->
+        
+        <record id="edu_record_line_follower_rule" model="ir.rule">
+            <field name="name">Позиция ведомости аттестации: Подписка</field>
+            <field name="model_id" ref="model_edu_record_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('st_program_id.student_id.message_follower_ids','in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_record_line_personal_rule" model="ir.rule">
+            <field name="name">Позиция ведомости аттестации: Обучающийся</field>
+            <field name="model_id" ref="model_edu_record_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('st_program_id.student_id','=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_record_line_teacher_rule" model="ir.rule">
+            <field name="name">Позиция ведомости аттестации: преподаватель</field>
+            <field name="model_id" ref="model_edu_record_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('record_id.employee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_edu_teacher'))]"/>
+        </record>
+        
+        <record id="edu_record_line_employee_rule" model="ir.rule">
+            <field name="name">Позиция ведомости аттестации: Сотрудник</field>
+            <field name="model_id" ref="model_edu_record_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('group_edu_employee'))]"/>
+        </record>
+        
+        <!-- Grade: rules -->
+        
+        <record id="edu_grade_follower_rule" model="ir.rule">
+            <field name="name">Ведомость успеваемости: Подписка</field>
+            <field name="model_id" ref="model_edu_grade"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">
+                [('line_ids.st_program_id.student_id.message_follower_ids','in', [user.partner_id.id])]
+            </field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_grade_personal_rule" model="ir.rule">
+            <field name="name">Ведомость успеваемости: обучающийся</field>
+            <field name="model_id" ref="model_edu_grade"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('line_ids.st_program_id.student_id','=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_grade_teacher_rule" model="ir.rule">
+            <field name="name">Ведомость успеваемости: преподаватель</field>
+            <field name="model_id" ref="model_edu_grade"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_edu_teacher'))]"/>
+        </record>
+        
+        <record id="edu_grade_employee_rule" model="ir.rule">
+            <field name="name">Ведомость успеваемости: Сотрудник</field>
+            <field name="model_id" ref="model_edu_grade"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('group_edu_employee'))]"/>
+        </record>
+        
+        <!-- Grade Line: rules -->
+        
+        <record id="edu_grade_line_follower_rule" model="ir.rule">
+            <field name="name">Позиция ведомости успеваемости: Подписка</field>
+            <field name="model_id" ref="model_edu_grade_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('st_program_id.student_id.message_follower_ids','in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_grade_line_personal_rule" model="ir.rule">
+            <field name="name">Позиция ведомости успеваемости: обучающийся</field>
+            <field name="model_id" ref="model_edu_grade_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('st_program_id.student_id','=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        
+        <record id="edu_grade_line_teacher_rule" model="ir.rule">
+            <field name="name">Позиция ведомости успеваемости: преподаватель</field>
+            <field name="model_id" ref="model_edu_grade_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[('grade_id.employee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_edu_teacher'))]"/>
+        </record>
+        
+        <record id="edu_grade_line_employee_rule" model="ir.rule">
+            <field name="name">Позиция ведомости успеваемости: сотрудник</field>
+            <field name="model_id" ref="model_edu_grade_line"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('group_edu_employee'))]"/>
+        </record>
+        
+        <!-- <record id="group_edu_prorector_ovr" model="res.groups"> <field name="name">Prorector
+            OVR</field> <field name="category_id" ref="base.module_category_education_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_edu_user'))]"/> </record>
+            <record id="group_edu_receptionist" model="res.groups"> <field name="name">Receptionist</field>
+            <field name="category_id" ref="base.module_category_education_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_edu_user'))]"/> </record>
+            <record id="edu_order_personal_rule" model="ir.rule"> <field name="name">edu.order
+            personal write rule</field> <field model="ir.model" name="model_id" ref="model_edu_order"/>
+            <field name="perm_unlink" eval="True"/> <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/> <field name="perm_read" eval="False"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field> <field
+            name="groups" eval="[(4, ref('irsid_edu.group_edu_receptionist')),(4,
+            ref('irsid_edu.group_edu_secretary'))]"/> </record> <record id="group_edu_student"
+            model="res.groups"> <field name="name">Student</field> <field name="category_id"
+            ref="base.module_category_education_management"/> </record> <record id="group_edu_teacher"
+            model="res.groups"> <field name="name">Teacher</field> <field name="category_id"
+            ref="base.module_category_education_management"/> </record> <record id="group_edu_secretary"
+            model="res.groups"> <field name="name">Secretary</field> <field name="category_id"
+            ref="base.module_category_education_management"/> <field name="implied_ids"
+            eval="[(4, ref('group_edu_user'))]"/> </record> <record id="group_edu_dispatcher"
+            model="res.groups"> <field name="name">Dispatcher</field> <field name="category_id"
+            ref="base.module_category_education_management"/> <field name="implied_ids"
+            eval="[(4, ref('group_edu_user'))]"/> </record> -->
+    </data>
+    
+    <data noupdate="1">
+    </data>
+    
+</openerp>

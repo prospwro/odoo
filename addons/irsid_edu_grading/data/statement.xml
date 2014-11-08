@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record
+            id="statement_admission"
+            model="edu.statement">
+            <field name="name">О приёме</field>
+            <field name="type">admission</field>
+            <field name="app_intro_text"/>
+            <field name="app_main_text">Допустить до сдачи вступительных испытаний и участия в конкурсе:</field>
+            <field name="app_final_text">С правилами приёма, нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании заявления(-ий)</field>
+            <field name="order_main_text">Допустить до сдачи вступительных испытаний и участия в конкурсе:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на заместителя председателя приёмной комиссии.</field>
+        </record>
+
+        <record
+            id="statement_enrollment"
+            model="edu.statement">
+            <field name="name">О зачислении</field>
+            <field name="type">enrollment</field>
+            <field name="app_intro_text">На основании результатов конкурса</field>
+            <field name="app_main_text">Зачислить на образовательные программы:</field>
+            <field name="app_final_text">С правилами приёма, нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании заявления(-ий)</field>
+            <field name="order_main_text">Зачислить на образовательные программы:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на заместителя председателя приёмной комиссии.</field>
+        </record>
+
+        <record
+            id="statement_transfer_stage"
+            model="edu.statement">
+            <field name="name">О переводе</field>
+            <field name="type">transfer</field>
+            <field name="app_intro_text">На основании результатов промежуточной аттестации</field>
+            <field name="app_main_text">Осуществить перевод с установлением стадии обучения, рабочего плана и академического статуса:</field>
+            <field name="app_final_text">С нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании результатов промежуточной аттестации
+            </field>
+            <field name="order_main_text">Осуществить перевод с установлением стадии обучения, рабочего плана и академического статуса:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на проректора по научной и учебной работе.</field>
+        </record>
+
+        <record
+            id="statement_transfer_ao_start"
+            model="edu.statement">
+            <field name="name">О предоставлении академического отпуска</field>
+            <field name="type">transfer</field>
+            <field name="app_intro_text"/>
+            <field name="app_main_text">Предоставить академический отпуск:</field>
+            <field name="app_final_text">С нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании заявления(-ий)</field>
+            <field name="order_main_text">Предоставить академический отпуск:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на проректора по научной и учебной работе.</field>
+        </record>
+
+        <record
+            id="statement_transfer_ao_stop"
+            model="edu.statement">
+            <field name="name">О выходе из академического отпуска</field>
+            <field name="type">transfer</field>
+            <field name="app_intro_text"/>
+            <field name="app_main_text">Считать вышедшим(и) из академического отпуска:
+            </field>
+            <field name="app_final_text">С нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании заявления(-ий)</field>
+            <field name="order_main_text">Считать вышедшим(и) из академического отпуска с установлением стадии обучения, рабочего плана и академического статуса:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на проректора по научной и учебной работе.</field>
+        </record>
+
+        <record
+            id="statement_dismissal"
+            model="edu.statement">
+            <field name="name">Об отчислении</field>
+            <field name="type">dismissal</field>
+            <field name="app_intro_text"/>
+            <field name="app_main_text">Прошу отчислить с образовательных программ:
+            </field>
+            <field name="app_final_text">С нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании заявления обучающегося</field>
+            <field name="order_main_text">Отчислить с образовательных программ:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на проректора по научной и учебной работе.</field>
+        </record>
+
+        <record
+            id="statement_other_"
+            model="edu.statement">
+            <field name="name">О пересдаче</field>
+            <field name="type">other</field>
+            <field name="app_intro_text"/>
+            <field name="app_main_text">Разрешить пересдачу ...:</field>
+            <field name="app_final_text">С нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании заявления обучающегося</field>
+            <field name="order_main_text">Разрешить пересдачу ...:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на проректора по научной и учебной работе.</field>
+        </record>
+
+        <record
+            id="statement_other_hostel"
+            model="edu.statement">
+            <field name="name">О предоставлении общежития</field>
+            <field name="type">other</field>
+            <field name="app_intro_text">В связи с отсутствием жилья по месту обучения</field>
+            <field name="app_main_text">На время обучения предоставить место в общежитии:</field>
+            <field name="app_final_text">С нормативно-правовыми актами, регламентирующими образовательную деятельность вуза, ознакомлен и согласен.</field>
+            <field name="order_intro_text">На основании заявления(-ий)</field>
+            <field name="order_main_text">Предоставить место в общежитии:</field>
+            <field name="order_final_text">Контроль за исполнением приказа возложить на проректора по организационной и воспитательной работе.</field>
+        </record>
+
+    </data>
+</openerp>

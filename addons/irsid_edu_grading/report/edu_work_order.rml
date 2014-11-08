@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<document filename="Academic Order.pdf">
+
+<template pageSize="(842.0,595.0)" title="Academic Order" author="IRSID" allowSplitting="20">
+
+<pageTemplate id="first">
+    <frame id="first" x1="28.0" y1="28.0" width="786" height="497"/>
+    <pageGraphics>
+        <setFont name="LiberationSans" size="8"/>
+        <drawRightString x="814" y="21"><pageNumber/>/<pageCount/></drawRightString>
+    </pageGraphics>
+</pageTemplate>
+
+</template>
+<!-- Таблица стилей документа-->
+<stylesheet>
+
+<blockTableStyle id="Underscript">
+    <blockAlignment value="CENTER"/>
+    <blockValign value="MIDDLE"/>
+    <lineStyle kind="LINEABOVE" colorName="black" start="0,-1" stop="-1,-1"/>  
+</blockTableStyle>
+
+<blockTableStyle id="CodeDate">
+    <blockAlignment value="CENTER"/>
+    <blockValign value="MIDDLE"/>
+    <lineStyle kind="GRID" colorName="black" start="5,0" stop="8,-1"/>  
+</blockTableStyle>
+
+<blockTableStyle id="Standard_Outline">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table1">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <blockBackground colorName="#e6e6e6" start="0,0" stop="0,0"/>
+    <blockBackground colorName="#e6e6e6" start="1,0" stop="1,0"/>
+    <blockBackground colorName="#e6e6e6" start="2,0" stop="2,0"/>
+    <blockBackground colorName="#e6e6e6" start="0,1" stop="0,1"/>
+    <blockBackground colorName="#e6e6e6" start="1,1" stop="1,1"/>
+    <blockBackground colorName="#e6e6e6" start="2,1" stop="2,1"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table_header_Content">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+</blockTableStyle>
+
+<blockTableStyle id="Tableau1">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <lineStyle kind="GRID" colorName="black"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table2">
+    <lineStyle kind="LINEBELOW" colorName="#000000" start="0,0" stop="-1,0"/>
+    <lineStyle kind="LINEBELOW" colorName="#000000" start="0,1" stop="-1,1"/>
+    <lineStyle kind="LINEBELOW" colorName="#e6e6e6" start="0,2" stop="-1,-1"/>
+    <blockValign value="TOP"/>
+    <blockAlignment value="LEFT" start="2,1" stop="-1,-1"/>
+</blockTableStyle>
+
+<blockTableStyle id="Table8">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <lineStyle kind="LINEBEFORE" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+    <lineStyle kind="LINEABOVE" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+    <lineStyle kind="LINEAFTER" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+    <lineStyle kind="LINEBELOW" colorName="#cccccc" start="0,0" stop="-1,-1"/>
+</blockTableStyle>
+
+<blockTableStyle id="Tableau3">
+    <blockAlignment value="LEFT"/>
+    <blockValign value="TOP"/>
+    <lineStyle kind="GRID" colorName="black"/>
+</blockTableStyle>
+
+<initialize>
+    <paraStyle name="all" alignment="justify"/>
+</initialize>
+
+<paraStyle name="Header" fontName="LiberationSans-Bold" fontSize="12" leading="12" alignment="CENTER" spaceBefore="6" spaceAfter="6"/>
+<paraStyle name="MainText" fontName="LiberationSans" fontSize="10" leading="10" alignment="JUSTIFY" spaceBefore="5" spaceAfter="5"/>
+<paraStyle name="MainTextCentered" fontName="LiberationSans" fontSize="10" leading="10" alignment="CENTER" spaceBefore="5" spaceAfter="5"/>
+<paraStyle name="SmallTextCentered" fontName="LiberationSans" fontSize="6" leading="6" alignment="CENTER" spaceBefore="3" spaceAfter="3"/>
+
+</stylesheet>
+<!-- Содержимое документа -->
+<story>
+<pto>
+<para style="MainText">[[repeatIn(objects,'o')]]</para>
+<blockTable style="Underscript" columnWidth="50">
+    <tr>
+        <td>
+            <para style="MainTextCentered">Негосударственное (частное) образовательное учреждение высшего профессионального образования</para>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <para style="MainTextCentered">"Институт радиоэлектроники, сервиса и диагностики"</para>
+        </td>
+    </tr>
+    <tr>
+        <td lineAboveCount="1">
+            <para style="SmallTextCentered">наименование организации</para>
+        </td>
+    </tr>
+</blockTable>
+<spacer length="20"/>
+<blockTable style="CodeDate">
+    <tr>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="Header"></para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Номер документа</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Дата составления</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Дата начала действия</para>            
+        </td>
+        <td>
+            <para style="MainTextCentered">Дата окончания</para>            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="MainText"></para>            
+        </td>
+        <td>
+            <para style="Header">ЗАКАЗ</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ o.code ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ formatLang(o.date, date = True) ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ formatLang(o.date_start, date = True) ]]</para>            
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ formatLang(o.date_stop, date = True) ]]</para>            
+        </td>
+    </tr>
+</blockTable>
+<para style="Header">[[ o.name ]]</para>
+<para style="MainText">Учебный год: [[ o.year_id.name ]]</para>
+<para style="MainText">Образовательная программа: [[ o.program_id.name ]]</para>
+<para style="MainText">Стадия: [[ o.stage_id.description ]]</para>
+<spacer length="20"/>
+<para style="MainText">Выполнить учебную работу в следующем объеме:</para>
+<blockTable style="Tableau1" repeatRows="1">
+    <tr>
+        <td>
+            <para style="MainTextCentered">Модуль</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Время</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Вид работы</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Сотрудник</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Часов обучения</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">Часов занятий</para>
+        </td>
+    </tr>
+    <tr>
+        <para style="MainTextCentered">[[ repeatIn(o.work_ids, 'work') ]]</para>
+        <td>
+            <para style="MainTextCentered">[[ work.module_id.code ]]: [[ work.module_id.name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ work.time_id.code ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ work.type_id.name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ work.employee_id.name ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ work.st_hours ]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ work.seance_hours ]]</para>
+        </td>
+    </tr>
+</blockTable>
+
+<blockTable style="Underscript">
+    <tr>
+        <td>
+            <para style="MainTextCentered"></para>
+        </td>
+        <td>
+            <para style="MainTextCentered"></para>
+        </td>
+        <td>
+            <para style="MainTextCentered"></para>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <para style="MainTextCentered">[[ o.user_job_approved.name]]</para>
+        </td>
+        <td>
+            <para style="MainTextCentered"></para>
+        </td>
+        <td>
+            <para style="MainTextCentered">[[ o.user_approved.name ]]</para>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <para style="SmallTextCentered">должность</para>
+        </td>
+        <td>
+            <para style="SmallTextCentered">личная подпись</para>
+        </td>
+        <td>
+            <para style="SmallTextCentered">расшифровка подписи</para>
+        </td>
+    </tr>
+</blockTable>
+</pto>
+</story>
+</document>

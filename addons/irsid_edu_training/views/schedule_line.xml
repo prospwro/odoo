@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record
+            id="view_edu_schedule_line_tree"
+            model="ir.ui.view">
+            <field name="name">edu.schedule.line.tree</field>
+            <field name="model">edu.schedule.line</field>
+            <field
+                name="arch"
+                type="xml">
+                <tree
+                    string="Schedule Lines"
+                    colors="
+                        grey:state in ('canceled','done');
+                        blue:state in ('confirmed','validated');
+                        red:state in ('draft','rejected');
+                        green:state=='approved'">
+                    <field name="year_id"/>
+                    <field name="schedule_id"/>
+                    <field name="program_id"/>
+                    <field name="stage_id"/>
+                    <field name="period_id"/>
+                    <field
+                        name="time_id"
+                        invisible="1"/>
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field
+                        name="weeks"
+                        sum="Weeks"/>
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_schedule_line_calendar"
+            model="ir.ui.view">
+            <field name="name">edu.schedule.line.calendar</field>
+            <field name="model">edu.schedule.line</field>
+            <field
+                name="arch"
+                type="xml">
+                <calendar
+                    color="time_id"
+                    date_start="date_start"
+                    date_stop="date_stop"
+                    string="Schedule
+                          Lines">
+                    <field name="code"/>
+                    <field name="program_id"/>
+                    <field name="weeks"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_schedule_line_form"
+            model="ir.ui.view">
+            <field name="name">edu.schedule.line.form</field>
+            <field name="model">edu.schedule.line</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Schedule Line"
+                    version="7.0">
+                    <header>
+                        <button
+                            name="set_confirmed"
+                            string="Confirm"
+                            type="object"
+                            states="draft"
+                            class="oe_highlight"/>
+                        <button
+                            name="set_validated"
+                            string="Validate"
+                            type="object"
+                            states="confirmed"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_approved"
+                            string="Approve"
+                            type="object"
+                            states="validated"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_done"
+                            string="Done"
+                            type="object"
+                            states="approved"
+                            class="oe_highlight"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_canceled"
+                            string="Cancel"
+                            type="object"
+                            states="approved"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="confirmed"
+                            groups="irsid_edu.group_edu_manager"/>
+                        <button
+                            name="set_draft"
+                            string="Revise"
+                            type="object"
+                            states="validated,approved"
+                            groups="irsid_edu.group_edu_prorector"/>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,confirmed,validated,approved"
+                            readonly="1"/>
+                    </header>
+                    <sheet>
+                        <label
+                            for="code"
+                            class="oe_edit_only"/>
+                        <h1>
+                            <field name="code"/>
+                        </h1>
+                        <label
+                            for="name"
+                            class="oe_edit_only"/>
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                        <group>
+                            <field
+                                name="schedule_id"
+                                invisible="1"
+                                on_change="onchange_schedule_id(schedule_id)"/>
+                            <field name="program_id"/>
+                            <field
+                                name="time_id"
+                                domain="[('program_id','=',program_id)]"
+                                on_change="onchange_time_id(time_id)"/>
+                            <field
+                                name="category_id"
+                                readonly="1"/>
+                            <field
+                                name="period_id"
+                                readonly="1"/>
+                            <field
+                                name="weeks"
+                                readonly="1"/>
+                            <field
+                                name="date_start"
+                                on_change="onchange_date_start(date_start, weeks)"/>
+                            <field name="date_stop"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field
+                            name="message_follower_ids"
+                            widget="mail_followers"/>
+                        <field
+                            name="message_ids"
+                            widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record
+            id="view_edu_schedule_line_filter"
+            model="ir.ui.view">
+            <field name="name">edu.schedule.line.filter</field>
+            <field name="model">edu.schedule.line</field>
+            <field
+                name="arch"
+                type="xml">
+                <search string="Schedule Lines">
+                    <field name="name"/>
+                    <field name="schedule_id"/>
+                    <field name="year_id"/>
+                    <field name="program_id"/>
+                    <field name="time_id"/>
+                    <field name="category_id"/>
+                    <field name="period_id"/>
+                    <field name="state"/>
+                    <group
+                        expand="1"
+                        string="Group By...">
+                        <filter
+                            string="Schedule"
+                            domain="[]"
+                            context="{'group_by':'schedule_id'}"/>
+                        <filter
+                            name="gr_year_id"
+                            string="Year"
+                            domain="[]"
+                            context="{'group_by':'year_id'}"/>
+                        <filter
+                            string="Program"
+                            domain="[]"
+                            context="{'group_by':'program_id'}"/>
+                        <filter
+                            name="gr_stage_id"
+                            string="Stage"
+                            domain="[]"
+                            context="{'group_by':'stage_id'}"/>
+                        <filter
+                            name="gr_period_id"
+                            string="Period"
+                            domain="[]"
+                            context="{'group_by':'period_id'}"/>
+                        <filter
+                            string="Category"
+                            domain="[]"
+                            context="{'group_by':'category_id'}"/>
+                        <filter
+                            string="State"
+                            domain="[]"
+                            context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record
+            id="action_edu_schedule_line"
+            model="ir.actions.act_window">
+            <field name="name">Schedule Lines</field>
+            <field name="res_model">edu.schedule.line</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field
+                name="search_view_id"
+                ref="view_edu_schedule_line_filter"/>
+        </record>
+
+        <menuitem
+            id="menu_edu_schedule_line"
+            action="action_edu_schedule_line"
+            sequence="50"
+            parent="menu_edu_report"/>
+
+    </data>
+</openerp>
