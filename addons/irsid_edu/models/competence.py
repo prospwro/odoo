@@ -20,52 +20,38 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields, api
 
-class edu_competence(osv.Model):
+class edu_competence(models.Model):
     _name = "edu.competence"
     _description = "Competence"
+    _order = 'speciality, name'
 # Naming Functions
-    def _name_get_fnc(self, cr, uid, ids, field_name, arg, context=None):
-        result = {}
-        for competence in self.browse(cr, uid, ids, context=context):
-            result[competence.id] = competence.speciality_id.code + '.' + competence.name
-        return result
-# Fields
-    _columns = {
-        'code': fields.function(
-            _name_get_fnc,
-            type='char',
-            string = 'Code',
-            store = True,
-            readonly = True,
-        ),
-        'name': fields.char(
-            'Name',
-            size = 8,
-        ),
-        'speciality_id': fields.many2one(
-            'edu.speciality',
-            'Speciality',
-            required = True,
-        ),
-        'description': fields.text(
-            'Description',
-        ),
-        'program_ids':fields.many2many(
-            'edu.program',
-            'edu_program_competence_rel',
-            'competence_id',
-            'program_id',
-            'Programs',
-        ),
-        'module_ids':fields.many2many(
-            'edu.module',
-            'edu_module_competence_rel',
-            'competence_id',
-            'module_id',
-            'Modules',
-        ),
-    }
-# Sorting Order
-    _order = 'speciality_id, name'
+    @api.one
+    @api.depends('speciality.code', 'name')
+    def _compute_code(self):
+        self.code = self.speciality.code + '.' + self.name
+    # Fields
+    code = fields.Char(
+        string = 'Code',
+        compute = _compute_code,
+        store = True,
+    )
+    name = fields.Char(
+        string = 'Name',
+    )
+    description = fields.Text(
+        string = 'Description',
+    )
+    speciality = fields.Many2one(
+        'edu.speciality',
+        string = 'Speciality',
+    )
+    programs = fields.Many2many(
+        'edu.program',
+        string = 'Programs',
+    )
+    modules = fields.Many2many(
+        'edu.module',
+        string = 'Modules',
+    )
