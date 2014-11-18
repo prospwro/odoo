@@ -22,42 +22,46 @@
 
 from openerp import models, fields
 
-class edu_scale(models.Model):
-    _name = 'edu.scale'
-    _description = 'Rating Scale'
+_EDU_DOC_STATES = [
+    ('draft', 'New'),
+    ('confirmed', 'On Validation'),
+    ('validated', 'On Approval'),
+    ('approved', 'Approved'),
+    ('done', 'Done'),
+    ('rejected', 'Rejected'),
+    ('canceled', 'Canceled'),
+]
+
+class edu_time_budget(models.Model):
+    _name = 'edu.time.budget'
+    _description = 'Study Time Budget'
+    _inherit = ['mail.thread']
     # Fields
     name = fields.Char(
-        string = 'Name',
-        required = True,
+        string='Name',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
     )
     code = fields.Char(
-        string = 'Code',
-        required = True,
+        string='Code',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
     )
-    description = fields.Text(
-        string = 'Description'
+    lines = fields.One2many(
+        comodel_name = 'edu.time',
+        inverse_name = 'budget',
+        string = 'Budget Lines',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
     )
-    type = fields.Selection(
-        [
-            ('continuous','Continuous Scale'),
-            ('discrete','Discrete Scale'),
-        ],
-        default = 'discrete',
-        string = 'Scale Type',
-        required = True,
-    )
-    marks = fields.One2many(
-        'edu.scale.mark',
-        'scale',
-        string = 'Marks',
-    )
-    min_value = fields.Float(
-        string = 'Minimal Value',
-        default = 0,
-        required = True,
-    )
-    max_value = fields.Float(
-        string = 'Maximal Value',
-        default = 100,
-        required = True,
+    state = fields.Selection(
+        selection = _EDU_DOC_STATES,
+        string = 'State',
+        index = True,
+        readonly = True,
+        track_visibility = 'onchange',
+        default = 'draft',
+        copy =False,
     )

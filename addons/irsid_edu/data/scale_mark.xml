@@ -7,10 +7,10 @@
             model="edu.scale.mark">
             <field name="name">Без оценки</field>
             <field name="code">БО</field>
-            <field name="value">1</field>
+            <field name="value">1.0</field>
             <field
-                name="type_id"
-                ref="scale_bo"/>
+                name="scale"
+                ref="scale_u0"/>
         </record>
 
         <record
@@ -20,7 +20,7 @@
             <field name="code">Неяв.</field>
             <field name="value">0</field>
             <field
-                name="type_id"
+                name="type"
                 ref="scale_u1"/>
         </record>
 
@@ -31,7 +31,7 @@
             <field name="code">Присутств.</field>
             <field name="value">1</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u1"/>
         </record>
 
@@ -42,7 +42,7 @@
             <field name="code">Неяв.</field>
             <field name="value">0</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u2"/>
         </record>
 
@@ -53,7 +53,7 @@
             <field name="code">Не зачт.</field>
             <field name="value">0</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u2"/>
         </record>
 
@@ -64,7 +64,7 @@
             <field name="code">Зачт.</field>
             <field name="value">1</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u2"/>
         </record>
 
@@ -75,18 +75,18 @@
             <field name="code">Неяв.</field>
             <field name="value">0</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u5"/>
         </record>
 
         <record
             id="scale_mark_u5_1"
             model="edu.scale.mark">
-            <field name="name">Неудовлетворительно без пересдачи</field>
-            <field name="code">Неуд.БП</field>
+            <field name="name">Плохо</field>
+            <field name="code">Плохо</field>
             <field name="value">0</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u5"/>
         </record>
 
@@ -95,9 +95,9 @@
             model="edu.scale.mark">
             <field name="name">Неудовлетворительно</field>
             <field name="code">Неуд.</field>
-            <field name="value">0</field>
+            <field name="value">0.25</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u5"/>
         </record>
 
@@ -108,7 +108,7 @@
             <field name="code">Удовл.</field>
             <field name="value">0.5</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u5"/>
         </record>
 
@@ -117,9 +117,9 @@
             model="edu.scale.mark">
             <field name="name">Хорошо</field>
             <field name="code">Хор.</field>
-            <field name="value">0.7</field>
+            <field name="value">0.75</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u5"/>
         </record>
 
@@ -130,7 +130,7 @@
             <field name="code">Отл.</field>
             <field name="value">1</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u5"/>
         </record>
 
@@ -141,18 +141,18 @@
             <field name="code">Неяв.</field>
             <field name="value">0</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
         <record
             id="scale_mark_u10_1"
             model="edu.scale.mark">
-            <field name="name">Присутствовал</field>
-            <field name="code">Присутств.</field>
+            <field name="name">Плохо</field>
+            <field name="code">Плохо</field>
             <field name="value">0.1</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -163,7 +163,7 @@
             <field name="code">E</field>
             <field name="value">0.2</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -174,7 +174,7 @@
             <field name="code">D</field>
             <field name="value">0.3</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -185,7 +185,7 @@
             <field name="code">C-</field>
             <field name="value">0.4</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -196,7 +196,7 @@
             <field name="code">C</field>
             <field name="value">0.5</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -207,7 +207,7 @@
             <field name="code">C+</field>
             <field name="value">0.6</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -218,7 +218,7 @@
             <field name="code">B</field>
             <field name="value">0.7</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -229,7 +229,7 @@
             <field name="code">B+</field>
             <field name="value">0.8</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -240,7 +240,7 @@
             <field name="code">A</field>
             <field name="value">0.9</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 
@@ -251,7 +251,7 @@
             <field name="code">A+</field>
             <field name="value">1</field>
             <field
-                name="type_id"
+                name="scale"
                 ref="scale_u10"/>
         </record>
 

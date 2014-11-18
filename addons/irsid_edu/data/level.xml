@@ -46,7 +46,7 @@
             id="level_vob"
             model="edu.level">
             <field name="name">Высшее образование - бакалавриат</field>
-            <field name="code">ВОБ</field>
+            <field name="code">ВО-Б</field>
             <field name="sequence">6</field>
         </record>
 
@@ -54,7 +54,7 @@
             id="level_vosm"
             model="edu.level">
             <field name="name">Высшее образование - специалитет, магистратура</field>
-            <field name="code">ВОСМ</field>
+            <field name="code">ВО-СМ</field>
             <field name="sequence">7</field>
         </record>
 
@@ -62,7 +62,7 @@
             id="level_vopkvk"
             model="edu.level">
             <field name="name">Высшее образование - подготовка кадров высшей квалификации</field>
-            <field name="code">ВОПКВК</field>
+            <field name="code">ВО-КВК</field>
             <field name="sequence">8</field>
         </record>
 

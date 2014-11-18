@@ -171,7 +171,7 @@
 </blockTable>
 <para style="Header">[[ o.name ]]</para>
 <para style="MainText">Учебный год: [[ o.year_id.name ]]</para>
-<para style="MainText">Образовательная программа: [[ o.program_id.name ]]</para>
+<para style="MainText">Образовательная программа: [[ o.program.name ]]</para>
 <spacer length="20"/>
 <blockTable style="Tableau1" repeatRows="1">
     <tr>
@@ -206,7 +206,7 @@
             <para style="MainTextCentered">[[ line.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ line.period_id.name ]]</para>
+            <para style="MainTextCentered">[[ line.period.name ]]</para>
         </td>
      </tr>
 </blockTable>

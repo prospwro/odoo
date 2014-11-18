@@ -11,10 +11,10 @@
                 name="arch"
                 type="xml">
                 <tree string="Competences">
-                    <field name="speciality_id"/>
+                    <field name="speciality"/>
                     <field name="name"/>
                     <field name="description"/>
-                    <field name="module_ids"/>
+                    <field name="modules"/>
                 </tree>
             </field>
         </record>
@@ -45,12 +45,12 @@
                         <field name="name"/>
                     </h2>
                     <group>
-                        <field name="speciality_id"/>
+                        <field name="speciality"/>
                         <field name="description"/>
                     </group>
                     <notebook>
                         <page string="Modules">
-                            <field name="module_ids"/>
+                            <field name="modules"/>
                         </page>
                     </notebook>
                 </form>

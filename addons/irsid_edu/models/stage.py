@@ -48,11 +48,11 @@ class edu_stage(osv.Model):
         'case_default': fields.boolean(
             'Default for New Programs',
         ),
-        'program_ids': fields.many2many(
+        'programs': fields.many2many(
             'edu.program',
             'edu_program_stage_rel',
             'stage_id',
-            'program_id',
+            'program',
             'Programs',
         ),
         'fold': fields.boolean(

@@ -9,12 +9,12 @@
             <field name="res_model">edu.time</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{
-                'default_program_id':active_id,
+                'default_program':active_id,
                 'group_by':False,
                 'search_default_gr_stage_id':1,
-                'search_default_gr_period_id':1}
+                'search_default_gr_period':1}
             </field>
-            <field name="domain">[('program_id','=',active_id)]</field>
+            <field name="domain">[('program','=',active_id)]</field>
             <field
                 name="search_view_id"
                 ref="view_edu_time_filter"/>
@@ -27,12 +27,12 @@
             <field name="res_model">edu.module</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{
-                'default_program_id':active_id,
+                'default_program':active_id,
                 'group_by':False,
-                'search_default_gr_section_id':1,
-                'search_default_gr_subsection_id':1}
+                'search_default_gr_section':1,
+                'search_default_gr_subsection':1}
             </field>
-            <field name="domain">[('program_id','=',active_id)]</field>
+            <field name="domain">[('program','=',active_id)]</field>
             <field
                 name="search_view_id"
                 ref="view_edu_module_filter"/>
@@ -56,7 +56,7 @@
                     <field name="code"/>
                     <field name="short_name"/>
                     <field name="name"/>
-                    <field name="speciality_id"/>
+                    <field name="speciality"/>
                     <field name="department_id"/>
                     <field name="mode_id"/>
                     <field name="rprog"/>
@@ -163,8 +163,8 @@
                         </h2>
                         <group>
                             <field
-                                name="speciality_id"
-                                on_change="onchange_speciality_id(speciality_id)"/>
+                                name="speciality"
+                                on_change="onchange_speciality(speciality)"/>
                             <field name="department_id"/>
                         </group>
                         <group string="Training Regime">
@@ -179,7 +179,7 @@
                         </group>
                         <notebook>
                             <page string="Training Time">
-                                <field name="time_ids">
+                                <field name="times">
                                     <tree string="Time">
                                         <field
                                             name="sequence"
@@ -187,7 +187,7 @@
                                         <field name="code"/>
                                         <field name="name"/>
                                         <field name="category_id"/>
-                                        <field name="period_id"/>
+                                        <field name="period"/>
                                         <field
                                             name="weeks"
                                             sum="Weeks"/>
@@ -196,10 +196,10 @@
                                 </field>
                             </page>
                             <page string="Main Modules">
-                                <field name="mainmodule_ids">
+                                <field name="mainmodules">
                                     <tree string="Main Modules">
-                                        <field name="section_id"/>
-                                        <field name="subsection_id"/>
+                                        <field name="section"/>
+                                        <field name="subsection"/>
                                         <field name="name"/>
                                         <field
                                             name="credits"
@@ -215,10 +215,10 @@
                                 </field>
                             </page>
                             <page string="Elective Modules">
-                                <field name="electivemodule_ids">
+                                <field name="electivemodules">
                                     <tree string="Elective Modules">
-                                        <field name="section_id"/>
-                                        <field name="subsection_id"/>
+                                        <field name="section"/>
+                                        <field name="subsection"/>
                                         <field name="name"/>
                                         <field name="parent_id"/>
                                         <field
@@ -248,7 +248,7 @@
                             <page string="Competences">
                                 <field
                                     name="competence_ids"
-                                    domain="[('speciality_id','=',speciality_id)]">
+                                    domain="[('speciality','=',speciality)]">
                                     <tree string="Competences">
                                         <field name="code"/>
                                         <field name="description"/>
@@ -281,7 +281,7 @@
                     <field name="name"/>
                     <field name="short_name"/>
                     <field name="code"/>
-                    <field name="speciality_id"/>
+                    <field name="speciality"/>
                     <field name="mode_id"/>
                     <field name="state"/>
                     <filter
@@ -299,7 +299,7 @@
                         <filter
                             string="Speciality"
                             domain="[]"
-                            context="{'group_by':'speciality_id'}"/>
+                            context="{'group_by':'speciality'}"/>
                         <filter
                             string="Mode"
                             domain="[]"

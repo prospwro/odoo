@@ -19,7 +19,7 @@
                         green:state=='approved'">
                     <field name="admission_id"/>
                     <field name="name"/>
-                    <field name="program_id"/>
+                    <field name="program"/>
                     <field name="target_id"/>
                     <field
                         name="seats"
@@ -99,8 +99,8 @@
                                 name="admission_id"
                                 invisible="1"/>
                             <field
-                                name="program_id"
-                                on_change="onchange_program_id(program_id)"/>
+                                name="program"
+                                on_change="onchange_program(program)"/>
                             <field name="name"/>
                             <field name="target_id"/>
                             <field name="seats"/>
@@ -136,7 +136,7 @@
                 type="xml">
                 <search string="Admission Lines">
                     <field name="admission_id"/>
-                    <field name="program_id"/>
+                    <field name="program"/>
                     <field name="target_id"/>
                     <field name="state"/>
                     <filter
@@ -153,7 +153,7 @@
                         <filter
                             string="Program"
                             domain="[]"
-                            context="{'group_by':'program_id'}"/>
+                            context="{'group_by':'program'}"/>
                         <filter
                             string="Target"
                             domain="[]"

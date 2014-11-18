@@ -36,12 +36,12 @@ class edu_module_record(osv.Model):
 #    def _name_get_fnc(self, cr, uid, ids, field_name, arg, context=None):
 #        result = {}
 #        for record in self.browse(cr, uid, ids, context=context):
-#            result[record.id] = record.module_id.code + '/' + line.student_id.name
+#            result[record.id] = record.module.code + '/' + line.student_id.name
 #        return result
 # Onchange Functions
-    def onchange_module_id(self, cr, uid, ids, module_id, context=None):
-        if module_id:
-            module = self.pool.get('edu.module').browse(cr, uid, module_id, context=context)
+    def onchange_module(self, cr, uid, ids, module, context=None):
+        if module:
+            module = self.pool.get('edu.module').browse(cr, uid, module, context=context)
             return {'value': {
                 'credits': module.credits,
                 'st_hours': module.st_hours,
@@ -78,7 +78,7 @@ class edu_module_record(osv.Model):
 #            type='char',
 #            string = 'Code',
 #            store = {
-#                'edu.work': (lambda self, cr, uid, ids, c={}: ids, ['order_id', 'modulework_id'], 10),
+#                'edu.work': (lambda self, cr, uid, ids, c={}: ids, ['order_id', 'modulework'], 10),
 #                'edu.work.order': (_update_list_by_order, ['code'], 20),
 #                'edu.module.work': (_update_list_by_modulework, ['code'], 30),
 #            },
@@ -91,7 +91,7 @@ class edu_module_record(osv.Model):
             readonly = True,
             states = {'draft': [('readonly',False)]},
         ),
-        'module_id': fields.many2one(
+        'module': fields.many2one(
             'edu.module',
             'Training Module',
             required = True,
@@ -143,11 +143,11 @@ class edu_module_record(osv.Model):
             readonly = True,
             states = {'draft': [('readonly',False)]},
         ),
-        'work_ids':fields.many2many(
+        'works':fields.many2many(
             'edu.module.work',
             'edu_module_record_work_rel',
             'record_id',
-            'work_id',
+            'work',
             'Module Work',
             readonly = True,
             states = {'draft': [('readonly',False)]},

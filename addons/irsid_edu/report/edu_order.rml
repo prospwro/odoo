@@ -172,7 +172,7 @@
 <para style="Header">[[ o.name ]]</para>
 <para style="MainText">Учебный год: [[ o.year_id.name ]]</para>
 <para style="MainText">Вид приказа: [[ dict_type.get(o.type,'') ]]</para>
-<para style="MainText">Образовательная программа: [[ o.program_id.name ]]</para>
+<para style="MainText">Образовательная программа: [[ o.program.name ]]</para>
 <para style="MainText">Стадия обучающегося: [[ o.stage_id.description ]]</para>
 <spacer length="20"/>
 <para style="MainText">[[ o.intro_text ]]</para>
@@ -220,13 +220,13 @@
             <para style="MainTextCentered">[[ o.type not in ['admission'] and removeParentNode('td') ]][[ line.line_id.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ o.type in ['admission'] and removeParentNode('td') ]][[ line.st_program_id.name ]]</para>
+            <para style="MainTextCentered">[[ o.type in ['admission'] and removeParentNode('td') ]][[ line.st_program.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ line.program_id.code ]]: [[ line.program_id.name ]]</para>
+            <para style="MainTextCentered">[[ line.program.code ]]: [[ line.program.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ line.speciality_id.code ]] [[ line.speciality_id.name ]]</para>
+            <para style="MainTextCentered">[[ line.speciality.code ]] [[ line.speciality.name ]]</para>
         </td>
         <td>
             <para style="MainTextCentered">[[ line.mode_id.name ]]</para>

@@ -18,8 +18,8 @@
                         green:state=='approved'">
                     <field name="pricelist_id"/>
                     <field name="year_id"/>
-                    <field name="program_id"/>
-                    <field name="speciality_id"/>
+                    <field name="program"/>
+                    <field name="speciality"/>
                     <field name="mode_id"/>
                     <field name="stage_id"/>
                     <field name="stage_price"/>
@@ -101,19 +101,19 @@
                             <field name="origin"/>
                             <field name="year_id"/>
                             <field
-                                name="pricelist_program_id"
+                                name="pricelist_program"
                                 invisible="1"/>
                             <field
                                 name="pricelist_stage_id"
                                 invisible="1"/>
                             <field
-                                name="program_id"
-                                on_change="onchange_program_id(program_id)"/>
-                            <field name="speciality_id"/>
+                                name="program"
+                                on_change="onchange_program(program)"/>
+                            <field name="speciality"/>
                             <field name="mode_id"/>
                             <field
                                 name="stage_id"
-                                domain="[('program_ids','=',program_id)]"/>
+                                domain="[('programs','=',program)]"/>
                             <field name="stage_price"/>
                         </group>
                         <notebook>
@@ -145,8 +145,8 @@
                 <search string="Pricelist Lines">
                     <field name="pricelist_id"/>
                     <field name="year_id"/>
-                    <field name="program_id"/>
-                    <field name="speciality_id"/>
+                    <field name="program"/>
+                    <field name="speciality"/>
                     <field name="mode_id"/>
                     <field name="stage_id"/>
                     <field name="state"/>
@@ -168,10 +168,10 @@
                             domain="[]"
                             context="{'group_by':'pricelist_id'}"/>
                         <filter
-                            name="gr_speciality_id"
+                            name="gr_speciality"
                             string="Speciality"
                             domain="[]"
-                            context="{'group_by':'speciality_id'}"/>
+                            context="{'group_by':'speciality'}"/>
                         <filter
                             name="gr_mode_id"
                             string="Mode"
@@ -180,7 +180,7 @@
                         <filter
                             string="Program"
                             domain="[]"
-                            context="{'group_by':'program_id'}"/>
+                            context="{'group_by':'program'}"/>
                         <filter
                             string="Stage"
                             domain="[]"
@@ -202,7 +202,7 @@
             <field name="view_mode">tree,form</field>
             <field name="context">{
                 'search_default_gr_year_id':1,
-                'search_default_gr_speciality_id':1,
+                'search_default_gr_speciality':1,
                 'search_default_gr_mode_id':1,
                 'search_default_approved':1}
             </field>

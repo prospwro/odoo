@@ -21,17 +21,16 @@
 ##############################################################################
 
 from openerp.osv import osv, fields
-from core import *
 
 class edu_program(osv.Model):
     _name = 'edu.program'
     _description = 'Education Program'
     _inherit = 'edu.doc'
-    _track = {
-        'state': {
-            'irsid_edu.mt_program_updated': lambda self, cr, uid, obj, ctx=None: True,
-        },
-    }
+#     _track = {
+#         'state': {
+#             'irsid_edu.mt_program_updated': lambda self, cr, uid, obj, ctx=None: True,
+#         },
+#     }
 # Naming Functions
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):
@@ -49,7 +48,7 @@ class edu_program(osv.Model):
             context = {}
         ids = self.search(cr, user, ['|',
             '|',('short_name','ilike',name),('name','ilike',name),
-            '|',('speciality_id.code','ilike',name),('speciality_id.name','ilike',name)
+            '|',('speciality.code','ilike',name),('speciality.name','ilike',name)
             ] + args, limit=limit, context=context)
         return self.name_get(cr, user, ids, context=context)
 # Workflow Functions
@@ -60,8 +59,8 @@ class edu_program(osv.Model):
                 'date_approved': False,
             }, context=context)
         time_obj = self.pool.get('edu.time')
-        time_ids = time_obj.search(cr, uid, [('program_id', 'in', ids)], context=context)
-        time_obj.set_draft(cr, uid, time_ids, context=context)
+        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+        time_obj.set_draft(cr, uid, times, context=context)
         return True
 
     def set_confirmed(self, cr, uid, ids, context=None):
@@ -70,8 +69,8 @@ class edu_program(osv.Model):
                 'state': 'confirmed',
             }, context=context)
         time_obj = self.pool.get('edu.time')
-        time_ids = time_obj.search(cr, uid, [('program_id', 'in', ids)], context=context)
-        time_obj.set_confirmed(cr, uid, time_ids, context=context)
+        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+        time_obj.set_confirmed(cr, uid, times, context=context)
         return True
 
     def set_validated(self, cr, uid, ids, context=None):
@@ -80,8 +79,8 @@ class edu_program(osv.Model):
                 'state': 'validated',
             }, context=context)
         time_obj = self.pool.get('edu.time')
-        time_ids = time_obj.search(cr, uid, [('program_id', 'in', ids)], context=context)
-        time_obj.set_validated(cr, uid, time_ids, context=context)
+        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+        time_obj.set_validated(cr, uid, times, context=context)
         return True
 
     def set_approved(self, cr, uid, ids, context=None):
@@ -93,8 +92,8 @@ class edu_program(osv.Model):
                 'code': program.code =='/' and self.pool.get('ir.sequence').get(cr, uid, 'edu.program') or program.code or '/'
             }, context=context)
         time_obj = self.pool.get('edu.time')
-        time_ids = time_obj.search(cr, uid, [('program_id', 'in', ids)], context=context)
-        time_obj.set_approved(cr, uid, time_ids, context=context)
+        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+        time_obj.set_approved(cr, uid, times, context=context)
         return True
 
     def set_canceled(self, cr, uid, ids, context=None):
@@ -103,8 +102,8 @@ class edu_program(osv.Model):
                 'state': 'canceled',
             }, context=context)
         time_obj = self.pool.get('edu.time')
-        time_ids = time_obj.search(cr, uid, [('program_id', 'in', ids)], context=context)
-        time_obj.set_canceled(cr, uid, time_ids, context=context)
+        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+        time_obj.set_canceled(cr, uid, times, context=context)
         return True
 # Access Functions
     def copy(self, cr, uid, id, default=None, context=None):
@@ -114,9 +113,9 @@ class edu_program(osv.Model):
         })
         return super(edu_program, self).copy(cr, uid, id, default, context=context)
 # Onchange Functions
-    def onchange_speciality_id(self, cr, uid, ids, speciality_id, context=None):
-        if speciality_id:
-            speciality = self.pool.get('edu.speciality').browse(cr, uid, speciality_id, context=context)
+    def onchange_speciality(self, cr, uid, ids, speciality, context=None):
+        if speciality:
+            speciality = self.pool.get('edu.speciality').browse(cr, uid, speciality, context=context)
             return {'value': {
                 'description': speciality.description,
             }}
@@ -144,7 +143,7 @@ class edu_program(osv.Model):
             readonly = True,
             states = {'draft': [('readonly', False)]},
         ),
-        'speciality_id': fields.many2one(
+        'speciality': fields.many2one(
             'edu.speciality',
             'Speciality',
             required = True,
@@ -179,28 +178,28 @@ class edu_program(osv.Model):
             readonly = True,
             states = {'draft': [('readonly', False)]},
         ),
-        'time_ids':fields.one2many(
+        'times':fields.one2many(
             'edu.time',
-            'program_id',
+            'program',
             'Time',
             readonly = True,
         ),
-        'module_ids':fields.one2many(
+        'modules':fields.one2many(
             'edu.module',
-            'program_id',
+            'program',
             'Modules',
             readonly = True,
         ),
-        'mainmodule_ids':fields.one2many(
+        'mainmodules':fields.one2many(
             'edu.module',
-            'program_id',
+            'program',
             'Modules',
             readonly = True,
             domain=[('parent_id','=',False)],
         ),
-        'electivemodule_ids':fields.one2many(
+        'electivemodules':fields.one2many(
             'edu.module',
-            'program_id',
+            'program',
             'Modules',
             readonly = True,
             domain=[('parent_id','!=',False)],
@@ -208,7 +207,7 @@ class edu_program(osv.Model):
         'competence_ids':fields.many2many(
             'edu.competence',
             'edu_program_competence_rel',
-            'program_id',
+            'program',
             'competence_id',
             'Competences',
             readonly = True,
@@ -216,7 +215,7 @@ class edu_program(osv.Model):
         ),
 #        'plan_ids':fields.one2many(
 #            'edu.plan',
-#            'program_id',
+#            'program',
 #            'Plans',
 #            readonly = True,
 #            states = {'draft': [('readonly', False)]},
@@ -224,7 +223,7 @@ class edu_program(osv.Model):
         'stage_ids': fields.many2many(
             'edu.stage',
             'edu_program_stage_rel',
-            'program_id',
+            'program',
             'stage_id',
             'Stages',
             readonly = True,
@@ -244,4 +243,4 @@ class edu_program(osv.Model):
         'stage_ids': _get_stages_common,
     }
 # Sorting Order
-    _order = 'speciality_id,mode_id,code'
+    _order = 'speciality,mode_id,code'

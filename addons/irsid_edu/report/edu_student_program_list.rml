@@ -115,7 +115,7 @@
     <tr>
         <para style="MainTextCentered">[[repeatIn(objects,'o')]]</para>
         <td>
-            <para style="MainTextCentered">[[ o.program_id.code ]]:[[ o.program_id.short_name ]]</para>
+            <para style="MainTextCentered">[[ o.program.code ]]:[[ o.program.short_name ]]</para>
         </td>
         <td>
             <para style="MainTextCentered">[[ o.stage_id.name ]]</para>

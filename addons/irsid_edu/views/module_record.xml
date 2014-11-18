@@ -18,7 +18,7 @@
                         red:state in ('draft','rejected');
                         green:state=='approved'">
                     <field name="name"/>
-                    <field name="module_id"/>
+                    <field name="module"/>
                     <field name="journal_id"/>
                     <field name="journaltype"/>
                     <field name="recordtype"/>
@@ -93,9 +93,9 @@
                         </div>
                         <group>
                             <field
-                                name="module_id"
+                                name="module"
                                 invisible="1"
-                                on_change="onchange_module_id(module_id)"/>
+                                on_change="onchange_module(module)"/>
                             <field
                                 name="journal_id"
                                 on_change="onchange_journal_id(journal_id)"/>
@@ -109,11 +109,11 @@
                         <notebook>
                             <page string="Module Work">
                                 <field
-                                    name="work_ids"
-                                    domain="[('module_id','=',module_id)]">
+                                    name="works"
+                                    domain="[('module','=',module)]">
                                     <tree string="Module Work">
-                                        <field name="time_id"/>
-                                        <field name="type_id"/>
+                                        <field name="time"/>
+                                        <field name="type"/>
                                         <field
                                             name="st_hours"
                                             sum="Student Hours"/>
@@ -148,7 +148,7 @@
                 type="xml">
                 <search string="Module Records">
                     <field name="name"/>
-                    <field name="module_id"/>
+                    <field name="module"/>
                     <field name="journal_id"/>
                     <field name="scale"/>
                     <field name="state"/>
@@ -158,7 +158,7 @@
                         <filter
                             string="Module"
                             domain="[]"
-                            context="{'group_by':'module_id'}"/>
+                            context="{'group_by':'module'}"/>
                         <filter
                             string="Journal"
                             domain="[]"

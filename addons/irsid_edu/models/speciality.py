@@ -51,7 +51,6 @@ class edu_speciality(models.Model):
     )
     rank = fields.Char(
         string = 'Special Rank',
-        required = True,
     )
     level = fields.Many2one(
         'edu.level',
@@ -63,12 +62,12 @@ class edu_speciality(models.Model):
     )
     programs = fields.One2many(
         'edu.program',
-        'speciality_id',
+        'speciality',
         string = 'Programs',
     )
     competences = fields.One2many(
         'edu.competence',
-        'speciality_id',
+        'speciality',
         string = 'Competences',
     )
     licensed = fields.Boolean(

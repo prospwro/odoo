@@ -74,7 +74,7 @@ class edu_plan(osv.Model):
             readonly = True,
             states = {'draft': [('readonly',False)]},
         ),
-        'program_id': fields.many2one(
+        'program': fields.many2one(
             'edu.program',
             'Education Program',
             required = True,
@@ -82,9 +82,9 @@ class edu_plan(osv.Model):
             readonly = True,
             states = {'draft': [('readonly', False)]},
         ),
-        'speciality_id': fields.related(
-            'program_id',
-            'speciality_id',
+        'speciality': fields.related(
+            'program',
+            'speciality',
             type='many2one',
             relation = 'edu.speciality',
             string = 'Speciality',
@@ -92,7 +92,7 @@ class edu_plan(osv.Model):
             readonly = True,
         ),
         'mode_id': fields.related(
-            'program_id',
+            'program',
             'mode_id',
             type='many2one',
             relation = 'edu.mode',
@@ -100,13 +100,13 @@ class edu_plan(osv.Model):
             store = True,
             readonly = True,
         ),
-        'module_ids': fields.many2many(
+        'modules': fields.many2many(
             'edu.module',
             'edu_plan_module_rel',
             'plan_id',
-            'module_id',
+            'module',
             'Modules',
-            order = 'section_id,subsection_id,name',
+            order = 'section,subsection,name',
             readonly = True,
             states = {'draft': [('readonly', False)]},
         ),

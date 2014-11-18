@@ -20,14 +20,13 @@
 ##############################################################################
 
 import competence
-import core
 import scale
 import scale_mark
 import mode
 import module
-import module_record
+#import module_record
 import module_seance
-import module_section
+#import module_section
 import module_task
 import module_work
 import period

@@ -20,54 +20,74 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
-from core import *
+from openerp import models, fields
 
-class edu_time(osv.Model):
+class edu_time(models.Model):
     _name = 'edu.time'
-    _description = 'Training Time'
-    _inherit = 'edu.doc'
-    _rec_name = 'code'
-    _track = {
-        'state': {
-            'irsid_edu.mt_time_updated': lambda self, cr, uid, obj, ctx=None: True,
-        },
-    }
-# Naming Functions
-    def _name_get_fnc(self, cr, uid, ids, field_name, arg, context=None):
-        result = {}
-        for time in self.browse(cr, uid, ids, context=context):
-            result[time.id] = time.program_id.code + '/' + (time.period_id.code or "") + '/' + time.short_name
-        return result
-# Update Functions
-    def _update_list_by_program(self, cr, uid, ids, context=None):
-        return self.pool.get('edu.time').search(cr, uid, [('program_id', 'in', ids)], context=context)
-
-    def _update_list_by_period(self, cr, uid, ids, context=None):
-        return self.pool.get('edu.time').search(cr, uid, [('period_id', 'in', ids)], context=context)
-
-    def update_time(self, cr, uid, ids, context=None):
-        self.pool.get('edu.schedule.line').search(cr, uid, )
-        return self.pool.get('edu.time').search(cr, uid, [('period_id', 'in', ids)], context=context)
-
-    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
-        if not args:
-            args = []
-        if context is None:
-            context = {}
-        ids = self.search(cr, user, ['|',
-            '|',('code','ilike',name),('name','ilike',name),
-            '|',('period_id.name','ilike',name),('period_id.code','ilike',name)
-            ] + args, limit=limit, context=context)
-        return self.name_get(cr, user, ids, context=context)
-# Fields
+    _description = 'Study Time'
+#     _rec_name = 'code'
+#     _track = {
+#         'state': {
+#             'irsid_edu.mt_time_updated': lambda self, cr, uid, obj, ctx=None: True,
+#         },
+#     }
+# # Naming Functions
+#     def _name_get_fnc(self, cr, uid, ids, field_name, arg, context=None):
+#         result = {}
+#         for time in self.browse(cr, uid, ids, context=context):
+#             result[time.id] = time.program.code + '/' + (time.period.code or "") + '/' + time.short_name
+#         return result
+# # Update Functions
+#     def _update_list_by_program(self, cr, uid, ids, context=None):
+#         return self.pool.get('edu.time').search(cr, uid, [('program', 'in', ids)], context=context)
+# 
+#     def _update_list_by_period(self, cr, uid, ids, context=None):
+#         return self.pool.get('edu.time').search(cr, uid, [('period', 'in', ids)], context=context)
+# 
+#     def update_time(self, cr, uid, ids, context=None):
+#         self.pool.get('edu.schedule.line').search(cr, uid, )
+#         return self.pool.get('edu.time').search(cr, uid, [('period', 'in', ids)], context=context)
+# 
+#     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+#         if not args:
+#             args = []
+#         if context is None:
+#             context = {}
+#         ids = self.search(cr, user, ['|',
+#             '|',('code','ilike',name),('name','ilike',name),
+#             '|',('period.name','ilike',name),('period.code','ilike',name)
+#             ] + args, limit=limit, context=context)
+#         return self.name_get(cr, user, ids, context=context)
+# # Fields
+    code = fields.Char(
+        string='Code',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    name = fields.Char(
+        string='Name',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    short_name = fields.Char(
+        string='Name',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    sequence = fields.Integer(
+        string = "Sequence",
+        default = 1,
+    )
     _columns = {
         'code': fields.function(
             _name_get_fnc,
             type='char',
             string = 'Code',
             store = {
-                'edu.time': (lambda self, cr, uid, ids, c={}: ids, ['program_id', 'period_id', 'short_name'], 10),
+                'edu.time': (lambda self, cr, uid, ids, c={}: ids, ['program', 'period', 'short_name'], 10),
                 'edu.program': (_update_list_by_program, ['code'], 20),
                 'edu.period': (_update_list_by_period, ['code'], 30),
             },
@@ -92,7 +112,7 @@ class edu_time(osv.Model):
             readonly = True,
             states = {'draft': [('readonly', False)]},
         ),
-        'program_id': fields.many2one(
+        'program': fields.many2one(
             'edu.program',
             'Program',
             required = True,
@@ -107,7 +127,7 @@ class edu_time(osv.Model):
             readonly = True,
             states = {'draft': [('readonly', False)]},
         ),
-        'period_id': fields.many2one(
+        'period': fields.many2one(
             'edu.period',
             'Period',
             required = True,
@@ -115,7 +135,7 @@ class edu_time(osv.Model):
             states = {'draft': [('readonly', False)]},
         ),
         'stage_id': fields.related(
-            'period_id',
+            'period',
             'stage_id',
             type='many2one',
             relation = 'edu.stage',
@@ -143,4 +163,4 @@ class edu_time(osv.Model):
         'sequence': 10,
     }
 # Sorting Order
-    _order = 'program_id,period_id,sequence'
+    _order = 'program,period,sequence'

@@ -37,7 +37,7 @@
                     <field name="date"/>
                     <field name="name"/>
                     <field name="year_id"/>
-                    <field name="program_id"/>
+                    <field name="program"/>
                     <field name="stage_id"/>
                     <field name="date_start"/>
                     <field name="date_stop"/>
@@ -144,11 +144,11 @@
                                     name="year_id"
                                     on_change="onchange_year_id(year_id)"/>
                                 <field
-                                    name="program_id"
-                                    on_change="onchange_program_id(program_id)"/>
+                                    name="program"
+                                    on_change="onchange_program(program)"/>
                                 <field
                                     name="stage_id"
-                                    domain="program_id and [('program_ids','=',program_id)] or []"/>
+                                    domain="program and [('programs','=',program)] or []"/>
                             </group>
                             <group string="Period of Validity">
                                 <field name="date_start"/>
@@ -160,13 +160,13 @@
                             readonly="1">
                             <tree string="Pricelist Lines">
                                 <field
-                                    name="pricelist_program_id"
+                                    name="pricelist_program"
                                     invisible="1"/>
                                 <field
                                     name="pricelist_stage_id"
                                     invisible="1"/>
-                                <field name="program_id"/>
-                                <field name="speciality_id"/>
+                                <field name="program"/>
+                                <field name="speciality"/>
                                 <field name="mode_id"/>
                                 <field name="stage_id"/>
                                 <field name="stage_price"/>
@@ -203,7 +203,7 @@
                     <field name="date"/>
                     <field name="name"/>
                     <field name="year_id"/>
-                    <field name="program_id"/>
+                    <field name="program"/>
                     <field name="stage_id"/>
                     <field name="date_start"/>
                     <field name="date_stop"/>
@@ -218,7 +218,7 @@
                         <filter
                             string="Program"
                             domain="[]"
-                            context="{'group_by':'program_id'}"/>
+                            context="{'group_by':'program'}"/>
                         <filter
                             string="Stage"
                             domain="[]"

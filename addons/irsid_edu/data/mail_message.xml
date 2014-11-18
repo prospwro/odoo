@@ -11,7 +11,7 @@
                 ref="mail.group_all_employees"/>
             <field name="type">notification</field>
             <field
-                name="subtype_id"
+                name="subtype"
                 ref="mail.mt_comment"/>
             <field name="subject">Установлен модуль управления обучением!</field>
             <field name="body"><![CDATA[<p>Это приложение предназначено для управления всеми аспектами образовательного процесса.</p>

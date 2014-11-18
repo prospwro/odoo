@@ -18,12 +18,12 @@
                         red:state in ('draft','rejected');
                         green:state=='approved'">
                     <field name="grade_id"/>
-                    <field name="st_program_id"/>
-                    <field name="module_id"/>
+                    <field name="st_program"/>
+                    <field name="module"/>
                     <field
-                        name="time_id"
+                        name="time"
                         invisible="1"/>
-                    <field name="type_id"/>
+                    <field name="type"/>
                     <field name="scale"/>
                     <field name="mark"/>
                     <field
@@ -32,7 +32,7 @@
                     <field
                         name="points"
                         sum="Points"/>
-                    <field name="employee_id"/>
+                    <field name="employee"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -84,18 +84,18 @@
                                 name="grade_id"
                                 invisible="1"
                                 on_change="onchange_grade_id(grade_id)"/>
-                            <field name="module_id"/>
-                            <field name="time_id"/>
-                            <field name="type_id"/>
+                            <field name="module"/>
+                            <field name="time"/>
+                            <field name="type"/>
                             <field name="scale"/>
                             <field
-                                name="st_program_id"
+                                name="st_program"
                                 domain="[('grade_ids','=',grade_id),('state','=','open')]"/>
                             <field
                                 name="mark"
-                                domain="[('type_id','=',scale)]"/>
+                                domain="[('type','=',scale)]"/>
                             <field name="points"/>
-                            <field name="employee_id"/>
+                            <field name="employee"/>
                             <field name="user_approved"/>
                         </group>
                     </sheet>
@@ -122,13 +122,13 @@
                 <search string="Grade Lines">
                     <field name="title"/>
                     <field name="grade_id"/>
-                    <field name="st_program_id"/>
-                    <field name="module_id"/>
-                    <field name="time_id"/>
-                    <field name="type_id"/>
+                    <field name="st_program"/>
+                    <field name="module"/>
+                    <field name="time"/>
+                    <field name="type"/>
                     <field name="scale"/>
                     <field name="mark"/>
-                    <field name="employee_id"/>
+                    <field name="employee"/>
                     <field name="state"/>
                     <group
                         expand="1"
@@ -140,20 +140,20 @@
                         <filter
                             string="Student Program"
                             domain="[]"
-                            context="{'group_by':'st_program_id'}"/>
+                            context="{'group_by':'st_program'}"/>
                         <filter
-                            name="gr_module_id"
+                            name="gr_module"
                             string="Module"
                             domain="[]"
-                            context="{'group_by':'module_id'}"/>
+                            context="{'group_by':'module'}"/>
                         <filter
                             string="Time"
                             domain="[]"
-                            context="{'group_by':'time_id'}"/>
+                            context="{'group_by':'time'}"/>
                         <filter
                             string="Work Type"
                             domain="[]"
-                            context="{'group_by':'type_id'}"/>
+                            context="{'group_by':'type'}"/>
                         <filter
                             string="Scale"
                             domain="[]"
@@ -165,7 +165,7 @@
                         <filter
                             string="Employee"
                             domain="[]"
-                            context="{'group_by':'employee_id'}"/>
+                            context="{'group_by':'employee'}"/>
                         <filter
                             string="State"
                             domain="[]"
@@ -185,8 +185,8 @@
                 { 'default_grade_id': active_id, 'group_by':
                 False,
                 'search_default_gr_year_id':0,
-                'search_default_gr_program_id':0,
-                'search_default_gr_module_id':0,
+                'search_default_gr_program':0,
+                'search_default_gr_module':0,
                 }
             </field>
             <field name="domain">[('grade_id','=',active_id)]</field>
@@ -202,9 +202,9 @@
             <field name="res_model">edu.grade.line</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{'group_by':
-                False,'search_default_gr_module_id':1}
+                False,'search_default_gr_module':1}
             </field>
-            <field name="domain">[('st_program_id','=',active_id)]</field>
+            <field name="domain">[('st_program','=',active_id)]</field>
             <field
                 name="search_view_id"
                 ref="view_edu_grade_line_filter"/>

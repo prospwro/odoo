@@ -21,12 +21,10 @@
 ##############################################################################
 
 from openerp.osv import osv, fields
-from core import *
 
 class edu_module_task(osv.Model):
     _name = 'edu.module.task'
     _description = 'Module Task'
-    _inherit = 'edu.doc'
     _track = {
         'state': {
             'irsid_edu.mt_module_task_updated': lambda self, cr, uid, obj, ctx=None: True,
@@ -34,17 +32,17 @@ class edu_module_task(osv.Model):
     }
 # Update Functions
     def _update_list_by_seance(self, cr, uid, ids, context=None):
-        return self.pool.get('edu.module.task').search(cr, uid, [('seance_id', 'in', ids)], context=context)
+        return self.pool.get('edu.module.task').search(cr, uid, [('seance', 'in', ids)], context=context)
 
     def _update_list_by_work(self, cr, uid, ids, context=None):
-        seance_ids = self.pool.get('edu.module.seance').search(cr, uid, [('work_id','in',ids)], context=context)
-        return self.pool.get('edu.module.task').search(cr, uid, [('seance_id','in', seance_ids)], context=context)
+        seances = self.pool.get('edu.module.seance').search(cr, uid, [('work','in',ids)], context=context)
+        return self.pool.get('edu.module.task').search(cr, uid, [('seance','in', seances)], context=context)
 # Onchange Functions
-    def onchange_seance_id(self, cr, uid, ids, seance_id, context=None):
-        if seance_id:
-            seance = self.pool.get('edu.module.seance').browse(cr, uid, seance_id, context=context)
+    def onchange_seance(self, cr, uid, ids, seance, context=None):
+        if seance:
+            seance = self.pool.get('edu.module.seance').browse(cr, uid, seance, context=context)
             return {'value':{
-                'module_id': seance.work_id.module_id.id,
+                'module': seance.work.module.id,
             }}
         return {'value': {}}
 # OpenChatter functions
@@ -68,34 +66,34 @@ class edu_module_task(osv.Model):
             readonly = True,
             states = {'draft': [('readonly',False)]},
         ),
-        'module_id': fields.related(
-            'seance_id',
-            'work_id',
-            'module_id',
+        'module': fields.related(
+            'seance',
+            'work',
+            'module',
             type='many2one',
             relation = 'edu.module',
             string = 'Module',
             readonly = True,
             store = {
                 'edu.module.task': (lambda self, cr, uid, ids, c={}: ids, [], 10),
-                'edu.module.seance': (_update_list_by_seance, ['work_id'], 20),
-                'edu.module.work': (_update_list_by_work, ['module_id'], 30),
+                'edu.module.seance': (_update_list_by_seance, ['work'], 20),
+                'edu.module.work': (_update_list_by_work, ['module'], 30),
             },
         ),
-        'work_id': fields.related(
-            'seance_id',
-            'work_id',
+        'work': fields.related(
+            'seance',
+            'work',
             type='many2one',
             relation = 'edu.module.work',
             string = 'Module Work',
             readonly = True,
             store = {
                 'edu.module.task': (lambda self, cr, uid, ids, c={}: ids, [], 10),
-                'edu.module.seance': (_update_list_by_seance, ['work_id'], 20),
-                'edu.module.work': (_update_list_by_work, ['module_id'], 30),
+                'edu.module.seance': (_update_list_by_seance, ['work'], 20),
+                'edu.module.work': (_update_list_by_work, ['module'], 30),
             },
         ),
-        'seance_id': fields.many2one(
+        'seance': fields.many2one(
             'edu.module.seance',
             'Module Seance',
             required = True,
@@ -131,4 +129,4 @@ class edu_module_task(osv.Model):
         'sequence': 1,
     }
 # Sorting Order
-    _order = 'seance_id, sequence'
+    _order = 'seance, sequence'

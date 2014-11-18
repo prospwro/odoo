@@ -49,21 +49,21 @@ msgstr "Обычный модуль"
 
 #. module: irsid_edu
 #: view:edu.grade:0
-#: field:edu.grade,time_id:0
+#: field:edu.grade,time:0
 #: view:edu.grade.line:0
-#: field:edu.grade.line,time_id:0
+#: field:edu.grade.line,time:0
 #: view:edu.module.seance:0
-#: field:edu.module.seance,time_id:0
+#: field:edu.module.seance,time:0
 #: view:edu.module.work:0
-#: field:edu.module.work,time_id:0
+#: field:edu.module.work,time:0
 #: view:edu.program:0
-#: field:edu.program,time_ids:0
-#: field:edu.schedule.line,time_id:0
+#: field:edu.program,times:0
+#: field:edu.schedule.line,time:0
 #: view:edu.seance:0
-#: field:edu.seance,time_id:0
+#: field:edu.seance,time:0
 #: view:edu.time:0
 #: view:edu.work:0
-#: field:edu.work,time_id:0
+#: field:edu.work,time:0
 #: model:ir.model,name:irsid_edu.model_edu_time
 msgid "Time"
 msgstr "Время"
@@ -129,7 +129,7 @@ msgid "Partner Targeted"
 msgstr "Целевое обучение"
 
 #. module: irsid_edu
-#: field:edu.module,subsection_id:0
+#: field:edu.module,subsection:0
 #: model:ir.model,name:irsid_edu.model_edu_program_subsection
 msgid "Program Subsection"
 msgstr "Часть"
@@ -551,7 +551,7 @@ msgstr "Категория"
 
 #. module: irsid_edu
 #: view:edu.speciality:0
-#: field:edu.speciality,program_ids:0
+#: field:edu.speciality,programs:0
 msgid "Education Programs"
 msgstr "Образовательные программы"
 
@@ -650,7 +650,7 @@ msgstr "Время окончания"
 
 #. module: irsid_edu
 #: view:edu.grade:0
-#: field:edu.grade,seance_id:0
+#: field:edu.grade,seance:0
 #: view:edu.module.task:0
 #: view:edu.seance:0
 #: model:ir.model,name:irsid_edu.model_edu_seance
@@ -755,10 +755,10 @@ msgstr "Работа не должна повторяться!"
 
 #. module: irsid_edu
 #: view:edu.module:0
-#: field:edu.module.record,module_id:0
-#: field:edu.module.section,module_id:0
-#: field:edu.module.work,module_id:0
-#: field:edu.work,module_id:0
+#: field:edu.module.record,module:0
+#: field:edu.module.section,module:0
+#: field:edu.module.work,module:0
+#: field:edu.work,module:0
 msgid "Training Module"
 msgstr "Учебный модуль"
 
@@ -797,17 +797,17 @@ msgstr "Программа"
 
 #. module: irsid_edu
 #: view:edu.module.seance:0
-#: field:edu.module.seance,period_id:0
+#: field:edu.module.seance,period:0
 #: view:edu.module.work:0
-#: field:edu.module.work,period_id:0
+#: field:edu.module.work,period:0
 #: view:edu.schedule.line:0
-#: field:edu.schedule.line,period_id:0
+#: field:edu.schedule.line,period:0
 #: view:edu.seance:0
-#: field:edu.seance,period_id:0
+#: field:edu.seance,period:0
 #: view:edu.time:0
-#: field:edu.time,period_id:0
+#: field:edu.time,period:0
 #: view:edu.work:0
-#: field:edu.work,period_id:0
+#: field:edu.work,period:0
 #: model:ir.model,name:irsid_edu.model_edu_period
 msgid "Period"
 msgstr "Период"
@@ -1099,15 +1099,15 @@ msgstr "График"
 
 #. module: irsid_edu
 #: view:edu.grade:0
-#: field:edu.grade,type_id:0
+#: field:edu.grade,type:0
 #: view:edu.grade.line:0
-#: field:edu.grade.line,type_id:0
+#: field:edu.grade.line,type:0
 #: view:edu.module.seance:0
-#: field:edu.module.seance,type_id:0
+#: field:edu.module.seance,type:0
 #: view:edu.module.work:0
-#: field:edu.module.work,type_id:0
-#: field:edu.seance,type_id:0
-#: field:edu.work,type_id:0
+#: field:edu.module.work,type:0
+#: field:edu.seance,type:0
+#: field:edu.work,type:0
 #: model:ir.model,name:irsid_edu.model_edu_work_type
 msgid "Work Type"
 msgstr "Вид работы"
@@ -1120,7 +1120,7 @@ msgid "Points"
 msgstr "Баллов"
 
 #. module: irsid_edu
-#: field:edu.pricelist.line,pricelist_program_id:0
+#: field:edu.pricelist.line,pricelist_program:0
 msgid "Pricelist Program"
 msgstr "Программа прейскуранта"
 
@@ -1323,7 +1323,7 @@ msgid "Номер документа"
 msgstr "Номер документа"
 
 #. module: irsid_edu
-#: field:edu.module.seance,section_ids:0
+#: field:edu.module.seance,sections:0
 #: view:edu.module.section:0
 msgid "Module Sections"
 msgstr "Разделы модуля"
@@ -1427,7 +1427,7 @@ msgstr "Строки приказа"
 #: field:edu.application,type:0
 #: view:edu.application.line:0
 #: field:edu.application.line,type:0
-#: field:edu.scale.mark,type_id:0
+#: field:edu.scale.mark,type:0
 #: field:edu.journal,recordtype:0
 #: view:edu.module.task:0
 #: field:edu.module.task,type:0
@@ -1461,10 +1461,10 @@ msgstr "Дата начала действия"
 
 #. module: irsid_edu
 #: view:edu.module.section:0
-#: field:edu.module.work,seance_ids:0
+#: field:edu.module.work,seances:0
 #: view:edu.seance:0
 #: view:edu.student.program:0
-#: field:edu.work,seance_ids:0
+#: field:edu.work,seances:0
 #: model:ir.actions.act_window,name:irsid_edu.action_edu_seance
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_seance
 msgid "Seances"
@@ -1643,19 +1643,19 @@ msgstr "Приказы"
 
 #. module: irsid_edu
 #: view:edu.application.line:0
-#: field:edu.application.line,speciality_id:0
-#: field:edu.competence,speciality_id:0
+#: field:edu.application.line,speciality:0
+#: field:edu.competence,speciality:0
 #: view:edu.order.line:0
-#: field:edu.order.line,speciality_id:0
+#: field:edu.order.line,speciality:0
 #: view:edu.plan:0
-#: field:edu.plan,speciality_id:0
+#: field:edu.plan,speciality:0
 #: view:edu.pricelist.line:0
-#: field:edu.pricelist.line,speciality_id:0
+#: field:edu.pricelist.line,speciality:0
 #: view:edu.program:0
-#: field:edu.program,speciality_id:0
+#: field:edu.program,speciality:0
 #: view:edu.speciality:0
 #: view:edu.student.program:0
-#: field:edu.student.program,speciality_id:0
+#: field:edu.student.program,speciality:0
 #: model:ir.model,name:irsid_edu.model_edu_speciality
 msgid "Speciality"
 msgstr "Специальность"
@@ -1724,18 +1724,18 @@ msgid "Задание обновлено"
 msgstr "Задание обновлено"
 
 #. module: irsid_edu
-#: field:edu.grade.line,modulework_id:0
+#: field:edu.grade.line,modulework:0
 #: view:edu.module:0
-#: field:edu.module,work_ids:0
+#: field:edu.module,works:0
 #: view:edu.module.record:0
-#: field:edu.module.record,work_ids:0
-#: field:edu.module.seance,work_id:0
-#: field:edu.module.task,work_id:0
+#: field:edu.module.record,works:0
+#: field:edu.module.seance,work:0
+#: field:edu.module.task,work:0
 #: view:edu.module.work:0
 #: view:edu.record:0
-#: field:edu.record,modulework_ids:0
-#: field:edu.seance,modulework_id:0
-#: field:edu.work,modulework_id:0
+#: field:edu.record,moduleworks:0
+#: field:edu.seance,modulework:0
+#: field:edu.work,modulework:0
 #: model:ir.actions.act_window,name:irsid_edu.action_edu_module_work
 #: model:ir.model,name:irsid_edu.model_edu_module_work
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_module_work
@@ -1744,31 +1744,31 @@ msgstr "Работа по модулю"
 
 #. module: irsid_edu
 #: view:edu.admission.line:0
-#: field:edu.admission.line,program_id:0
+#: field:edu.admission.line,program:0
 #: view:edu.application:0
 #: view:edu.application.line:0
 #: view:edu.grade:0
-#: field:edu.grade,program_id:0
+#: field:edu.grade,program:0
 #: view:edu.module:0
 #: view:edu.module.work:0
-#: field:edu.module.work,program_id:0
+#: field:edu.module.work,program:0
 #: view:edu.order:0
 #: view:edu.order.line:0
 #: view:edu.plan:0
 #: view:edu.pricelist:0
 #: view:edu.pricelist.line:0
 #: view:edu.program:0
-#: field:edu.record,program_id:0
+#: field:edu.record,program:0
 #: view:edu.schedule:0
 #: view:edu.schedule.line:0
-#: field:edu.schedule.line,program_id:0
+#: field:edu.schedule.line,program:0
 #: view:edu.seance:0
-#: field:edu.seance,program_id:0
+#: field:edu.seance,program:0
 #: view:edu.student.program:0
 #: view:edu.time:0
-#: field:edu.time,program_id:0
+#: field:edu.time,program:0
 #: view:edu.work:0
-#: field:edu.work,program_id:0
+#: field:edu.work,program:0
 #: view:edu.work.order:0
 msgid "Program"
 msgstr "Программа"
@@ -1779,17 +1779,17 @@ msgid "Lines By Order"
 msgstr "Позиции приказа"
 
 #. module: irsid_edu
-#: field:edu.application,program_id:0
-#: field:edu.application.line,program_id:0
-#: field:edu.module,program_id:0
-#: field:edu.order,program_id:0
-#: field:edu.order.line,program_id:0
-#: field:edu.plan,program_id:0
-#: field:edu.pricelist,program_id:0
-#: field:edu.pricelist.line,program_id:0
-#: field:edu.schedule,program_id:0
-#: field:edu.student.program,program_id:0
-#: field:edu.work.order,program_id:0
+#: field:edu.application,program:0
+#: field:edu.application.line,program:0
+#: field:edu.module,program:0
+#: field:edu.order,program:0
+#: field:edu.order.line,program:0
+#: field:edu.plan,program:0
+#: field:edu.pricelist,program:0
+#: field:edu.pricelist.line,program:0
+#: field:edu.schedule,program:0
+#: field:edu.student.program,program:0
+#: field:edu.work.order,program:0
 msgid "Education Program"
 msgstr "Образовательная программа"
 
@@ -2339,7 +2339,7 @@ msgid "Messages and communication history"
 msgstr "Сообщения и история переписки"
 
 #. module: irsid_edu
-#: field:edu.order.line,order_program_id:0
+#: field:edu.order.line,order_program:0
 msgid "Order Program"
 msgstr "Программа"
 
@@ -2358,19 +2358,19 @@ msgstr "Раздел обновлён"
 
 #. module: irsid_edu
 #: view:edu.grade:0
-#: field:edu.grade,module_id:0
+#: field:edu.grade,module:0
 #: view:edu.grade.line:0
-#: field:edu.grade.line,module_id:0
+#: field:edu.grade.line,module:0
 #: view:edu.module.record:0
-#: field:edu.module.seance,module_id:0
+#: field:edu.module.seance,module:0
 #: view:edu.module.section:0
 #: view:edu.module.task:0
-#: field:edu.module.task,module_id:0
+#: field:edu.module.task,module:0
 #: view:edu.module.work:0
 #: view:edu.record:0
-#: field:edu.record,module_id:0
+#: field:edu.record,module:0
 #: view:edu.seance:0
-#: field:edu.seance,module_id:0
+#: field:edu.seance,module:0
 #: view:edu.work:0
 msgid "Module"
 msgstr "Модуль"
@@ -2804,14 +2804,14 @@ msgstr "Направление приёма"
 
 #. module: irsid_edu
 #: view:edu.grade:0
-#: field:edu.grade,st_program_ids:0
+#: field:edu.grade,st_programs:0
 #: view:edu.record:0
-#: field:edu.record,st_program_ids:0
+#: field:edu.record,st_programs:0
 #: view:edu.seance:0
-#: field:edu.seance,st_program_ids:0
+#: field:edu.seance,st_programs:0
 #: view:edu.student.program:0
 #: view:edu.work:0
-#: field:edu.work,st_program_ids:0
+#: field:edu.work,st_programs:0
 #: model:ir.actions.act_window,name:irsid_edu.action_edu_student_program
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_student_program
 msgid "Student Programs"
@@ -2849,8 +2849,8 @@ msgstr "Проректор"
 
 #. module: irsid_edu
 #: view:edu.module.seance:0
-#: field:edu.module.task,seance_id:0
-#: field:edu.seance,moduleseance_id:0
+#: field:edu.module.task,seance:0
+#: field:edu.seance,moduleseance:0
 #: model:ir.model,name:irsid_edu.model_edu_module_seance
 msgid "Module Seance"
 msgstr "Занятие модуля"
@@ -3472,14 +3472,14 @@ msgstr "Зачисление"
 
 #. module: irsid_edu
 #: view:edu.competence:0
-#: field:edu.competence,module_ids:0
+#: field:edu.competence,modules:0
 #: view:edu.module:0
 #: view:edu.plan:0
-#: field:edu.plan,module_ids:0
+#: field:edu.plan,modules:0
 #: view:edu.program:0
-#: field:edu.program,electivemodule_ids:0
-#: field:edu.program,mainmodule_ids:0
-#: field:edu.program,module_ids:0
+#: field:edu.program,electivemodules:0
+#: field:edu.program,mainmodules:0
+#: field:edu.program,modules:0
 #: model:ir.actions.act_window,name:irsid_edu.action_edu_module
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_module
 msgid "Modules"
@@ -3759,16 +3759,16 @@ msgid "Approved"
 msgstr "Утвержден"
 
 #. module: irsid_edu
-#: field:edu.competence,program_ids:0
+#: field:edu.competence,programs:0
 #: view:edu.program:0
-#: field:edu.stage,program_ids:0
+#: field:edu.stage,programs:0
 #: view:edu.student.program:0
 #: model:ir.actions.act_window,name:irsid_edu.action_edu_program
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_configuration_programs
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_program
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_programs
 #: view:res.partner:0
-#: field:res.partner,program_ids:0
+#: field:res.partner,programs:0
 msgid "Programs"
 msgstr "Программы"
 
@@ -4042,19 +4042,19 @@ msgstr "Подписчики"
 
 #. module: irsid_edu
 #: view:edu.grade:0
-#: field:edu.grade,employee_id:0
+#: field:edu.grade,employee:0
 #: view:edu.grade.line:0
-#: field:edu.grade.line,employee_id:0
+#: field:edu.grade.line,employee:0
 #: view:edu.module:0
-#: field:edu.module,employee_id:0
-#: field:edu.module.seance,employee_id:0
+#: field:edu.module,employee:0
+#: field:edu.module.seance,employee:0
 #: view:edu.module.work:0
-#: field:edu.module.work,employee_id:0
-#: field:edu.record,employee_id:0
+#: field:edu.module.work,employee:0
+#: field:edu.record,employee:0
 #: view:edu.seance:0
-#: field:edu.seance,employee_id:0
+#: field:edu.seance,employee:0
 #: view:edu.work:0
-#: field:edu.work,employee_id:0
+#: field:edu.work,employee:0
 #: model:res.groups,name:irsid_edu.group_edu_employee
 msgid "Employee"
 msgstr "Сотрудник"
@@ -4283,11 +4283,11 @@ msgstr "Мест"
 #: view:edu.grade:0
 #: view:edu.module:0
 #: view:edu.record:0
-#: field:edu.seance,work_id:0
-#: field:edu.student.program,work_ids:0
+#: field:edu.seance,work:0
+#: field:edu.student.program,works:0
 #: view:edu.work:0
 #: view:edu.work.order:0
-#: field:edu.work.order,work_ids:0
+#: field:edu.work.order,works:0
 #: model:ir.actions.act_window,name:irsid_edu.action_edu_work
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_work
 msgid "Training Work"
@@ -4486,13 +4486,13 @@ msgid "Раздел/Цикл"
 msgstr "Раздел/Цикл"
 
 #. module: irsid_edu
-#: field:edu.application.line,st_program_id:0
+#: field:edu.application.line,st_program:0
 #: view:edu.grade.line:0
-#: field:edu.grade.line,st_program_id:0
-#: field:edu.order.line,st_program_id:0
+#: field:edu.grade.line,st_program:0
+#: field:edu.order.line,st_program:0
 #: view:edu.record:0
 #: view:edu.record.line:0
-#: field:edu.record.line,st_program_id:0
+#: field:edu.record.line,st_program:0
 #: view:edu.student.program:0
 #: model:ir.model,name:irsid_edu.model_edu_student_program
 msgid "Student Program"
@@ -4698,7 +4698,7 @@ msgstr "Описание"
 
 #. module: irsid_edu
 #: view:edu.module.seance:0
-#: field:edu.module.section,seance_ids:0
+#: field:edu.module.section,seances:0
 msgid "Module Seances"
 msgstr "Занятия модуля"
 
@@ -4772,7 +4772,7 @@ msgid "Заявление обновлено"
 msgstr "Заявление обновлено"
 
 #. module: irsid_edu
-#: field:edu.module,section_id:0
+#: field:edu.module,section:0
 #: model:ir.model,name:irsid_edu.model_edu_program_section
 msgid "Program Section"
 msgstr "Раздел программы"

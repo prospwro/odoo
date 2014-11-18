@@ -21,12 +21,10 @@
 ##############################################################################
 
 from openerp.osv import osv, fields
-from core import *
 
 class edu_module_section(osv.Model):
     _name = 'edu.module.section'
     _description = 'Module Section'
-    _inherit = 'edu.doc'
     _track = {
         'state': {
             'irsid_edu.mt_module_section_updated': lambda self, cr, uid, obj, ctx=None: True,
@@ -51,7 +49,7 @@ class edu_module_section(osv.Model):
             size = 128,
             required = True,
         ),
-        'module_id': fields.many2one(
+        'module': fields.many2one(
             'edu.module',
             'Training Module',
             required = True,
@@ -60,11 +58,11 @@ class edu_module_section(osv.Model):
         'sequence': fields.integer(
             'Sequence',
         ),
-        'seance_ids':fields.many2many(
+        'seances':fields.many2many(
             'edu.module.seance',
             'edu_section_seance_rel',
-            'section_id',
-            'seance_id',
+            'section',
+            'seance',
             'Module Seances',
         ),
         'description': fields.text(

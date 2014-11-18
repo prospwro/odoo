@@ -20,21 +20,17 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields
 
-class edu_time_category(osv.Model):
+class edu_time_category(models.Model):
     _name = 'edu.time.category'
     _description = 'Time Category'
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 64,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 16,
-            required = True,
-        ),
-    }
+    # Fields
+    name = fields.Char(
+        string='Name',
+        required=True,
+    )
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )

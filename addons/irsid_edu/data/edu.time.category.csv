@@ -1,0 +1,8 @@
+id,code,name
+time_category_1,ОснОбуч,Основное обучение
+time_category_2,Практ,Практики
+time_category_3,ИА,Итоговая аттестация
+time_category_4,Кан,Каникулы
+time_category_5,НИР,Исследовательская подготовка
+time_category_6,ОбрП,Образовательная подготовка
+time_category_7,КандЭкз,Кандидатские экзамены

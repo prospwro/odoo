@@ -170,12 +170,12 @@
     </tr>
 </blockTable>
 <para style="Header">[[ o.name ]]</para>
-<para style="MainText">Сотрудник: [[ o.employee_id.name ]]</para>
+<para style="MainText">Сотрудник: [[ o.employee.name ]]</para>
 <para style="MainText">Учебный год: [[ o.year_id.name ]]</para>
-<para style="MainText">Образовательная программа: [[ o.program_id.code) ]]:[[ o.program_id.name) ]]</para>
-<para style="MainText">Модуль: [[ o.module_id.code) ]]:[[ o.module_id.name) ]]</para>
-<para style="MainText">Учебное время: [[ o.time_id.code) ]]</para>
-<para style="MainText">Вид работы: [[ o.type_id.name) ]]</para>
+<para style="MainText">Образовательная программа: [[ o.program.code) ]]:[[ o.program.name) ]]</para>
+<para style="MainText">Модуль: [[ o.module.code) ]]:[[ o.module.name) ]]</para>
+<para style="MainText">Учебное время: [[ o.time.code) ]]</para>
+<para style="MainText">Вид работы: [[ o.type.name) ]]</para>
 <para style="MainText">Система оценки: [[ o.scale.name) ]]</para>
 <para style="MainText">Часов обучения: [[ o.st_hours) ]]</para>
 <para style="MainText">Часов занятий: [[ o.seance_hours) ]]</para>
@@ -198,7 +198,7 @@
     <tr>
         <para style="MainTextCentered">[[ repeatIn(o.line_ids, 'line') ]]</para>
         <td>
-            <para style="MainTextCentered">[[ line.st_program_id.name ]]</para>
+            <para style="MainTextCentered">[[ line.st_program.name ]]</para>
         </td>
        <td>
             <para style="MainTextCentered">[[ line.mark.name ]]</para>

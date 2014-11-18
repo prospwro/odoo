@@ -14,7 +14,6 @@
                     <field name="code"/>
                     <field name="name"/>
                     <field name="level"/>
-                    <field name="rank"/>
                     <field name="licensed"/>
                     <field name="accredited"/>
                 </tree>
@@ -47,6 +46,7 @@
                         </h2>
                         <group>
                             <field name="level"/>
+                            <field name="level_pre"/>
                             <field name="rank"/>
                             <field name="licensed"/>
                             <field name="accredited"/>

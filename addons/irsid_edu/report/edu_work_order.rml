@@ -171,7 +171,7 @@
 </blockTable>
 <para style="Header">[[ o.name ]]</para>
 <para style="MainText">Учебный год: [[ o.year_id.name ]]</para>
-<para style="MainText">Образовательная программа: [[ o.program_id.name ]]</para>
+<para style="MainText">Образовательная программа: [[ o.program.name ]]</para>
 <para style="MainText">Стадия: [[ o.stage_id.description ]]</para>
 <spacer length="20"/>
 <para style="MainText">Выполнить учебную работу в следующем объеме:</para>
@@ -197,18 +197,18 @@
         </td>
     </tr>
     <tr>
-        <para style="MainTextCentered">[[ repeatIn(o.work_ids, 'work') ]]</para>
+        <para style="MainTextCentered">[[ repeatIn(o.works, 'work') ]]</para>
         <td>
-            <para style="MainTextCentered">[[ work.module_id.code ]]: [[ work.module_id.name ]]</para>
+            <para style="MainTextCentered">[[ work.module.code ]]: [[ work.module.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ work.time_id.code ]]</para>
+            <para style="MainTextCentered">[[ work.time.code ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ work.type_id.name ]]</para>
+            <para style="MainTextCentered">[[ work.type.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ work.employee_id.name ]]</para>
+            <para style="MainTextCentered">[[ work.employee.name ]]</para>
         </td>
         <td>
             <para style="MainTextCentered">[[ work.st_hours ]]</para>

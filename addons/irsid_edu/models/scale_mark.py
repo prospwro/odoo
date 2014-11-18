@@ -20,12 +20,18 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, api
+from openerp.exceptions import ValidationError
 
 class edu_scale_mark(models.Model):
     _name = 'edu.scale.mark'
     _description = 'Mark'
     _order = 'scale,value'
+    # Functions
+    @api.constrains('value')
+    def _check_value(self):
+        if self.value < self.scale.min_value or self.value > self.scale.max_value:
+            raise ValidationError("Mark Value must be in range of Scale")
     # Fields
     name = fields.Char(
         string = 'Name',
@@ -35,7 +41,7 @@ class edu_scale_mark(models.Model):
         string = 'Code',
         required = True,
     )
-    value = fields.Boolean(
+    value = fields.Float(
         string = 'Value',
         required = True,
     )

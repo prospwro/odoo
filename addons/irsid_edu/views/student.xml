@@ -285,7 +285,7 @@
                     <filter
                         string="Applicant"
                         name="applicant"
-                        domain="[('student','=',True),'|',('program_ids','=',False),('program_ids.stage_id.state','in',['draft'])]"/>
+                        domain="[('student','=',True),'|',('programs','=',False),('programs.stage_id.state','in',['draft'])]"/>
                     <separator/>
                     <group
                         expand="0"
@@ -304,7 +304,7 @@
             <field name="name">Students</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="domain">[('student','=',True),('program_ids.stage_id.state','in',['open'])]
+            <field name="domain">[('student','=',True),('programs.stage_id.state','in',['open'])]
             </field>
             <field name="context">{'default_student': 1}</field>
             <field
@@ -372,7 +372,7 @@
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="domain">
-                [('student','=',True),('program_ids.stage_id.state','in',['done','pending','canceled'])]
+                [('student','=',True),('programs.stage_id.state','in',['done','pending','canceled'])]
             </field>
             <field name="context">{'default_student': 1}</field>
             <field
@@ -441,7 +441,7 @@
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="domain">
-                [('student','=',True),'|',('program_ids','=',False),('program_ids.stage_id.state','in',['draft','entrance'])]
+                [('student','=',True),'|',('programs','=',False),('programs.stage_id.state','in',['draft','entrance'])]
             </field>
             <field name="context">{'default_student': 1}</field>
             <field

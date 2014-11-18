@@ -39,7 +39,7 @@
                     <field name="statement_id"/>
                     <field name="year_id"/>
                     <field name="type"/>
-                    <field name="program_id"/>
+                    <field name="program"/>
                     <field name="stage_id"/>
                     <field name="author_id"/>
                     <field name="state"/>
@@ -198,12 +198,12 @@
                                     required="context.get('default_type',False) in ['admission']"
                                     on_change="onchange_line_id(line_id)"/>
                                 <field
-                                    name="st_program_id"
+                                    name="st_program"
                                     invisible="context.get('default_type',False) in ['admission']"
                                     required="context.get('default_type',False) not in ['admission']"
-                                    on_change="onchange_st_program_id(st_program_id)"/>
-                                <field name="program_id"/>
-                                <field name="speciality_id"/>
+                                    on_change="onchange_st_program(st_program)"/>
+                                <field name="program"/>
+                                <field name="speciality"/>
                                 <field name="mode_id"/>
                                 <field
                                     name="stage_id"
@@ -256,7 +256,7 @@
                     <field name="year_id"/>
                     <field name="type"/>
                     <field name="statement_id"/>
-                    <field name="program_id"/>
+                    <field name="program"/>
                     <field name="stage_id"/>
                     <field name="date"/>
                     <field name="date_start"/>
@@ -280,7 +280,7 @@
                         <filter
                             string="Program"
                             domain="[]"
-                            context="{'group_by':'program_id'}"/>
+                            context="{'group_by':'program'}"/>
                         <filter
                             string="Stage"
                             domain="[]"

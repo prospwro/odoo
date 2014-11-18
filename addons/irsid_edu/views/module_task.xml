@@ -21,8 +21,8 @@
                         name="sequence"
                         widget="handle"/>
                     <field name="name"/>
-                    <field name="module_id"/>
-                    <field name="seance_id"/>
+                    <field name="module"/>
+                    <field name="seance"/>
                     <field name="type"/>
                     <field name="state"/>
                 </tree>
@@ -90,12 +90,12 @@
                             </h2>
                         </div>
                         <group>
-                            <field name="module_id"/>
-                            <field name="work_id"/>
+                            <field name="module"/>
+                            <field name="work"/>
                             <field
-                                name="seance_id"
-                                domain="[('module_id','=',module_id)]"
-                                on_change="onchange_seance_id(seance_id)"/>
+                                name="seance"
+                                domain="[('module','=',module)]"
+                                on_change="onchange_seance(seance)"/>
                             <field name="type"/>
                             <field name="sequence"/>
                         </group>
@@ -128,8 +128,8 @@
                 name="arch"
                 type="xml">
                 <search string="Module Tasks">
-                    <field name="module_id"/>
-                    <field name="seance_id"/>
+                    <field name="module"/>
+                    <field name="seance"/>
                     <field name="type"/>
                     <field name="state"/>
                     <group
@@ -138,11 +138,11 @@
                         <filter
                             string="Module"
                             domain="[]"
-                            context="{'group_by':'module_id'}"/>
+                            context="{'group_by':'module'}"/>
                         <filter
                             string="Seance"
                             domain="[]"
-                            context="{'group_by':'seance_id'}"/>
+                            context="{'group_by':'seance'}"/>
                         <filter
                             string="Type"
                             domain="[]"

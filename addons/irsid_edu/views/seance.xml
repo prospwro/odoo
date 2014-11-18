@@ -9,10 +9,10 @@
             <field name="res_model">edu.grade</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{
-                'default_seance_id':active_id,
+                'default_seance':active_id,
                 'group_by':False}
             </field>
-            <field name="domain">[('seance_id','=',active_id)]</field>
+            <field name="domain">[('seance','=',active_id)]</field>
             <field
                 name="search_view_id"
                 ref="view_edu_grade_filter"/>
@@ -27,11 +27,11 @@
                 name="arch"
                 type="xml">
                 <calendar
-                    color="module_id"
+                    color="module"
                     date_start="datetime_start"
                     date_stop="datetime_stop"
                     string="Seances">
-                    <field name="employee_id"/>
+                    <field name="employee"/>
                     <field name="location_id"/>
                 </calendar>
             </field>
@@ -54,14 +54,14 @@
                         green:state=='approved'">
                     <field name="name"/>
                     <field name="year_id"/>
-                    <field name="program_id"/>
-                    <field name="module_id"/>
-                    <field name="period_id"/>
+                    <field name="program"/>
+                    <field name="module"/>
+                    <field name="period"/>
                     <field
-                        name="time_id"
+                        name="time"
                         invisible="1"/>
-                    <field name="type_id"/>
-                    <field name="employee_id"/>
+                    <field name="type"/>
+                    <field name="employee"/>
                     <field name="location_id"/>
                     <field name="datetime_start"/>
                     <field name="datetime_stop"/>
@@ -168,23 +168,23 @@
                         </div>
                         <group string="Summary">
                             <field
-                                name="work_id"
-                                on_change="onchange_work_id(work_id)"/>
+                                name="work"
+                                on_change="onchange_work(work)"/>
                             <field
-                                name="modulework_id"
+                                name="modulework"
                                 invisible="1"/>
                             <field
-                                name="moduleseance_id"
-                                on_change="onchange_moduleseance_id(moduleseance_id)"
-                                domain="[('work_id','=',modulework_id)]"/>
-                            <field name="module_id"/>
-                            <field name="time_id"/>
-                            <field name="type_id"/>
+                                name="moduleseance"
+                                on_change="onchange_moduleseance(moduleseance)"
+                                domain="[('work','=',modulework)]"/>
+                            <field name="module"/>
+                            <field name="time"/>
+                            <field name="type"/>
                             <field name="scale"/>
                         </group>
                         <group>
                             <group>
-                                <field name="employee_id"/>
+                                <field name="employee"/>
                                 <field name="location_id"/>
                                 <field
                                     name="datetime_start"
@@ -206,11 +206,11 @@
                                 <field name="description"/>
                             </page>
                             <page string="Student Programs">
-                                <field name="st_program_ids">
+                                <field name="st_programs">
                                     <tree>
                                         <field name="code"/>
                                         <field name="student_id"/>
-                                        <field name="program_id"/>
+                                        <field name="program"/>
                                         <field name="stage_id"/>
                                         <field name="plan_id"/>
                                         <field name="group_id"/>
@@ -249,14 +249,14 @@
                 <search string="Seances">
                     <field name="name"/>
                     <field name="year_id"/>
-                    <field name="program_id"/>
-                    <field name="period_id"/>
-                    <field name="time_id"/>
-                    <field name="module_id"/>
-                    <field name="type_id"/>
-                    <field name="employee_id"/>
+                    <field name="program"/>
+                    <field name="period"/>
+                    <field name="time"/>
+                    <field name="module"/>
+                    <field name="type"/>
+                    <field name="employee"/>
                     <field name="location_id"/>
-                    <field name="st_program_ids"/>
+                    <field name="st_programs"/>
                     <field name="state"/>
                     <group
                         expand="1"
@@ -267,33 +267,33 @@
                             domain="[]"
                             context="{'group_by':'year_id'}"/>
                         <filter
-                            name="gr_program_id"
+                            name="gr_program"
                             string="Program"
                             domain="[]"
-                            context="{'group_by':'program_id'}"/>
+                            context="{'group_by':'program'}"/>
                         <filter
-                            name="gr_period_id"
+                            name="gr_period"
                             string="Period"
                             domain="[]"
-                            context="{'group_by':'period_id'}"/>
+                            context="{'group_by':'period'}"/>
                         <filter
-                            name="gr_time_id"
+                            name="gr_time"
                             string="Time"
                             domain="[]"
-                            context="{'group_by':'time_id'}"/>
+                            context="{'group_by':'time'}"/>
                         <filter
-                            name="gr_module_id"
+                            name="gr_module"
                             string="Module"
                             domain="[]"
-                            context="{'group_by':'module_id'}"/>
+                            context="{'group_by':'module'}"/>
                         <filter
                             string="Type"
                             domain="[]"
-                            context="{'group_by':'type_id'}"/>
+                            context="{'group_by':'type'}"/>
                         <filter
                             string="Employee"
                             domain="[]"
-                            context="{'group_by':'employee_id'}"/>
+                            context="{'group_by':'employee'}"/>
                         <filter
                             string="Location"
                             domain="[]"
@@ -315,9 +315,9 @@
             <field name="view_mode">calendar,tree,form</field>
             <field name="context">{
                 'search_default_gr_year_id':1,
-                'search_default_gr_program_id':1,
-                'search_default_gr_period_id':1,
-                'search_default_gr_module_id':1}
+                'search_default_gr_program':1,
+                'search_default_gr_period':1,
+                'search_default_gr_module':1}
             </field>
             <field
                 name="search_view_id"

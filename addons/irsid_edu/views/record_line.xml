@@ -18,7 +18,7 @@
                         red:state in ('draft','rejected');
                         green:state=='approved'">
                     <field name="code"/>
-                    <field name="st_program_id"/>
+                    <field name="st_program"/>
                     <field name="mark"/>
                     <field name="state"/>
                 </tree>
@@ -83,11 +83,11 @@
                                 readonly="1"/>
                         </h1>
                         <label
-                            for="st_program_id"
+                            for="st_program"
                             class="oe_edit_only"/>
                         <h2>
                             <field
-                                name="st_program_id"
+                                name="st_program"
                                 domain="[('record_ids','=',record_id),('state','=','open')]"/>
                         </h2>
                         <group>
@@ -101,7 +101,7 @@
                             <page string="Grade Lines">
                                 <field name="gradeline_ids">
                                     <tree string="Grade Lines">
-                                        <field name="st_program_id"/>
+                                        <field name="st_program"/>
                                         <field name="mark"/>
                                         <field name="state"/>
                                     </tree>
@@ -131,7 +131,7 @@
                 type="xml">
                 <search string="Search Record Lines">
                     <field name="code"/>
-                    <field name="st_program_id"/>
+                    <field name="st_program"/>
                     <field name="mark"/>
                     <field name="state"/>
                     <group
@@ -140,7 +140,7 @@
                         <filter
                             string="Student Program"
                             domain="[]"
-                            context="{'group_by':'st_program_id'}"/>
+                            context="{'group_by':'st_program'}"/>
                         <filter
                             string="Mark"
                             domain="[]"
@@ -157,7 +157,7 @@
             <field name="res_model">edu.record.line</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{'group_by': False}</field>
-            <field name="domain">[('st_program_id','=',active_id)]</field>
+            <field name="domain">[('st_program','=',active_id)]</field>
             <field
                 name="search_view_id"
                 ref="view_edu_record_line_filter"/>

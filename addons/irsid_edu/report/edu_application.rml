@@ -218,13 +218,13 @@
             <para style="MainTextCentered">[[ o.type not in ['admission'] and removeParentNode('td') ]][[ line.line_id.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ o.type in ['admission'] and removeParentNode('td') ]][[ line.st_program_id.name ]]</para>
+            <para style="MainTextCentered">[[ o.type in ['admission'] and removeParentNode('td') ]][[ line.st_program.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ line.program_id.code ]]: [[ line.program_id.name ]]</para>
+            <para style="MainTextCentered">[[ line.program.code ]]: [[ line.program.name ]]</para>
         </td>
         <td>
-            <para style="MainTextCentered">[[ line.speciality_id.code ]] [[ line.speciality_id.name ]]</para>
+            <para style="MainTextCentered">[[ line.speciality.code ]] [[ line.speciality.name ]]</para>
         </td>
         <td>
             <para style="MainTextCentered">[[ line.mode_id.name ]]</para>

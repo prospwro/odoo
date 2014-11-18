@@ -158,7 +158,7 @@
                                         string="Admission Lines"
                                         editable="bottom">
                                         <field name="name"/>
-                                        <field name="program_id"/>
+                                        <field name="program"/>
                                         <field name="target_id"/>
                                         <field name="seats"/>
                                         <field name="note"/>

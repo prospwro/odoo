@@ -12,8 +12,8 @@
                 type="xml">
                 <tree
                     string="Levels"
-                    version="7.0"
                     editable="bottom">
+                    <field name="sequence" widget="handle"/>
                     <field name="code"/>
                     <field name="name"/>
                 </tree>
@@ -29,8 +29,7 @@
                 name="arch"
                 type="xml">
                 <form
-                    string="Level"
-                    version="7.0">
+                    string="Level">
                     <sheet>
                         <group>
                             <field name="code"/>

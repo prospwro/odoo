@@ -21,7 +21,7 @@
                         name="sequence"
                         widget="handle"/>
                     <field name="name"/>
-                    <field name="module_id"/>
+                    <field name="module"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -89,7 +89,7 @@
                         </div>
                         <group>
                             <field
-                                name="module_id"
+                                name="module"
                                 invisible="1"/>
                             <field name="sequence"/>
                         </group>
@@ -101,16 +101,16 @@
                             </page>
                             <page string="Seances">
                                 <field
-                                    name="seance_ids"
+                                    name="seances"
                                     readonly="1">
                                     <tree>
                                         <field
                                             name="sequence"
                                             widget="handle"/>
                                         <field name="name"/>
-                                        <field name="type_id"/>
-                                        <field name="time_id"/>
-                                        <field name="employee_id"/>
+                                        <field name="type"/>
+                                        <field name="time"/>
+                                        <field name="employee"/>
                                     </tree>
                                 </field>
                             </page>
@@ -138,7 +138,7 @@
                 type="xml">
                 <search string="Module Sections">
                     <field name="name"/>
-                    <field name="module_id"/>
+                    <field name="module"/>
                     <field name="state"/>
                     <group
                         expand="1"
@@ -146,7 +146,7 @@
                         <filter
                             string="Module"
                             domain="[]"
-                            context="{'group_by':'module_id'}"/>
+                            context="{'group_by':'module'}"/>
                         <filter
                             string="State"
                             domain="[]"

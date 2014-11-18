@@ -27,15 +27,15 @@ class report_edu_module_work(osv.osv):
     _description = "Module Work Analysis"
     _auto = False
     _columns = {
-        'program_id': fields.many2one('edu.program','Academic Program', readonly=True),
-        'section_id': fields.many2one('edu.program.section','Program Section', readonly=True),
-        'subsection_id': fields.many2one('edu.program.subsection','Program Subsection', readonly=True),
-        'module_id': fields.many2one('edu.module','Module', readonly=True),
+        'program': fields.many2one('edu.program','Academic Program', readonly=True),
+        'section': fields.many2one('edu.program.section','Program Section', readonly=True),
+        'subsection': fields.many2one('edu.program.subsection','Program Subsection', readonly=True),
+        'module': fields.many2one('edu.module','Module', readonly=True),
         'time': fields.char('Time', size=32, readonly=True),
         'sequence': fields.integer('Sequence', readonly=True),
         'timecategory_id': fields.many2one('edu.time.category','Time Category', readonly=True),
-        'period_id': fields.many2one('edu.period','Period', readonly=True),
-        'type_id': fields.many2one('edu.work.type','Type', readonly=True),
+        'period': fields.many2one('edu.period','Period', readonly=True),
+        'type': fields.many2one('edu.work.type','Type', readonly=True),
         'location_id': fields.many2one('edu.location', 'Location', readonly=True),
         'teacher_id': fields.many2one('hr.employee', 'Teacher', readonly=True),
 #       Часов работы студента
@@ -52,23 +52,23 @@ class report_edu_module_work(osv.osv):
             CREATE view report_edu_module_work as
                 SELECT
                     work.id as id,
-                    module.program_id as program_id,
-                    module.section_id as section_id,
-                    module.subsection_id as subsection_id,
-                    module.id as module_id,
-                    program.id as moduleprogram_id,
+                    module.program as program,
+                    module.section as section,
+                    module.subsection as subsection,
+                    module.id as module,
+                    program.id as moduleprogram,
                     time.name as time,
                     time.sequence as sequence,
                     time.category_id as timecategory_id,
-                    time.period_id as period_id,
-                    work.type_id as type_id,
+                    time.period as period,
+                    work.type as type,
                     work.location_id as location_id,
                     work.teacher_id as teacher_id,
                     work.st_hours as st_hours,
                     work.emp_hours as emp_hours,
                     work.seance_hours as seance_hours
                 FROM edu_module_work as work, edu_module_program as program, edu_module as module, edu_time as time
-                WHERE work.program_id = program.id AND program.module_id = module.id AND work.time_id = time.id
+                WHERE work.program = program.id AND program.module = module.id AND work.time = time.id
         """)
 
 

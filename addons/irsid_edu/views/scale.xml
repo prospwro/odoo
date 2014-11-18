@@ -11,9 +11,7 @@
                 name="arch"
                 type="xml">
                 <tree
-                    string="Scales"
-                    version="7.0"
-                    editable="bottom">
+                    string="Scales">
                     <field name="code"/>
                     <field name="name"/>
                     <field name="description"/>
@@ -22,18 +20,53 @@
         </record>
 
         <record
+            id="view_edu_scale_form"
+            model="ir.ui.view">
+            <field name="name">edu.scale.form</field>
+            <field name="model">edu.scale</field>
+            <field
+                name="arch"
+                type="xml">
+                <form
+                    string="Scale">
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="min_value"/>
+                        <field name="max_value"/>
+                    </group>
+                    <notebook>
+                        <page string="Marks" attrs="{'invisible':[('type','!=','discrete')]}">
+                            <field name="marks">
+                                <tree editable="bottom">
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="value"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record
             id="action_edu_scale"
             model="ir.actions.act_window">
             <field name="name">Scales</field>
             <field name="res_model">edu.scale</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
         </record>
 
         <menuitem
             id="menu_edu_scale"
             action="action_edu_scale"
             sequence="10"
-            parent="menu_edu_configuration_grade"/>
+            parent="menu_edu_configuration_programs"/>
 
     </data>
 </openerp>

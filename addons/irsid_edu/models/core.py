@@ -20,7 +20,7 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields, api
 
 EDU_STATES = [
     ('draft', 'New'),
@@ -63,7 +63,7 @@ EDU_JOURNAL_TYPES = [
     ('credits', 'Credits'),
 ]
 # Abstract Academic Document
-class edu_doc(osv.AbstractModel):
+class edu_doc(models.AbstractModel):
     _name = 'edu.doc'
     _description = 'Academic Document'
     _inherit = ['mail.thread','ir.needaction_mixin']
@@ -131,8 +131,8 @@ class edu_doc(osv.AbstractModel):
     def _get_user_job_validated(self, cr, uid, ids, field_name, arg, context=None):
         user_ids = [doc.user_validated.id for doc in self.browse(cr, uid, ids, context=context)]
         employee_obj = self.pool.get('hr.employee')
-        employee_ids = employee_obj.search(cr, uid, [('resource_id.user_id','in',user_ids)], context=context)
-        employee_dict = dict([(employee.resource_id.user_id.id, employee.job_id.id) for employee in employee_obj.browse(cr, uid, employee_ids, context=context)])
+        employees = employee_obj.search(cr, uid, [('resource_id.user_id','in',user_ids)], context=context)
+        employee_dict = dict([(employee.resource_id.user_id.id, employee.job_id.id) for employee in employee_obj.browse(cr, uid, employees, context=context)])
         result = {}
         for doc in self.browse(cr, uid, ids, context=context):
             result[doc.id] = employee_dict.get(doc.user_validated.id, False)
@@ -140,8 +140,8 @@ class edu_doc(osv.AbstractModel):
     def _get_user_job_approved(self, cr, uid, ids, field_name, arg, context=None):
         user_ids = [doc.user_approved.id for doc in self.browse(cr, uid, ids, context=context)]
         employee_obj = self.pool.get('hr.employee')
-        employee_ids = employee_obj.search(cr, uid, [('resource_id.user_id','in',user_ids)], context=context)
-        employee_dict = dict([(employee.resource_id.user_id.id, employee.job_id.id) for employee in employee_obj.browse(cr, uid, employee_ids, context=context)])
+        employees = employee_obj.search(cr, uid, [('resource_id.user_id','in',user_ids)], context=context)
+        employee_dict = dict([(employee.resource_id.user_id.id, employee.job_id.id) for employee in employee_obj.browse(cr, uid, employees, context=context)])
         result = {}
         for doc in self.browse(cr, uid, ids, context=context):
             result[doc.id] = employee_dict.get(doc.user_approved.id, False)

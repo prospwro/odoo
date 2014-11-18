@@ -3,10 +3,13 @@
     <data noupdate="1">
 
         <record
-            id="scale_bo"
+            id="scale_u0"
             model="edu.scale">
             <field name="name">Без оценки</field>
-            <field name="code">БО</field>
+            <field name="code">У0</field>
+            <field name="type">discrete</field>
+            <field name="min_value">1.0</field>
+            <field name="max_value">1.0</field>
             <field name="description">Уровни оценки не предусмотрены</field>
         </record>
 
@@ -15,32 +18,41 @@
             model="edu.scale">
             <field name="name">Контроль посещаемости</field>
             <field name="code">У1</field>
+            <field name="type">discrete</field>
+            <field name="min_value">0.0</field>
+            <field name="max_value">1.0</field>
             <field name="description">Применяется для видов работ, предусматривающих только контроль посещаемости</field>
         </record>
 
         <record
             id="scale_u2"
             model="edu.scale">
-            <field name="name">Двухуровневая система оценки</field>
+            <field name="name">Двухуровневая шкала оценки</field>
             <field name="code">У2</field>
-            <field name="description">Система оценки Зачтено|Не зачтено</field>
+            <field name="type">discrete</field>
+            <field name="min_value">0.0</field>
+            <field name="max_value">1.0</field>
+            <field name="description">Шкала оценки Зачтено|Не зачтено</field>
         </record>
 
         <record
             id="scale_u5"
             model="edu.scale">
-            <field name="name">Пятиуровневая система оценки</field>
+            <field name="name">Пятиуровневая шкала оценки</field>
             <field name="code">У5</field>
-            <field name="description">Система оценки Отлично|Хорошо|Удовлетворительно|Неудовлетворительно|Неудовлетворительно без возможности пересдачи
+            <field name="description">Шкала оценки Отлично|Хорошо|Удовлетворительно|Неудовлетворительно|Плохо
             </field>
         </record>
 
         <record
             id="scale_u10"
             model="edu.scale">
-            <field name="name">Десятиуровневая система оценки</field>
+            <field name="name">Десятиуровневая шкала оценки</field>
             <field name="code">У10</field>
-            <field name="description">Оценка по десятибалльной шкале</field>
+            <field name="type">discrete</field>
+            <field name="min_value">0.0</field>
+            <field name="max_value">1.0</field>
+            <field name="description">Десятиуровневая шкала, позволяющая более точно оценить обучающегося</field>
         </record>
 
     </data>
