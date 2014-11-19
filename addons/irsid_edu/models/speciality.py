@@ -20,13 +20,16 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, _
 
 class edu_speciality(models.Model):
     """ Speciality """
     _name = 'edu.speciality'
     _description = 'Speciality'
     _order = 'code asc'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
     # Naming Functions
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):

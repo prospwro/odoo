@@ -13,7 +13,7 @@
             sequence="10"/>
         <menuitem id="menu_edu_configuration_training" name="Training" parent="menu_edu_configuration"
             sequence="20"/>
-        <menuitem id="menu_edu_configuration_programs" name="Programs" parent="menu_edu_configuration"
+        <menuitem id="menu_edu_configuration_program" name="Programs" parent="menu_edu_configuration"
             sequence="30"/>
         <menuitem id="menu_edu_configuration_grade" name="Grade" parent="menu_edu_configuration"
             sequence="40"/>
@@ -101,7 +101,7 @@
             <field name="view_mode">tree,form</field>
         </record>
         
-        <menuitem id="menu_edu_speciality" action = "action_edu_speciality" sequence="1" parent="menu_edu_configuration_programs"/>
+        <menuitem id="menu_edu_speciality" action = "action_edu_speciality" sequence="1" parent="menu_edu_configuration_program"/>
         
         <!-- Views for Qualifications -->
         
@@ -138,7 +138,7 @@
         </record>
         
         <menuitem id="menu_edu_qualification" action = "action_edu_qualification" sequence="2"
-            parent="menu_edu_configuration_programs"/>
+            parent="menu_edu_configuration_program"/>
         
         <!-- Views for Modes of Study -->
         
@@ -159,7 +159,7 @@
             <field name="view_mode">tree</field>
         </record>
         
-        <menuitem id="menu_edu_mode" action = "action_edu_mode" sequence="3" parent="menu_edu_configuration_programs"/>
+        <menuitem id="menu_edu_mode" action = "action_edu_mode" sequence="3" parent="menu_edu_configuration_program"/>
         
         <!-- Views for Program Sections -->
         
@@ -182,7 +182,7 @@
         </record>
         
         <menuitem id="menu_edu_program_section" action = "action_edu_program_section" sequence="4"
-            parent="menu_edu_configuration_programs"/>
+            parent="menu_edu_configuration_program"/>
         
         <!-- Views for Program Subsections -->
         
@@ -205,7 +205,7 @@
         </record>
         
         <menuitem id="menu_edu_program_subsection" action = "action_edu_program_subsection"
-            sequence="5" parent="menu_edu_configuration_programs"/>
+            sequence="5" parent="menu_edu_configuration_program"/>
         
         <!-- Views for Competences -->
         
@@ -254,7 +254,7 @@
             <field name="view_mode">tree,form</field>
         </record>
         
-        <menuitem id="menu_edu_competence" action = "action_edu_competence" sequence="3" parent="menu_edu_configuration_programs"/>
+        <menuitem id="menu_edu_competence" action = "action_edu_competence" sequence="3" parent="menu_edu_configuration_program"/>
         
         <!-- Views for Statements -->
         
@@ -1839,7 +1839,7 @@
             <field name="view_mode">tree</field>
         </record>
         
-        <menuitem id="menu_edu_work_type" action = "action_edu_work_type" sequence="6" parent="menu_edu_configuration_programs"/>
+        <menuitem id="menu_edu_work_type" action = "action_edu_work_type" sequence="6" parent="menu_edu_configuration_program"/>
         
         <!-- Views for Years -->
         

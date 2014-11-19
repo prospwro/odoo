@@ -102,7 +102,7 @@
             id="menu_edu_speciality"
             action="action_edu_speciality"
             sequence="1"
-            parent="menu_edu_configuration_programs"/>
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

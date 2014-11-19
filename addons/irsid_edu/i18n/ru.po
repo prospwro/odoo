@@ -2486,7 +2486,7 @@ msgstr "Часов"
 #: model:ir.actions.act_window,name:irsid_edu.action_edu_scale
 #: model:ir.ui.menu,name:irsid_edu.menu_edu_scale
 msgid "Scales"
-msgstr "Системы оценки"
+msgstr "Шкалы оценки"
 
 #. module: irsid_edu
 #: field:edu.admission,message_unread:0

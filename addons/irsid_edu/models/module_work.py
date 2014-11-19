@@ -35,7 +35,7 @@ class edu_module_work(models.Model):
     @api.one
     @api.depends('time.code','module.code','type.code')
     def _compute_code(self):
-        self.code = module.code + '/' + time.code + '/' + type.code
+        self.code = self.module.code + '/' + self.time.code + '/' + self.type.code
 #         result = {}
 #         for work in self.browse(cr, uid, ids, context=context):
 #             result[work.id] = work.time.code + '/' + work.module.code + '/' + work.type.code

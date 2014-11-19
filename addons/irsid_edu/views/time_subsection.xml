@@ -3,37 +3,34 @@
     <data>
 
         <record
-            id="view_edu_period_tree"
+            id="view_edu_time_subsection_tree"
             model="ir.ui.view">
-            <field name="name">edu.period.tree</field>
-            <field name="model">edu.period</field>
+            <field name="name">edu.time.subsection.tree</field>
+            <field name="model">edu.time.subsection</field>
             <field
                 name="arch"
                 type="xml">
                 <tree
-                    string="Periods"
-                    version="7.0"
                     editable="bottom">
                     <field name="code"/>
                     <field name="name"/>
-                    <field name="stage_id"/>
                 </tree>
             </field>
         </record>
 
         <record
-            id="action_edu_period"
+            id="action_edu_time_subsection"
             model="ir.actions.act_window">
-            <field name="name">Periods</field>
-            <field name="res_model">edu.period</field>
+            <field name="name">Time Subsections</field>
+            <field name="res_model">edu.time.subsection</field>
             <field name="view_mode">tree</field>
         </record>
 
         <menuitem
-            id="menu_edu_period"
-            action="action_edu_period"
+            id="menu_edu_time_subsection"
+            action="action_edu_time_subsection"
             sequence="3"
-            parent="menu_edu_configuration_training"/>
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

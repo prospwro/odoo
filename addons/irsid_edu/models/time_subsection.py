@@ -20,26 +20,26 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields, _
 
-class edu_period(osv.Model):
-    _name = 'edu.period'
-    _description = 'Period'
-# Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 64,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 16,
-            required = True,
-        ),
-        'stage_id': fields.many2one(
-            'edu.stage',
-            'Stage',
-            required = True,
-        ),
-    }
+class edu_time_subsection(models.Model):
+    _name = 'edu.time.subsection'
+    _description = 'Study Time Subsection'
+    _rec_name = 'code'
+    _order = 'sequence, name'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
+    # Fields
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )
+    name = fields.Char(
+        string='Name',
+        required=True,
+    )
+    sequence = fields.Integer(
+        string = "Sequence",
+        default = 1,
+    )

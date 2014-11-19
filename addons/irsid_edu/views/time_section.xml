@@ -3,36 +3,35 @@
     <data>
 
         <record
-            id="view_edu_time_category_tree"
+            id="view_edu_time_section_tree"
             model="ir.ui.view">
-            <field name="name">edu.time.category.tree</field>
-            <field name="model">edu.time.category</field>
+            <field name="name">edu.time.section.tree</field>
+            <field name="model">edu.time.section</field>
             <field
                 name="arch"
                 type="xml">
                 <tree
-                    string="Time Categories"
-                    version="7.0"
                     editable="bottom">
                     <field name="code"/>
                     <field name="name"/>
+                    <field name="stage_id"/>
                 </tree>
             </field>
         </record>
 
         <record
-            id="action_edu_time_category"
+            id="action_edu_time_section"
             model="ir.actions.act_window">
-            <field name="name">Time Categories</field>
-            <field name="res_model">edu.time.category</field>
+            <field name="name">Study Time Sections</field>
+            <field name="res_model">edu.time.section</field>
             <field name="view_mode">tree</field>
         </record>
 
         <menuitem
-            id="menu_edu_time_category"
-            action="action_edu_time_category"
+            id="menu_edu_time_section"
+            action="action_edu_time_section"
             sequence="3"
-            parent="menu_edu_configuration_training"/>
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

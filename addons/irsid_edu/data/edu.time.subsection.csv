@@ -1,0 +1,8 @@
+id,code,name,sequence
+edu_time_subsection_1,ОснОбуч,Основное обучение,1
+edu_time_subsection_2,Практ,Практики,2
+edu_time_subsection_3,ИтАтт,Итоговая аттестация,3
+edu_time_subsection_4,Кан,Каникулы,4
+edu_time_subsection_5,НИР,Исследовательская подготовка,5
+edu_time_subsection_6,ОбрП,Образовательная подготовка,6
+edu_time_subsection_7,КандЭкз,Кандидатские экзамены,7

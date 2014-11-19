@@ -20,227 +20,174 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields, api, _
 
-class edu_program(osv.Model):
+class edu_program(models.Model):
     _name = 'edu.program'
     _description = 'Education Program'
-    _inherit = 'edu.doc'
+    _order = 'speciality,mode,code'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
 #     _track = {
 #         'state': {
 #             'irsid_edu.mt_program_updated': lambda self, cr, uid, obj, ctx=None: True,
 #         },
 #     }
 # Naming Functions
-    def name_get(self, cr, uid, ids, context=None):
-        if not len(ids):
-            return []
-        programs = self.browse(cr, uid, ids, context=context)
-        res = []
-        for program in programs:
-            res.append((program.id, program.code + ': [' + program.short_name + '] '))
-        return res
-
-    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
-        if not args:
-            args = []
-        if context is None:
-            context = {}
-        ids = self.search(cr, user, ['|',
-            '|',('short_name','ilike',name),('name','ilike',name),
-            '|',('speciality.code','ilike',name),('speciality.name','ilike',name)
-            ] + args, limit=limit, context=context)
-        return self.name_get(cr, user, ids, context=context)
-# Workflow Functions
-    def set_draft(self, cr, uid, ids, context=None):
-        for program in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, program.id, {
-                'state': 'draft',
-                'date_approved': False,
-            }, context=context)
-        time_obj = self.pool.get('edu.time')
-        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
-        time_obj.set_draft(cr, uid, times, context=context)
-        return True
-
-    def set_confirmed(self, cr, uid, ids, context=None):
-        for program in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, program.id, {
-                'state': 'confirmed',
-            }, context=context)
-        time_obj = self.pool.get('edu.time')
-        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
-        time_obj.set_confirmed(cr, uid, times, context=context)
-        return True
-
-    def set_validated(self, cr, uid, ids, context=None):
-        for program in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, program.id, {
-                'state': 'validated',
-            }, context=context)
-        time_obj = self.pool.get('edu.time')
-        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
-        time_obj.set_validated(cr, uid, times, context=context)
-        return True
-
-    def set_approved(self, cr, uid, ids, context=None):
-        for program in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, program.id, {
-                'state': 'approved',
-                'date_approved': fields.date.context_today(self, cr, uid, context=context),
-                'user_approved': uid,
-                'code': program.code =='/' and self.pool.get('ir.sequence').get(cr, uid, 'edu.program') or program.code or '/'
-            }, context=context)
-        time_obj = self.pool.get('edu.time')
-        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
-        time_obj.set_approved(cr, uid, times, context=context)
-        return True
-
-    def set_canceled(self, cr, uid, ids, context=None):
-        for program in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, program.id, {
-                'state': 'canceled',
-            }, context=context)
-        time_obj = self.pool.get('edu.time')
-        times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
-        time_obj.set_canceled(cr, uid, times, context=context)
-        return True
-# Access Functions
-    def copy(self, cr, uid, id, default=None, context=None):
-        default = default or {}
-        default.update({
-            'code': '/',
-        })
-        return super(edu_program, self).copy(cr, uid, id, default, context=context)
-# Onchange Functions
-    def onchange_speciality(self, cr, uid, ids, speciality, context=None):
-        if speciality:
-            speciality = self.pool.get('edu.speciality').browse(cr, uid, speciality, context=context)
-            return {'value': {
-                'description': speciality.description,
-            }}
-        return {'value': {}}
+#     def name_get(self, cr, uid, ids, context=None):
+#         if not len(ids):
+#             return []
+#         programs = self.browse(cr, uid, ids, context=context)
+#         res = []
+#         for program in programs:
+#             res.append((program.id, program.code + ': [' + program.short_name + '] '))
+#         return res
+# 
+#     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+#         if not args:
+#             args = []
+#         if context is None:
+#             context = {}
+#         ids = self.search(cr, user, ['|',
+#             '|',('short_name','ilike',name),('name','ilike',name),
+#             '|',('speciality.code','ilike',name),('speciality.name','ilike',name)
+#             ] + args, limit=limit, context=context)
+#         return self.name_get(cr, user, ids, context=context)
+# # Workflow Functions
+#     def set_draft(self, cr, uid, ids, context=None):
+#         for program in self.browse(cr, uid, ids, context=context):
+#             self.write(cr, uid, program.id, {
+#                 'state': 'draft',
+#                 'date_approved': False,
+#             }, context=context)
+#         time_obj = self.pool.get('edu.time')
+#         times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+#         time_obj.set_draft(cr, uid, times, context=context)
+#         return True
+# 
+#     def set_confirmed(self, cr, uid, ids, context=None):
+#         for program in self.browse(cr, uid, ids, context=context):
+#             self.write(cr, uid, program.id, {
+#                 'state': 'confirmed',
+#             }, context=context)
+#         time_obj = self.pool.get('edu.time')
+#         times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+#         time_obj.set_confirmed(cr, uid, times, context=context)
+#         return True
+# 
+#     def set_validated(self, cr, uid, ids, context=None):
+#         for program in self.browse(cr, uid, ids, context=context):
+#             self.write(cr, uid, program.id, {
+#                 'state': 'validated',
+#             }, context=context)
+#         time_obj = self.pool.get('edu.time')
+#         times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+#         time_obj.set_validated(cr, uid, times, context=context)
+#         return True
+# 
+#     def set_approved(self, cr, uid, ids, context=None):
+#         for program in self.browse(cr, uid, ids, context=context):
+#             self.write(cr, uid, program.id, {
+#                 'state': 'approved',
+#                 'date_approved': fields.date.context_today(self, cr, uid, context=context),
+#                 'user_approved': uid,
+#                 'code': program.code =='/' and self.pool.get('ir.sequence').get(cr, uid, 'edu.program') or program.code or '/'
+#             }, context=context)
+#         time_obj = self.pool.get('edu.time')
+#         times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+#         time_obj.set_approved(cr, uid, times, context=context)
+#         return True
+# 
+#     def set_canceled(self, cr, uid, ids, context=None):
+#         for program in self.browse(cr, uid, ids, context=context):
+#             self.write(cr, uid, program.id, {
+#                 'state': 'canceled',
+#             }, context=context)
+#         time_obj = self.pool.get('edu.time')
+#         times = time_obj.search(cr, uid, [('program', 'in', ids)], context=context)
+#         time_obj.set_canceled(cr, uid, times, context=context)
+#         return True
+# # Access Functions
+#     def copy(self, cr, uid, id, default=None, context=None):
+#         default = default or {}
+#         default.update({
+#             'code': '/',
+#         })
+#         return super(edu_program, self).copy(cr, uid, id, default, context=context)
+# # Onchange Functions
+#     def onchange_speciality(self, cr, uid, ids, speciality, context=None):
+#         if speciality:
+#             speciality = self.pool.get('edu.speciality').browse(cr, uid, speciality, context=context)
+#             return {'value': {
+#                 'description': speciality.description,
+#             }}
+#         return {'value': {}}
 # Fields
-    _columns = {
-        'name': fields.char(
-            'Title',
-            size = 128,
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'short_name': fields.char(
-            'Short Title',
-            size = 16,
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'code': fields.char(
-            'Code',
-            size = 32,
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'speciality': fields.many2one(
-            'edu.speciality',
-            'Speciality',
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'mode_id': fields.many2one(
-            'edu.mode',
-            'Mode of Study',
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'rprog': fields.boolean(
-            'Reduced',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'eprog': fields.boolean(
-            'Express',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'elearning': fields.boolean(
-            'E-Learning',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'department_id': fields.many2one(
-            'hr.department',
-            'Department',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'times':fields.one2many(
-            'edu.time',
-            'program',
-            'Time',
-            readonly = True,
-        ),
-        'modules':fields.one2many(
-            'edu.module',
-            'program',
-            'Modules',
-            readonly = True,
-        ),
-        'mainmodules':fields.one2many(
-            'edu.module',
-            'program',
-            'Modules',
-            readonly = True,
-            domain=[('parent_id','=',False)],
-        ),
-        'electivemodules':fields.one2many(
-            'edu.module',
-            'program',
-            'Modules',
-            readonly = True,
-            domain=[('parent_id','!=',False)],
-        ),
-        'competence_ids':fields.many2many(
-            'edu.competence',
-            'edu_program_competence_rel',
-            'program',
-            'competence_id',
-            'Competences',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-#        'plan_ids':fields.one2many(
-#            'edu.plan',
-#            'program',
-#            'Plans',
-#            readonly = True,
-#            states = {'draft': [('readonly', False)]},
-#        ),
-        'stage_ids': fields.many2many(
-            'edu.stage',
-            'edu_program_stage_rel',
-            'program',
-            'stage_id',
-            'Stages',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'description': fields.text(
-            'Characterization',
-        ),
-    }
-# Default Functions
-    def _get_stages_common(self, cr, uid, context):
-        ids = self.pool.get('edu.stage').search(cr, uid, [('case_default','=',1)], context=context)
-        return ids
-# Default Values
-    _defaults = {
-        'code': '/',
-        'stage_ids': _get_stages_common,
-    }
-# Sorting Order
-    _order = 'speciality,mode_id,code'
+    code = fields.Char(
+        string='Code',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    name = fields.Char(
+        string='Name',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    short_name = fields.Char(
+        string='Name',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    speciality = fields.Many2one(
+        comodel_name = 'edu.speciality',
+        string = 'Speciality',
+        required = True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    mode = fields.Many2one(
+        comodel_name = 'edu.mode',
+        string = 'Mode of Study',
+        required = True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    rprog = fields.Boolean(
+        string = 'Reduced',
+        default = False,
+    )
+    eprog = fields.Boolean(
+        string = 'Express',
+        default = False,
+    )
+    department = fields.Many2one(
+        comodel_name = 'hr.department',
+        string = 'Department',
+        required = True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    budget = fields.Many2one(
+        comodel_name = 'edu.time.budget',
+        string = 'Time Budget',
+        required = True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    modules = fields.One2many(
+        comodel_name = 'edu.module',
+        inverse_name = 'program',
+        string = 'Modules',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    stages = fields.Many2many(
+        comodel_name = 'edu.stage',
+        string = 'Stages',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )

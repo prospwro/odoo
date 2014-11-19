@@ -1,9 +1,9 @@
-"id","code","name","sequence"
-"irsid_edu.subsection_1","БазЧасть","Базовая часть","1"
-"irsid_edu.subsection_2","ВариатЧасть1","Вариативная часть 1 (вуз)","2"
-"irsid_edu.subsection_3","ВариатЧасть2","Вариативная часть 2 (обуч.)","3"
-"irsid_edu.subsection_4","УчебнПракт","Учебная практика","4"
-"irsid_edu.subsection_5","ПроизвПракт","Производственная практика","5"
-"irsid_edu.subsection_6","НИРОбуч","Научно-исследовательская работа обучающегося             ","6"
-"irsid_edu.subsection_7","ИтГосЭкзамен","Итоговый государственный экзамен","7"
-"irsid_edu.subsection_8","ВКР","Выпускная квалификационная работа","8"
+id,code,name,sequence
+edu_program_subsection_1,БазЧасть,Базовая часть,1
+edu_program_subsection_2,ВариатЧасть1,Вариативная часть 1 (вуз),2
+edu_program_subsection_3,ВариатЧасть2,Вариативная часть 2 (обуч.),3
+edu_program_subsection_4,УчебнПракт,Учебная практика,4
+edu_program_subsection_5,ПроизвПракт,Производственная практика,5
+edu_program_subsection_6,НИРОбуч,Научно-исследовательская работа обучающегося             ,6
+edu_program_subsection_7,ИтГосЭкзамен,Итоговый государственный экзамен,7
+edu_program_subsection_8,ВКР,Выпускная квалификационная работа,8

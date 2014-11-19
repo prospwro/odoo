@@ -69,7 +69,7 @@
             id="menu_edu_competence"
             action="action_edu_competence"
             sequence="3"
-            parent="menu_edu_configuration_programs"/>
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

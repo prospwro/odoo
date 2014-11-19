@@ -9,7 +9,7 @@
             sequence="20"/>
 
         <menuitem
-            id="menu_edu_partners"
+            id="menu_edu_partner"
             name="Partners"
             parent="menu_edu_root"
             sequence="20"/>
@@ -27,7 +27,7 @@
             sequence="40"/>
 
         <menuitem
-            id="menu_edu_programs"
+            id="menu_edu_program"
             name="Programs"
             parent="menu_edu_root"
             sequence="10"/>
@@ -40,7 +40,7 @@
             groups="group_edu_manager"/>
 
         <menuitem
-            id="menu_edu_configuration_admissions"
+            id="menu_edu_configuration_admission"
             name="Admissions"
             parent="menu_edu_configuration"
             sequence="10"/>
@@ -52,7 +52,7 @@
             sequence="20"/>
 
         <menuitem
-            id="menu_edu_configuration_programs"
+            id="menu_edu_configuration_program"
             name="Programs"
             parent="menu_edu_configuration"
             sequence="30"/>

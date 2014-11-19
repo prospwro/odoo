@@ -20,11 +20,15 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, _
 
 class edu_scale(models.Model):
     _name = 'edu.scale'
     _description = 'Rating Scale'
+    _order = 'code'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
     # Fields
     name = fields.Char(
         string = 'Name',
@@ -32,6 +36,8 @@ class edu_scale(models.Model):
     )
     code = fields.Char(
         string = 'Code',
+        default = '/',
+        copy = False,
         required = True,
     )
     description = fields.Text(
@@ -50,6 +56,7 @@ class edu_scale(models.Model):
         'edu.scale.mark',
         'scale',
         string = 'Marks',
+        copy = True,
     )
     min_value = fields.Float(
         string = 'Minimal Value',

@@ -20,12 +20,15 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, _
 
 class edu_level(models.Model):
     _name = 'edu.level'
     _description = 'Education Level'
     _order = 'sequence asc'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
     # Naming Functions
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):

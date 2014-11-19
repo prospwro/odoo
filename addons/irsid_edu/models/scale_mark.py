@@ -46,6 +46,8 @@ class edu_scale_mark(models.Model):
         required = True,
     )
     scale = fields.Many2one(
-        'edu.scale',
+        comodel_name = 'edu.scale',
         string = 'Scale',
+        required = True,
+#        ondelete = 'cascade',
     )

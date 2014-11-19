@@ -52,7 +52,7 @@
             id="menu_edu_level"
             action="action_edu_level"
             sequence="2"
-            parent="menu_edu_configuration_programs"/>
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

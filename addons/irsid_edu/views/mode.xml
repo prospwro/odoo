@@ -32,7 +32,7 @@
             id="menu_edu_mode"
             action="action_edu_mode"
             sequence="3"
-            parent="menu_edu_configuration_programs"/>
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

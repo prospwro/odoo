@@ -25,6 +25,7 @@ from openerp import models, fields
 class edu_time(models.Model):
     _name = 'edu.time'
     _description = 'Study Time'
+    _order = 'budget, section, subsection, sequence'
 #     _rec_name = 'code'
 #     _track = {
 #         'state': {
@@ -80,87 +81,39 @@ class edu_time(models.Model):
     sequence = fields.Integer(
         string = "Sequence",
         default = 1,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
     )
-    _columns = {
-        'code': fields.function(
-            _name_get_fnc,
-            type='char',
-            string = 'Code',
-            store = {
-                'edu.time': (lambda self, cr, uid, ids, c={}: ids, ['program', 'period', 'short_name'], 10),
-                'edu.program': (_update_list_by_program, ['code'], 20),
-                'edu.period': (_update_list_by_period, ['code'], 30),
-            },
-            readonly = True,
-        ),
-        'name': fields.char(
-            'Title',
-            size = 64,
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'short_name': fields.char(
-            'Short Title',
-            size = 16,
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'sequence': fields.integer(
-            'Sequence',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'program': fields.many2one(
-            'edu.program',
-            'Program',
-            required = True,
-            ondelete = 'cascade',
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'category_id': fields.many2one(
-            'edu.time.category',
-            'Category',
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'period': fields.many2one(
-            'edu.period',
-            'Period',
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'stage_id': fields.related(
-            'period',
-            'stage_id',
-            type='many2one',
-            relation = 'edu.stage',
-            string = 'Stage',
-            store = True,
-            readonly = True,
-            ),
-        'weeks': fields.float(
-            'Weeks',
-            required = True,
-            readonly = True,
-            states = {'draft': [('readonly', False)]},
-        ),
-        'date_start': fields.date(
-            'Start Date',
-            readonly = True,
-        ),
-        'date_stop': fields.date(
-            'End Date',
-            readonly = True,
-        ),
-    }
-# Default Values
-    _defaults = {
-        'sequence': 10,
-    }
-# Sorting Order
-    _order = 'program,period,sequence'
+    section = fields.Many2one(
+        comodel_name = 'edu.time.section',
+        string = 'Time Section',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    subsection = fields.Many2one(
+        comodel_name = 'edu.time.subsection',
+        string = 'Time Subsection',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    stage = fields.Many2one(
+        comodel_name = 'edu.stage',
+        string = 'Stage',
+        required = True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    budget = fields.Many2one(
+        comodel_name = 'edu.time.budget',
+        string = 'Budget',
+        required = True,
+        ondelete = 'cascade',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    weeks = fields.Float(
+        string = 'Weeks',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )

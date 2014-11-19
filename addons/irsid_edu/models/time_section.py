@@ -20,17 +20,26 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, _
 
-class edu_time_category(models.Model):
-    _name = 'edu.time.category'
-    _description = 'Time Category'
-    # Fields
+class edu_time_section(models.Model):
+    _name = 'edu.time.section'
+    _description = 'Study Time Section'
+    _rec_name = 'code'
+    _order = 'sequence, name'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
+# Fields
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )
     name = fields.Char(
         string='Name',
         required=True,
     )
-    code = fields.Char(
-        string='Code',
-        required=True,
+    sequence = fields.Integer(
+        string = "Sequence",
+        default = 1,
     )

@@ -20,8 +20,7 @@
 ##############################################################################
 
 import competence
-import scale
-import scale_mark
+import level
 import mode
 import module
 #import module_record
@@ -29,14 +28,16 @@ import module_seance
 #import module_section
 import module_task
 import module_work
-import period
 import plan
 import program
 import program_section
 import program_subsection
-import level
+import scale
+import scale_mark
 import speciality
 import stage
 import time
-import time_category
+import time_budget
+import time_section
+import time_subsection
 import work_type

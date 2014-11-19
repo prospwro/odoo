@@ -20,7 +20,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, _
 
 _EDU_DOC_STATES = [
     ('draft', 'New'),
@@ -36,6 +36,9 @@ class edu_time_budget(models.Model):
     _name = 'edu.time.budget'
     _description = 'Study Time Budget'
     _inherit = ['mail.thread']
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
     # Fields
     name = fields.Char(
         string='Name',

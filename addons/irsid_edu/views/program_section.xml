@@ -35,7 +35,7 @@
             id="menu_edu_program_section"
             action="action_edu_program_section"
             sequence="4"
-            parent="menu_edu_configuration_programs"/>
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

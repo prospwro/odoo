@@ -20,51 +20,48 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
-from core import EDU_STATES
+from openerp import models, fields, api, _
 
-class edu_stage(osv.Model):
+_EDU_STATES = [
+    ('draft', 'New'),
+    ('entrance', 'Entrance'),
+    ('open', 'Training in Progress'),
+    ('pending', 'Training Suspended'),
+    ('done', 'Training Done'),
+    ('canceled', 'Training Canceled'),
+]
+
+class edu_stage(models.Model):
     _name = 'edu.stage'
     _description = 'Stage'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
 # Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 32,
-            required = True,
-        ),
-        'description': fields.text(
-            'Description',
-        ),
-        'sequence': fields.integer(
-            'Sequence',
-            required = True,
-        ),
-        'state': fields.selection(
-            EDU_STATES,
-            'State',
-            required = True,
-        ),
-        'case_default': fields.boolean(
-            'Default for New Programs',
-        ),
-        'programs': fields.many2many(
-            'edu.program',
-            'edu_program_stage_rel',
-            'stage_id',
-            'program',
-            'Programs',
-        ),
-        'fold': fields.boolean(
-            'Folded by Default',
-        ),
-    }
-# Sorting Order
-    _order = 'sequence'
-# Default Values
-    _defaults = {
-        'sequence': 100,
-        'state': 'open',
-        'fold': False,
-        'case_default': False,
-    }
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )
+    name = fields.Char(
+        string='Name',
+        required=True,
+    )
+    sequence = fields.Integer(
+        string = "Sequence",
+        default = 1,
+    )
+    case_default = fields.Boolean(
+        string = 'Default for New Programs',
+        default = False,
+    )
+    fold = fields.Boolean(
+        string = 'Folded in Kanban View',
+        default = False,
+    )
+    state = fields.Selection(
+        selection = _EDU_STATES,
+        string = 'State',
+        required = True,
+        default = 'draft',
+        copy =False,
+    )

@@ -108,6 +108,24 @@ class edu_module_seance(models.Model):
         string = "Sequence",
         default = 1,
     )
+    st_hours = fields.Float(
+        string = 'Student Hours',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    seance_hours = fields.Float(
+        string = 'Seance Hours',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    emp_hours = fields.Float(
+        string = 'Employee Hours',
+        required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
 
 #     _columns = {
 #         'name': fields.char(

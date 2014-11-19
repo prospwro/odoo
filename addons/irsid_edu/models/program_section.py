@@ -20,32 +20,26 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp import models, fields, _
 
-class edu_program_section(osv.Model):
+class edu_program_section(models.Model):
     _name = 'edu.program.section'
     _description = 'Program Section'
     _rec_name = 'code'
+    _order = 'sequence, name'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
 # Fields
-    _columns = {
-        'name': fields.char(
-            'Name',
-            size = 64,
-            required = True,
-        ),
-        'code': fields.char(
-            'Code',
-            size = 16,
-            required = True,
-        ),
-        'sequence': fields.integer(
-            'Sequence',
-            required = True,
-        ),
-    }
-# Sorting Order
-    _order = 'sequence,name'
-# Default Values
-    _defaults = {
-        'sequence': 1,
-    }
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )
+    name = fields.Char(
+        string='Name',
+        required=True,
+    )
+    sequence = fields.Integer(
+        string = "Sequence",
+        default = 1,
+    )

@@ -20,12 +20,15 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, _
 
 class edu_mode(models.Model):
     """ Mode of Study """
     _name = 'edu.mode'
     _description = 'Mode of Study'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
     # Fields
     name = fields.Char(
         string='Name',
