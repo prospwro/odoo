@@ -1,0 +1,24 @@
+id,code,name,value,scale/id
+edu_scale_u0_mark_0,Просл.,Прослушано,1.0,edu_scale_u0
+edu_scale_u1_mark_0,Неяв.,Неявка,0.0,edu_scale_u1
+edu_scale_u1_mark_1,Присутств.,Присутствовал,1.0,edu_scale_u1
+edu_scale_u10_mark_0,Неяв.,Неявка,0.0,edu_scale_u10
+edu_scale_u10_mark_1,F,Плохо,0.0,edu_scale_u10
+edu_scale_u10_mark_2,E,Крайне посредственно,0.2,edu_scale_u10
+edu_scale_u10_mark_3,D,Посредственно,0.3,edu_scale_u10
+edu_scale_u10_mark_4,C-,Ниже среднего,0.4,edu_scale_u10
+edu_scale_u10_mark_5,C,Средне,0.5,edu_scale_u10
+edu_scale_u10_mark_6,C+,Выше среднего,0.6,edu_scale_u10
+edu_scale_u10_mark_7,B,Хорошо,0.7,edu_scale_u10
+edu_scale_u10_mark_8,B+,Очень хорошо,0.8,edu_scale_u10
+edu_scale_u10_mark_9,A,Отлично,0.9,edu_scale_u10
+edu_scale_u10_mark_10,A+,Превосходно,1.0,edu_scale_u10
+edu_scale_u2_mark_0,Неяв.,Неявка,0.0,edu_scale_u2
+edu_scale_u2_mark_1,Не зачт.,Не зачтено,0.0,edu_scale_u2
+edu_scale_u2_mark_2,Зачт.,Зачтено,1.0,edu_scale_u2
+edu_scale_u5_mark_0,Неяв.,Неявка,0.0,edu_scale_u5
+edu_scale_u5_mark_1,Плохо,Плохо,0.0,edu_scale_u5
+edu_scale_u5_mark_2,Неуд.,Неудовлетворительно,0.25,edu_scale_u5
+edu_scale_u5_mark_3,Удовл.,Удовлетворительно,0.5,edu_scale_u5
+edu_scale_u5_mark_4,Хор.,Хорошо,0.75,edu_scale_u5
+edu_scale_u5_mark_5,Отл.,Отлично,1.0,edu_scale_u5

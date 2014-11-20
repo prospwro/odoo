@@ -27,7 +27,7 @@
             sequence="40"/>
 
         <menuitem
-            id="menu_edu_program"
+            id="menu_edu_main_program"
             name="Programs"
             parent="menu_edu_root"
             sequence="10"/>

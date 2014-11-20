@@ -10,8 +10,10 @@
             <field
                 name="arch"
                 type="xml">
-                <tree
-                    editable="bottom">
+                <tree editable="bottom">
+                    <field
+                        name="sequence"
+                        widget="handle"/>
                     <field name="code"/>
                     <field name="name"/>
                 </tree>
@@ -29,7 +31,7 @@
         <menuitem
             id="menu_edu_time_subsection"
             action="action_edu_time_subsection"
-            sequence="3"
+            sequence="80"
             parent="menu_edu_configuration_program"/>
 
     </data>

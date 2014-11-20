@@ -1,0 +1,20 @@
+id,code,name,state,case_default,fold,sequence
+irsid_edu.stage_applicant,Новый,Подано заявление на приём,draft,True,False,1
+irsid_edu.stage_entrance_test,На испытаниях,Допущен к вступительным испытаниям,entrance,False,True,2
+irsid_edu.stage_competition,На конкурсе,Допущен к участию в конкурсе,entrance,False,True,4
+irsid_edu.stage_recommended,Рекомендован,Рекомендован к зачислению,entrance,False,True,6
+irsid_edu.stage_enlisted,Зачислен,Зачислен на обучение,open,True,False,7
+irsid_edu.stage_1,Курс 1,Обучение на первом курсе,open,False,False,10
+irsid_edu.stage_2,Курс 2,Обучение на втором курсе,open,False,False,20
+irsid_edu.stage_3,Курс 3,Обучение на третьем курсе,open,False,False,30
+irsid_edu.stage_4,Курс 4,Обучение на четвертом курсе,open,False,False,40
+irsid_edu.stage_5,Курс 5,Обучение на пятом курсе,open,False,False,50
+irsid_edu.stage_6,Курс 6,Обучение на шестом курсе,open,False,False,60
+irsid_edu.stage_7,Курс 7,Обучение на седьмом курсе,open,False,False,70
+irsid_edu.stage_graduated,Выпущен,Обучение завершено,done,True,True,80
+irsid_edu.stage_leave,В отпуске,Академический отпуск,pending,False,True,90
+irsid_edu.stage_suspended,Не обучается,Обучение приостановлено,pending,False,True,95
+irsid_edu.stage_dismissed,Отчислен,Обучение прекращено,canceled,True,True,100
+irsid_edu.stage_test_failed,Не прошёл испытания,Не прошёл вступительные испытания,canceled,False,True,110
+irsid_edu.stage_competition_failed,Не прошёл конкурс,Не прошёл по конкурсу,canceled,False,True,120
+irsid_edu.stage_canceled,Отказ,Отказ от поступления,canceled,False,True,130

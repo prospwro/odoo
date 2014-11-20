@@ -10,10 +10,10 @@
             <field
                 name="arch"
                 type="xml">
-                <tree
-                    string="Levels"
-                    editable="bottom">
-                    <field name="sequence" widget="handle"/>
+                <tree editable="bottom">
+                    <field
+                        name="sequence"
+                        widget="handle"/>
                     <field name="code"/>
                     <field name="name"/>
                 </tree>
@@ -28,8 +28,7 @@
             <field
                 name="arch"
                 type="xml">
-                <form
-                    string="Level">
+                <form>
                     <sheet>
                         <group>
                             <field name="code"/>
@@ -51,7 +50,7 @@
         <menuitem
             id="menu_edu_level"
             action="action_edu_level"
-            sequence="2"
+            sequence="10"
             parent="menu_edu_configuration_program"/>
 
     </data>

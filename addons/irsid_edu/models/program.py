@@ -22,6 +22,16 @@
 
 from openerp import models, fields, api, _
 
+_EDU_DOC_STATES = [
+    ('draft', 'New'),
+    ('confirmed', 'On Validation'),
+    ('validated', 'On Approval'),
+    ('approved', 'Approved'),
+    ('done', 'Done'),
+    ('rejected', 'Rejected'),
+    ('canceled', 'Canceled'),
+]
+
 class edu_program(models.Model):
     _name = 'edu.program'
     _description = 'Education Program'
@@ -29,6 +39,7 @@ class edu_program(models.Model):
     _sql_constraints = [
         ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
     ]
+    _inherit = ['mail.thread']
 #     _track = {
 #         'state': {
 #             'irsid_edu.mt_program_updated': lambda self, cr, uid, obj, ctx=None: True,
@@ -123,11 +134,18 @@ class edu_program(models.Model):
 #                 'description': speciality.description,
 #             }}
 #         return {'value': {}}
-# Fields
+
+    def _default_code(self):
+        seq_obj = self.pool.get('ir.sequence')
+        code =seq_obj.next_by_code('edu.program') or '/'
+        return code
+    # Fields
     code = fields.Char(
         string='Code',
         required=True,
         readonly = True,
+        default = _default_code,
+        copy = False,
         states = {'draft': [('readonly', False)]},
     )
     name = fields.Char(
@@ -153,6 +171,11 @@ class edu_program(models.Model):
         comodel_name = 'edu.mode',
         string = 'Mode of Study',
         required = True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    qualification = fields.Char(
+        string='Qualification',
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )
@@ -190,4 +213,18 @@ class edu_program(models.Model):
         string = 'Stages',
         readonly = True,
         states = {'draft': [('readonly', False)]},
+    )
+    description = fields.Html(
+        string='Description',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    state = fields.Selection(
+        selection = _EDU_DOC_STATES,
+        string = 'State',
+        index = True,
+        readonly = True,
+        track_visibility = 'onchange',
+        default = 'draft',
+        copy =False,
     )

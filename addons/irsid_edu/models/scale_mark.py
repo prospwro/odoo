@@ -20,13 +20,16 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 from openerp.exceptions import ValidationError
 
 class edu_scale_mark(models.Model):
     _name = 'edu.scale.mark'
     _description = 'Mark'
     _order = 'scale,value'
+    _sql_constraints = [
+        ('scale_code_unique', 'UNIQUE(scale,code)', _('(Scale,Code) tuple must be unique !')),
+    ]
     # Functions
     @api.constrains('value')
     def _check_value(self):
@@ -49,5 +52,5 @@ class edu_scale_mark(models.Model):
         comodel_name = 'edu.scale',
         string = 'Scale',
         required = True,
-#        ondelete = 'cascade',
+        ondelete = 'cascade',
     )

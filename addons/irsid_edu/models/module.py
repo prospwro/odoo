@@ -22,6 +22,16 @@
 
 from openerp import models, fields, api
 
+_EDU_DOC_STATES = [
+    ('draft', 'New'),
+    ('confirmed', 'On Validation'),
+    ('validated', 'On Approval'),
+    ('approved', 'Approved'),
+    ('done', 'Done'),
+    ('rejected', 'Rejected'),
+    ('canceled', 'Canceled'),
+]
+
 class edu_module(models.Model):
     _name = 'edu.module'
     _description = 'Education Module'
@@ -309,4 +319,13 @@ class edu_module(models.Model):
         string = 'Plans',
         readonly = True,
         states = {'draft': [('readonly', False)]},
+    )
+    state = fields.Selection(
+        selection = _EDU_DOC_STATES,
+        string = 'State',
+        index = True,
+        readonly = True,
+        track_visibility = 'onchange',
+        default = 'draft',
+        copy =False,
     )

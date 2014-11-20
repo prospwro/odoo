@@ -10,15 +10,15 @@
             <field
                 name="arch"
                 type="xml">
-                <tree string="Stages">
+                <tree>
                     <field
                         name="sequence"
                         widget="handle"/>
+                    <field name="code"/>
                     <field name="name"/>
-                    <field name="description"/>
+                    <field name="state"/>
                     <field name="case_default"/>
                     <field name="fold"/>
-                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -31,16 +31,18 @@
             <field
                 name="arch"
                 type="xml">
-                <form
-                    string="Stage"
-                    version="7.0">
+                <form>
                     <group>
-                        <field name="sequence"/>
-                        <field name="name"/>
-                        <field name="case_default"/>
-                        <field name="fold"/>
-                        <field name="state"/>
-                        <field name="description"/>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="case_default"/>
+                            <field name="fold"/>
+                            <field name="sequence"/>
+                        </group>
                     </group>
                 </form>
             </field>
@@ -57,8 +59,8 @@
         <menuitem
             id="menu_edu_stage"
             action="action_edu_stage"
-            sequence="3"
-            parent="menu_edu_configuration_training"/>
+            sequence="40"
+            parent="menu_edu_configuration_program"/>
 
     </data>
 </openerp>

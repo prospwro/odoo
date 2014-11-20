@@ -20,12 +20,15 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 
 class edu_competence(models.Model):
     _name = "edu.competence"
     _description = "Competence"
     _order = 'speciality, name'
+    _sql_constraints = [
+        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+    ]
 # Naming Functions
     @api.one
     @api.depends('speciality.code', 'name')
@@ -46,6 +49,8 @@ class edu_competence(models.Model):
     speciality = fields.Many2one(
         'edu.speciality',
         string = 'Speciality',
+        required = True,
+        ondelete = 'cascade',
     )
     programs = fields.Many2many(
         'edu.program',

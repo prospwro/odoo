@@ -10,10 +10,7 @@
             <field
                 name="arch"
                 type="xml">
-                <tree
-                    string="Modes of Study"
-                    version="7.0"
-                    editable="bottom">
+                <tree editable="bottom">
                     <field name="code"/>
                     <field name="name"/>
                 </tree>
@@ -31,7 +28,7 @@
         <menuitem
             id="menu_edu_mode"
             action="action_edu_mode"
-            sequence="3"
+            sequence="30"
             parent="menu_edu_configuration_program"/>
 
     </data>

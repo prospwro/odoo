@@ -65,7 +65,7 @@
         <menuitem
             id="menu_edu_scale"
             action="action_edu_scale"
-            sequence="10"
+            sequence="90"
             parent="menu_edu_configuration_program"/>
 
     </data>

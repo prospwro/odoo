@@ -2,42 +2,19 @@
 <openerp>
     <data>
 
-        <record
-            id="action_program_time"
-            model="ir.actions.act_window">
-            <field name="name">Program Training Time</field>
-            <field name="res_model">edu.time</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{
-                'default_program':active_id,
-                'group_by':False,
-                'search_default_gr_stage_id':1,
-                'search_default_gr_period':1}
-            </field>
-            <field name="domain">[('program','=',active_id)]</field>
-            <field
-                name="search_view_id"
-                ref="view_edu_time_filter"/>
-        </record>
-
-        <record
-            id="action_program_module"
-            model="ir.actions.act_window">
-            <field name="name">Program Modules</field>
-            <field name="res_model">edu.module</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{
-                'default_program':active_id,
-                'group_by':False,
-                'search_default_gr_section':1,
-                'search_default_gr_subsection':1}
-            </field>
-            <field name="domain">[('program','=',active_id)]</field>
-            <field
-                name="search_view_id"
-                ref="view_edu_module_filter"/>
-        </record>
-
+        <!-- <div class="oe_right oe_button_box" name="buttons"> <button name="%(action_program_time)d" 
+            string="Training Time" type="action"/> <button name="%(action_program_module)d" string="Modules" 
+            type="action"/> </div> <record id="action_program_time" model="ir.actions.act_window"> 
+            <field name="name">Program Training Time</field> <field name="res_model">edu.time</field> 
+            <field name="view_mode">tree,form</field> <field name="context">{ 'default_program':active_id, 
+            'group_by':False, 'search_default_gr_stage_id':1, 'search_default_gr_period':1} </field> 
+            <field name="domain">[('program','=',active_id)]</field> <field name="search_view_id" 
+            ref="view_edu_time_filter"/> </record> <record id="action_program_module" model="ir.actions.act_window"> 
+            <field name="name">Program Modules</field> <field name="res_model">edu.module</field> 
+            <field name="view_mode">tree,form</field> <field name="context">{ 'default_program':active_id, 
+            'group_by':False, 'search_default_gr_section':1, 'search_default_gr_subsection':1} 
+            </field> <field name="domain">[('program','=',active_id)]</field> <field name="search_view_id" 
+            ref="view_edu_module_filter"/> </record> -->
         <record
             id="view_edu_program_tree"
             model="ir.ui.view">
@@ -47,7 +24,6 @@
                 name="arch"
                 type="xml">
                 <tree
-                    string="Programs"
                     colors="
                         grey:state in ('canceled','done');
                         blue:state in ('confirmed','validated');
@@ -57,11 +33,10 @@
                     <field name="short_name"/>
                     <field name="name"/>
                     <field name="speciality"/>
-                    <field name="department_id"/>
-                    <field name="mode_id"/>
+                    <field name="department"/>
+                    <field name="mode"/>
                     <field name="rprog"/>
                     <field name="eprog"/>
-                    <field name="elearning"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -75,9 +50,7 @@
             <field
                 name="arch"
                 type="xml">
-                <form
-                    string="Program"
-                    version="7.0">
+                <form>
                     <header>
                         <button
                             name="set_confirmed"
@@ -125,24 +98,11 @@
                             readonly="1"/>
                     </header>
                     <sheet>
-                        <div
-                            class="oe_right oe_button_box"
-                            name="buttons">
-                            <button
-                                name="%(action_program_time)d"
-                                string="Training Time"
-                                type="action"/>
-                            <button
-                                name="%(action_program_module)d"
-                                string="Modules"
-                                type="action"/>
-                        </div>
                         <h1>
                             <label string="Education Program: "/>
                             <field
                                 name="code"
-                                class="oe_inline"
-                                readonly="1"/>
+                                class="oe_inline"/>
                         </h1>
                         <label
                             for="name"
@@ -162,15 +122,14 @@
                                 placeholder="Full Title..."/>
                         </h2>
                         <group>
-                            <field
-                                name="speciality"
-                                on_change="onchange_speciality(speciality)"/>
-                            <field name="department_id"/>
+                            <field name="speciality"/>
+                            <field name="department"/>
+                            <field name="budget"/>
                         </group>
                         <group string="Training Regime">
                             <group>
-                                <field name="mode_id"/>
-                                <field name="elearning"/>
+                                <field name="mode"/>
+                                <field name="qualification"/>
                             </group>
                             <group>
                                 <field name="eprog"/>
@@ -178,82 +137,16 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Training Time">
-                                <field name="times">
-                                    <tree string="Time">
-                                        <field
-                                            name="sequence"
-                                            widget="handle"/>
+                            <page string="Stages">
+                                <field name="stages">
+                                    <tree>
                                         <field name="code"/>
                                         <field name="name"/>
-                                        <field name="category_id"/>
-                                        <field name="period"/>
-                                        <field
-                                            name="weeks"
-                                            sum="Weeks"/>
-                                        <field name="state"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="Main Modules">
-                                <field name="mainmodules">
-                                    <tree string="Main Modules">
-                                        <field name="section"/>
-                                        <field name="subsection"/>
-                                        <field name="name"/>
-                                        <field
-                                            name="credits"
-                                            sum="Credits"/>
-                                        <field
-                                            name="st_hours"
-                                            sum="Student Hours"/>
-                                        <field
-                                            name="seance_hours"
-                                            sum="Seance Hours"/>
-                                        <field name="state"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="Elective Modules">
-                                <field name="electivemodules">
-                                    <tree string="Elective Modules">
-                                        <field name="section"/>
-                                        <field name="subsection"/>
-                                        <field name="name"/>
-                                        <field name="parent_id"/>
-                                        <field
-                                            name="credits"
-                                            sum="Credits"/>
-                                        <field
-                                            name="st_hours"
-                                            sum="Student Hours"/>
-                                        <field
-                                            name="seance_hours"
-                                            sum="Seance Hours"/>
-                                        <field name="state"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="Stages">
-                                <field name="stage_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                        <field name="description"/>
                                     </tree>
                                 </field>
                             </page>
                             <page string="Characterization">
                                 <field name="description"/>
-                            </page>
-                            <page string="Competences">
-                                <field
-                                    name="competence_ids"
-                                    domain="[('speciality','=',speciality)]">
-                                    <tree string="Competences">
-                                        <field name="code"/>
-                                        <field name="description"/>
-                                    </tree>
-                                </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -282,7 +175,7 @@
                     <field name="short_name"/>
                     <field name="code"/>
                     <field name="speciality"/>
-                    <field name="mode_id"/>
+                    <field name="mode"/>
                     <field name="state"/>
                     <filter
                         string="Reduced"
@@ -290,12 +183,7 @@
                     <filter
                         string="Express"
                         domain="[('eprog','=',True)]"/>
-                    <filter
-                        string="E-Learning"
-                        domain="[('elearning','=',True)]"/>
-                    <group
-                        expand="1"
-                        string="Group By...">
+                    <group string="Group By...">
                         <filter
                             string="Speciality"
                             domain="[]"
@@ -303,7 +191,7 @@
                         <filter
                             string="Mode"
                             domain="[]"
-                            context="{'group_by':'mode_id'}"/>
+                            context="{'group_by':'mode'}"/>
                         <filter
                             string="State"
                             domain="[]"
@@ -328,7 +216,7 @@
             id="menu_edu_program"
             action="action_edu_program"
             sequence="1"
-            parent="menu_edu_programs"/>
+            parent="menu_edu_main_program"/>
 
     </data>
 </openerp>

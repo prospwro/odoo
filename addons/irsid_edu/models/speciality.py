@@ -47,6 +47,8 @@ class edu_speciality(models.Model):
     code = fields.Char(
         string = 'Code',
         required = True,
+        default = '/',
+        copy = False,
     )
     qualification = fields.Char(
         string = 'Qualification',
@@ -72,6 +74,7 @@ class edu_speciality(models.Model):
         'edu.competence',
         'speciality',
         string = 'Competences',
+        copy = True,
     )
     licensed = fields.Boolean(
         string = 'Licensed',

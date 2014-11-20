@@ -10,11 +10,12 @@
             <field
                 name="arch"
                 type="xml">
-                <tree
-                    editable="bottom">
+                <tree editable="bottom">
+                    <field
+                        name="sequence"
+                        widget="handle"/>
                     <field name="code"/>
                     <field name="name"/>
-                    <field name="stage_id"/>
                 </tree>
             </field>
         </record>
@@ -22,7 +23,7 @@
         <record
             id="action_edu_time_section"
             model="ir.actions.act_window">
-            <field name="name">Study Time Sections</field>
+            <field name="name">Time Sections</field>
             <field name="res_model">edu.time.section</field>
             <field name="view_mode">tree</field>
         </record>
@@ -30,7 +31,7 @@
         <menuitem
             id="menu_edu_time_section"
             action="action_edu_time_section"
-            sequence="3"
+            sequence="70"
             parent="menu_edu_configuration_program"/>
 
     </data>

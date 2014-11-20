@@ -34,7 +34,7 @@
         <menuitem
             id="menu_edu_program_section"
             action="action_edu_program_section"
-            sequence="4"
+            sequence="50"
             parent="menu_edu_configuration_program"/>
 
     </data>

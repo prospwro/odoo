@@ -10,10 +10,11 @@
             <field
                 name="arch"
                 type="xml">
-                <tree string="Specialities">
+                <tree>
                     <field name="code"/>
                     <field name="name"/>
                     <field name="level"/>
+                    <field name="qualification"/>
                     <field name="licensed"/>
                     <field name="accredited"/>
                 </tree>
@@ -28,9 +29,7 @@
             <field
                 name="arch"
                 type="xml">
-                <form
-                    string="Speciality"
-                    version="7.0">
+                <form>
                     <sheet>
                         <label
                             for="code"
@@ -47,6 +46,7 @@
                         <group>
                             <field name="level"/>
                             <field name="level_pre"/>
+                            <field name="qualification"/>
                             <field name="rank"/>
                             <field name="licensed"/>
                             <field name="accredited"/>
@@ -54,15 +54,13 @@
                         <notebook>
                             <page string="Competences">
                                 <field name="competences">
-                                    <form
-                                        string="Competence"
-                                        version="7.0">
+                                    <form>
                                         <group>
                                             <field name="name"/>
                                             <field name="description"/>
                                         </group>
                                     </form>
-                                    <tree string="Competences">
+                                    <tree>
                                         <field name="name"/>
                                         <field name="description"/>
                                     </tree>
@@ -72,14 +70,12 @@
                                 <field
                                     name="programs"
                                     readonly="1">
-                                    <tree string="Education Programs">
+                                    <tree>
                                         <field name="code"/>
                                         <field name="name"/>
-                                        <field name="mode_id"/>
+                                        <field name="mode"/>
                                         <field name="rprog"/>
                                         <field name="eprog"/>
-                                        <field name="elearning"/>
-                                        <field name="date_approved"/>
                                         <field name="state"/>
                                     </tree>
                                 </field>
@@ -101,7 +97,7 @@
         <menuitem
             id="menu_edu_speciality"
             action="action_edu_speciality"
-            sequence="1"
+            sequence="20"
             parent="menu_edu_configuration_program"/>
 
     </data>

@@ -63,5 +63,4 @@ class edu_stage(models.Model):
         string = 'State',
         required = True,
         default = 'draft',
-        copy =False,
     )
