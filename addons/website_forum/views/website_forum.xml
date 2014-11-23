@@ -5,7 +5,6 @@
 <!-- Editor custom -->
 <template id="assets_editor" inherit_id="website.assets_editor" name="Forum Editor Assets" groups="base.group_user">
     <xpath expr="." position="inside">
-        <script type="text/javascript" src="/website_forum/static/src/js/website.tour.forum.js"/>
         <script type="text/javascript" src="/website_forum/static/src/js/website_forum.editor.js"/>
     </xpath>
 </template>
@@ -410,7 +409,7 @@
             </textarea>
             <br/>
             <input type="text" name="post_tags" placeholder="Tags" class="form-control load_tags"/>
-            <br/>
+            <br/><br/>
             <button class="btn btn-primary">Post Your Topic</button>
         </form>
     </t>
@@ -419,13 +418,6 @@
 <!-- Edition: ask your question -->
 <template id="new_question">
     <t t-call="website_forum.header">
-        <t t-set="head">
-            <script type="text/javascript">
-                window.onload = function() {
-                    $("[data-toggle='popover']").popover();
-                };
-            </script>
-        </t>
         <h1 class="mt0">Ask Your Question</h1>
         <p>
             To improve your chance getting an answer:
@@ -445,12 +437,14 @@
             <input type="text" name="post_name" required="True" t-attf-value="#{post_name}"
                 class="form-control mb16" placeholder="Your Question Title..."/>
             <input type="hidden" name="karma" t-attf-value="#{user.karma}" id="karma"/>
+
             <textarea name="content" required="True" id="content" class="form-control load_editor">
                 <t t-esc="question_content"/>
             </textarea>
             <br/>
-            <input type="text" name="post_tags" placeholder="Tags" class="form-control load_tags"/>
-            <br/>
+            <input type="hidden" name="karma_retag" t-attf-value="#{forum.karma_retag}" id="karma_retag"/>
+            <input type="hidden" name="post_tags" placeholder="Tags" class="form-control js_select2"/>
+            <br/><br/>
             <button t-attf-class="btn btn-primary #{(user.karma &lt; forum.karma_ask) and 'karma_required' or ''}"
                 t-att-data-karma="forum.karma_ask">Post Your Question</button>
         </form>
@@ -469,12 +463,13 @@
                 <h5 t-if="post.post_type == 'question'" class="mt20">Please enter a descriptive question (should finish by a '?')</h5>
             </div>
             <input type="hidden" name="karma" t-attf-value="#{user.karma}" id="karma"/>
+            <input type="hidden" name="karma_retag" t-attf-value="#{forum.karma_retag}" id="karma_retag"/>
             <textarea name="content" id="content" required="True" class="form-control load_editor">
                 <t t-esc="post.content"/>
             </textarea>
             <div t-if="not is_answer">
                 <br/>
-                <input type="text" name="post_tag" class="form-control col-md-9 load_tags" placeholder="Tags" t-attf-value="#{tags}"/>
+                <input type="text" name="post_tag" class="form-control col-md-9 js_select2" placeholder="Tags" t-attf-value="#{tags}"/>
                 <br/>
             </div>
             <button class="btn btn-primary btn-lg">Save</button>
@@ -615,7 +610,8 @@
                         </t>
                     </div>
                 </div>
-                <div t-if="question.post_type != 'link'"><t t-raw="question.content"/></div>
+                <div t-if="question.post_type != 'link' and question.create_uid.karma &gt;= forum.karma_dofollow"><span t-field="question.content" class="oe_no_empty"/></div>
+                <div t-if="question.post_type != 'link' and question.create_uid.karma &lt; forum.karma_dofollow"><span t-field="question.content" class="oe_no_empty" t-field-options='{"nofollow": 1}'/></div>
                 <div class="mt16 clearfix">
                     <div class="pull-right">
                         <div class="text-right">
@@ -733,7 +729,8 @@
             </div>
         </div>
         <div class="col-md-10 clearfix">
-            <t t-raw="answer.content"/>
+            <div t-if="answer.create_uid.karma &gt;= forum.karma_dofollow"><span t-field="answer.content" class="oe_no_empty"/></div>
+            <div t-if="answer.create_uid.karma &lt; forum.karma_dofollow"><span t-field="answer.content" class="oe_no_empty" t-field-options='{"nofollow": 1}'/></div>
             <div class="mt16">
                 <ul class="list-inline pull-right">
                     <li t-if="question.post_type == 'question'">
@@ -826,7 +823,8 @@
                         <t t-set="classes" t-value="'close comment_delete fa-times'"/>
                     </t>
 
-                    <span t-field="message.body"/>
+                    <div t-if="message.create_uid.karma &gt;= forum.karma_dofollow"><span t-field="message.body" class="oe_no_empty"/></div>
+                    <div t-if="message.create_uid.karma &lt; forum.karma_dofollow"><span t-field="message.body" class="oe_no_empty" t-field-options='{"nofollow": 1}'/></div>
                     <t t-set="required_karma" t-value="message.author_id.id == user.partner_id.id and object.forum_id.karma_comment_convert_own or object.forum_id.karma_comment_convert_all"/>
                     <t t-if="(object.parent_id and object.parent_id.state != 'close' and object.parent_id.active != False) or (not object.parent_id and object.state != 'close' and object.active != False)">
                         <t t-set="allow_post_comment" t-value="True" />
@@ -1114,7 +1112,8 @@
                 </tr>
                 </table>
                 <div class="well well-sm">
-                    <span t-field="user.partner_id.website_description" class="oe_no_empty"/>
+                    <div t-if="user.karma &gt;= forum.karma_dofollow"><span t-field="user.partner_id.website_description" class="oe_no_empty"/></div>
+                    <div t-if="user.karma &lt; forum.karma_dofollow"><span t-field="user.partner_id.website_description" class="oe_no_empty" t-field-options='{"nofollow": 1}'/></div>
                     <t t-if="uid == user.id">
                         <a class="fa fa-arrow-right" t-attf-href="/forum/#{slug(forum)}/user/#{slug(user)}/edit"> Edit Your Bio</a>
                     </t>

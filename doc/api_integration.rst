@@ -1,7 +1,7 @@
 :classes: stripe
 
 ===========
-Odoo as API
+Web Service
 ===========
 
 Odoo is mostly extended internally via modules, but much of its features and
@@ -24,64 +24,66 @@ Connection and authentication
 
 .. kinda gross because it duplicates existing bits
 
-.. rst-class:: setupcode hidden
+.. only:: html
 
-    .. code-block:: python
+    .. rst-class:: setupcode hidden
 
-        import xmlrpclib
-        info = xmlrpclib.ServerProxy('https://demo.odoo.com/start').start()
-        url, db, username, password = \
-            info['host'], info['database'], info['user'], info['password']
-        common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(url))
-        uid = common.authenticate(db, username, password, {})
-        models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(url))
+        .. code-block:: python
 
-    .. code-block:: ruby
+            import xmlrpclib
+            info = xmlrpclib.ServerProxy('https://demo.odoo.com/start').start()
+            url, db, username, password = \
+                info['host'], info['database'], info['user'], info['password']
+            common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(url))
+            uid = common.authenticate(db, username, password, {})
+            models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(url))
 
-        require "xmlrpc/client"
-        info = XMLRPC::Client.new2('https://demo.odoo.com/start').call('start')
-        url, db, username, password = \
-            info['host'], info['database'], info['user'], info['password']
-        common = XMLRPC::Client.new2("#{url}/xmlrpc/2/common")
-        uid = common.call('authenticate', db, username, password, {})
-        models = XMLRPC::Client.new2("#{url}/xmlrpc/2/object").proxy
+        .. code-block:: ruby
 
-    .. code-block:: php
+            require "xmlrpc/client"
+            info = XMLRPC::Client.new2('https://demo.odoo.com/start').call('start')
+            url, db, username, password = \
+                info['host'], info['database'], info['user'], info['password']
+            common = XMLRPC::Client.new2("#{url}/xmlrpc/2/common")
+            uid = common.call('authenticate', db, username, password, {})
+            models = XMLRPC::Client.new2("#{url}/xmlrpc/2/object").proxy
 
-        require_once('ripcord.php');
-        $info = ripcord::client('https://demo.odoo.com/start')->start();
-        list($url, $db, $username, $password) =
-          array($info['host'], $info['database'], $info['user'], $info['password']);
-        $common = ripcord::client("$url/xmlrpc/2/common");
-        $uid = $common->authenticate($db, $username, $password, array());
-        $models = ripcord::client("$url/xmlrpc/2/object");
+        .. code-block:: php
 
-    .. code-block:: java
+            require_once('ripcord.php');
+            $info = ripcord::client('https://demo.odoo.com/start')->start();
+            list($url, $db, $username, $password) =
+              array($info['host'], $info['database'], $info['user'], $info['password']);
+            $common = ripcord::client("$url/xmlrpc/2/common");
+            $uid = $common->authenticate($db, $username, $password, array());
+            $models = ripcord::client("$url/xmlrpc/2/object");
 
-        final XmlRpcClient client = new XmlRpcClient();
+        .. code-block:: java
 
-        final XmlRpcClientConfigImpl start_config = new XmlRpcClientConfigImpl();
-        start_config.setServerURL(new URL("https://demo.odoo.com/start"));
-        final Map<String, String> info = (Map<String, String>)client.execute(
-            start_config, "start", Collections.emptyList());
+            final XmlRpcClient client = new XmlRpcClient();
 
-        final String url = info.get("host"),
-                      db = info.get("database"),
-                username = info.get("user"),
-                password = info.get("password");
+            final XmlRpcClientConfigImpl start_config = new XmlRpcClientConfigImpl();
+            start_config.setServerURL(new URL("https://demo.odoo.com/start"));
+            final Map<String, String> info = (Map<String, String>)client.execute(
+                start_config, "start", Collections.emptyList());
 
-        final XmlRpcClientConfigImpl common_config = new XmlRpcClientConfigImpl();
-        common_config.setServerURL(new URL(String.format("%s/xmlrpc/2/common", url)));
+            final String url = info.get("host"),
+                          db = info.get("database"),
+                    username = info.get("user"),
+                    password = info.get("password");
 
-        int uid = (int)client.execute(
-            common_config, "authenticate", Arrays.asList(
-                db, username, password, Collections.emptyMap()));
+            final XmlRpcClientConfigImpl common_config = new XmlRpcClientConfigImpl();
+            common_config.setServerURL(new URL(String.format("%s/xmlrpc/2/common", url)));
 
-        final XmlRpcClient models = new XmlRpcClient() {{
-            setConfig(new XmlRpcClientConfigImpl() {{
-                setServerURL(new URL(String.format("%s/xmlrpc/2/object", url)));
-            }});
-        }};
+            int uid = (int)client.execute(
+                common_config, "authenticate", Arrays.asList(
+                    db, username, password, Collections.emptyMap()));
+
+            final XmlRpcClient models = new XmlRpcClient() {{
+                setConfig(new XmlRpcClientConfigImpl() {{
+                    setServerURL(new URL(String.format("%s/xmlrpc/2/object", url)));
+                }});
+            }};
 
 Configuration
 -------------
@@ -250,8 +252,8 @@ the login.
 Calling methods
 ===============
 
-The second — and most generally useful — is ``xmlrpc/2/object`` which is used
-to call methods of odoo models via the ``execute_kw`` RPC function.
+The second endpoint is ``xmlrpc/2/object``, is used to call methods of odoo
+models via the ``execute_kw`` RPC function.
 
 Each call to ``execute_kw`` takes the following parameters:
 

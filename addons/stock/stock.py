@@ -681,7 +681,7 @@ class stock_picking(osv.osv):
         if ('name' not in vals) or (vals.get('name') in ('/', False)):
             ptype_id = vals.get('picking_type_id', context.get('default_picking_type_id', False))
             sequence_id = self.pool.get('stock.picking.type').browse(cr, user, ptype_id, context=context).sequence_id.id
-            vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, sequence_id, 'id', context=context)
+            vals['name'] = self.pool.get('ir.sequence').next_by_id(cr, user, sequence_id, context=context)
         return super(stock_picking, self).create(cr, user, vals, context)
 
     def _state_get(self, cr, uid, ids, field_name, arg, context=None):
@@ -1486,7 +1486,7 @@ class stock_production_lot(osv.osv):
         'create_date': fields.datetime('Creation Date'),
     }
     _defaults = {
-        'name': lambda x, y, z, c: x.pool.get('ir.sequence').get(y, z, 'stock.lot.serial'),
+        'name': lambda x, y, z, c: x.pool.get('ir.sequence').next_by_code(y, z, 'stock.lot.serial'),
         'product_id': lambda x, y, z, c: c.get('product_id', False),
     }
     _sql_constraints = [
@@ -2640,13 +2640,27 @@ class stock_inventory(osv.osv):
     def prepare_inventory(self, cr, uid, ids, context=None):
         inventory_line_obj = self.pool.get('stock.inventory.line')
         for inventory in self.browse(cr, uid, ids, context=context):
-            #clean the existing inventory lines before redoing an inventory proposal
+            # If there are inventory lines already (e.g. from import), respect those and set their theoretical qty
             line_ids = [line.id for line in inventory.line_ids]
-            inventory_line_obj.unlink(cr, uid, line_ids, context=context)
-            #compute the inventory lines and create them
-            vals = self._get_inventory_lines(cr, uid, inventory, context=context)
-            for product_line in vals:
-                inventory_line_obj.create(cr, uid, product_line, context=context)
+            if not line_ids:
+                #compute the inventory lines and create them
+                vals = self._get_inventory_lines(cr, uid, inventory, context=context)
+                for product_line in vals:
+                    inventory_line_obj.create(cr, uid, product_line, context=context)
+            else:
+                # On import calculate theoretical quantity
+                quant_obj = self.pool.get("stock.quant")
+                for line in inventory.line_ids:
+                    dom = [('company_id', '=', line.company_id.id), ('location_id', 'child_of', line.location_id.id), ('lot_id', '=', line.prod_lot_id.id),
+                        ('product_id','=', line.product_id.id), ('owner_id', '=', line.partner_id.id)]
+                    if line.package_id:
+                        dom += [('package_id', '=', line.package_id.id)]
+                    quants = quant_obj.search(cr, uid, dom, context=context)
+                    tot_qty = 0
+                    for quant in quant_obj.browse(cr, uid, quants, context=context):
+                        tot_qty += quant.qty
+                    inventory_line_obj.write(cr, uid, [line.id], {'theoretical_qty': tot_qty}, context=context)
+
         return self.write(cr, uid, ids, {'state': 'confirm', 'date': time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)})
 
     def _get_inventory_lines(self, cr, uid, inventory, context=None):
@@ -2712,7 +2726,7 @@ class stock_inventory_line(osv.osv):
         'company_id': fields.related('inventory_id', 'company_id', type='many2one', relation='res.company', string='Company', store=True, select=True, readonly=True),
         'prod_lot_id': fields.many2one('stock.production.lot', 'Serial Number', domain="[('product_id','=',product_id)]"),
         'state': fields.related('inventory_id', 'state', type='char', string='Status', readonly=True),
-        'theoretical_qty': fields.float('Theoretical Quantity', readonly=True),
+        'theoretical_qty': fields.float('Theoretical Quantity', digits_compute=dp.get_precision('Product Unit of Measure'), readonly=True),
         'partner_id': fields.many2one('res.partner', 'Owner'),
         'product_name': fields.related('product_id', 'name', type='char', string='Product Name', store={
                                                                                             'product.product': (_get_product_name_change, ['name', 'default_code'], 20),
@@ -3678,7 +3692,7 @@ class stock_package(osv.osv):
                                     }, readonly=True, select=True),
     }
     _defaults = {
-        'name': lambda self, cr, uid, context: self.pool.get('ir.sequence').get(cr, uid, 'stock.quant.package') or _('Unknown Pack')
+        'name': lambda self, cr, uid, context: self.pool.get('ir.sequence').next_by_code(cr, uid, 'stock.quant.package') or _('Unknown Pack')
     }
 
     def _check_location_constraint(self, cr, uid, packs, context=None):
@@ -4073,7 +4087,7 @@ class stock_warehouse_orderpoint(osv.osv):
         'active': lambda *a: 1,
         'logic': lambda *a: 'max',
         'qty_multiple': lambda *a: 1,
-        'name': lambda self, cr, uid, context: self.pool.get('ir.sequence').get(cr, uid, 'stock.orderpoint') or '',
+        'name': lambda self, cr, uid, context: self.pool.get('ir.sequence').next_by_code(cr, uid, 'stock.orderpoint') or '',
         'product_uom': lambda self, cr, uid, context: context.get('product_uom', False),
         'company_id': lambda self, cr, uid, context: self.pool.get('res.company')._company_default_get(cr, uid, 'stock.warehouse.orderpoint', context=context)
     }
