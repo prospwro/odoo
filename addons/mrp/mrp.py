@@ -330,7 +330,7 @@ class mrp_bom(osv.osv):
         if bom.type == 'phantom' and not bom.bom_lines:
             newbom = self._bom_find(cr, uid, bom.product_id.id, bom.product_uom.id, properties)
 
-            if newbom:
+            if newbom and newbom != bom.id:
                 res = self._bom_explode(cr, uid, self.browse(cr, uid, [newbom])[0], factor*bom.product_qty, properties, addthis=True, level=level+10)
                 result = result + res[0]
                 result2 = result2 + res[1]
@@ -374,6 +374,13 @@ class mrp_bom(osv.osv):
         bom_data = self.read(cr, uid, id, [], context=context)
         default.update(name=_("%s (copy)") % (bom_data['name']), bom_id=False)
         return super(mrp_bom, self).copy_data(cr, uid, id, default, context=context)
+
+    def unlink(self, cr, uid, ids, context=None):
+        if self.pool['mrp.production'].search(cr, uid, [
+                ('bom_id', 'in', ids), ('state', 'not in', ['done', 'cancel'])
+            ], context=context):
+            raise osv.except_osv(_('Warning!'), _('You can not delete a Bill of Material with running manufacturing orders.\nPlease close or cancel it first.'))
+        return super(mrp_bom, self).unlink(cr, uid, ids, context=context)
 
 
 def rounding(f, r):

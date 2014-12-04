@@ -152,6 +152,7 @@ class product_uom(osv.osv):
     _defaults = {
         'active': 1,
         'rounding': 0.01,
+        'factor': 1,
         'uom_type': 'reference',
     }
 
@@ -177,10 +178,7 @@ class product_uom(osv.osv):
                 raise osv.except_osv(_('Error!'), _('Conversion from Product UoM %s to Default UoM %s is not possible as they both belong to different Category!.') % (from_unit.name,to_unit.name,))
             else:
                 return qty
-        # First round to the precision of the original unit, so that
-        # float representation errors do not bias the following ceil()
-        # e.g. with 1 / (1/12) we could get 12.0000048, ceiling to 13! 
-        amount = float_round(qty/from_unit.factor, precision_rounding=from_unit.rounding)
+        amount = qty/from_unit.factor
         if to_unit:
             amount = ceiling(amount * to_unit.factor, to_unit.rounding)
         return amount
@@ -639,11 +637,8 @@ class product_product(osv.osv):
         return result
 
     def _get_name_template_ids(self, cr, uid, ids, context=None):
-        result = set()
         template_ids = self.pool.get('product.product').search(cr, uid, [('product_tmpl_id', 'in', ids)])
-        for el in template_ids:
-            result.add(el)
-        return list(result)
+        return list(set(template_ids))
 
     _columns = {
         'qty_available': fields.function(_product_qty_available, type='float', string='Quantity On Hand'),
@@ -790,7 +785,7 @@ class product_product(osv.osv):
                 if not limit or len(ids) < limit:
                     # we may underrun the limit because of dupes in the results, that's fine
                     limit2 = (limit - len(ids)) if limit else False
-                    ids.update(self.search(cr, user, args + [('name', operator, name)], limit=limit2, context=context))
+                    ids.update(self.search(cr, user, args + [('name', operator, name), ('id', 'not in', list(ids))], limit=limit2, context=context))
                 ids = list(ids)
             elif not ids and operator in expression.NEGATIVE_TERM_OPERATORS:
                 ids = self.search(cr, user, args + ['&', ('default_code', operator, name), ('name', operator, name)], limit=limit, context=context)

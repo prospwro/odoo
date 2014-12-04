@@ -4109,7 +4109,6 @@ instance.web.form.One2ManyListView = instance.web.ListView.extend({
         if (!this.fields_view || !this.editable()){
             return true;
         }
-        this.o2m._dirty_flag = true;
         var r;
         return _.every(this.records.records, function(record){
             r = record;
@@ -5457,12 +5456,8 @@ instance.web.form.FieldMany2ManyBinaryMultiFiles = instance.web.form.AbstractFie
         this.fileupload_id = _.uniqueId('oe_fileupload_temp');
         $(window).on(this.fileupload_id, _.bind(this.on_file_loaded, this));
     },
-    start: function() {
-        this._super(this);
+    initialize_content: function() {
         this.$el.on('change', 'input.oe_form_binary_file', this.on_file_change );
-        this.on("change:effective_readonly", this, function () {
-            this.render_value();
-        });
     },
     set_value: function(value_) {
         value_ = value_ || [];
