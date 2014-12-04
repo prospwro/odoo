@@ -14,7 +14,7 @@
                 'search_default_gr_subsection':1,
                 'search_default_gr_state':0}
             </field>
-            <field name="domain">[('plan_ids','=',active_id)]</field>
+            <field name="domain">[('plans','=',active_id)]</field>
             <field
                 name="search_view_id"
                 ref="view_edu_module_filter"/>
@@ -28,10 +28,10 @@
             <field name="view_mode">tree,form</field>
             <field name="context">{
                 'group_by': False,
-                'search_default_gr_period':1,
+                'search_default_gr_section':1,
                 'search_default_gr_module':1}
             </field>
-            <field name="domain">[('module.plan_ids','=',active_id)]</field>
+            <field name="domain">[('module.plans','=',active_id)]</field>
             <field
                 name="search_view_id"
                 ref="view_edu_module_work_filter"/>

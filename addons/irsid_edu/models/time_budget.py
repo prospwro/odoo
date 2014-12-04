@@ -22,36 +22,14 @@
 
 from openerp import models, fields, _
 
-_EDU_DOC_STATES = [
-    ('draft', 'New'),
-    ('confirmed', 'On Validation'),
-    ('validated', 'On Approval'),
-    ('approved', 'Approved'),
-    ('done', 'Done'),
-    ('rejected', 'Rejected'),
-    ('canceled', 'Canceled'),
-]
-
 class edu_time_budget(models.Model):
     _name = 'edu.time.budget'
     _description = 'Study Time Budget'
-    _inherit = ['mail.thread']
+    _inherit = ['base.doc']
     _sql_constraints = [
         ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
     ]
     # Fields
-    name = fields.Char(
-        string='Name',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
-    code = fields.Char(
-        string='Code',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
     lines = fields.One2many(
         comodel_name = 'edu.time',
         inverse_name = 'budget',
@@ -59,12 +37,10 @@ class edu_time_budget(models.Model):
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )
-    state = fields.Selection(
-        selection = _EDU_DOC_STATES,
-        string = 'State',
-        index = True,
+    programs = fields.One2many(
+        comodel_name = 'edu.program',
+        inverse_name = 'budget',
+        string = 'Programs',
         readonly = True,
-        track_visibility = 'onchange',
-        default = 'draft',
-        copy =False,
     )
+

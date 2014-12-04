@@ -25,6 +25,7 @@ from openerp import models, fields
 class edu_time(models.Model):
     _name = 'edu.time'
     _description = 'Study Time'
+    _inherit = ['base.doc']
     _order = 'budget, section, subsection, sequence'
 #     _rec_name = 'code'
 #     _track = {

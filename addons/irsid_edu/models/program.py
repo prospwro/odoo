@@ -20,26 +20,13 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-
-_EDU_DOC_STATES = [
-    ('draft', 'New'),
-    ('confirmed', 'On Validation'),
-    ('validated', 'On Approval'),
-    ('approved', 'Approved'),
-    ('done', 'Done'),
-    ('rejected', 'Rejected'),
-    ('canceled', 'Canceled'),
-]
+from openerp import models, fields, api
 
 class edu_program(models.Model):
     _name = 'edu.program'
     _description = 'Education Program'
     _order = 'speciality,mode,code'
-    _sql_constraints = [
-        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
-    ]
-    _inherit = ['mail.thread']
+    _inherit = ['base.doc']
 #     _track = {
 #         'state': {
 #             'irsid_edu.mt_program_updated': lambda self, cr, uid, obj, ctx=None: True,
@@ -134,26 +121,10 @@ class edu_program(models.Model):
 #                 'description': speciality.description,
 #             }}
 #         return {'value': {}}
-
-    def _default_code(self):
-        seq_obj = self.pool.get('ir.sequence')
-        code =seq_obj.next_by_code('edu.program') or '/'
-        return code
+    @api.depends('modules')
+    def _module_count(self):
+        self.module_count = len(self.modules)
     # Fields
-    code = fields.Char(
-        string='Code',
-        required=True,
-        readonly = True,
-        default = _default_code,
-        copy = False,
-        states = {'draft': [('readonly', False)]},
-    )
-    name = fields.Char(
-        string='Name',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
     short_name = fields.Char(
         string='Name',
         required=True,
@@ -208,6 +179,11 @@ class edu_program(models.Model):
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )
+    module_count = fields.Integer(
+        string = 'Number of Modules',
+        compute = _module_count,
+        readonly = True,
+    )
     stages = fields.Many2many(
         comodel_name = 'edu.stage',
         string = 'Stages',
@@ -218,13 +194,4 @@ class edu_program(models.Model):
         string='Description',
         readonly = True,
         states = {'draft': [('readonly', False)]},
-    )
-    state = fields.Selection(
-        selection = _EDU_DOC_STATES,
-        string = 'State',
-        index = True,
-        readonly = True,
-        track_visibility = 'onchange',
-        default = 'draft',
-        copy =False,
     )

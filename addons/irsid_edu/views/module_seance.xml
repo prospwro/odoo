@@ -27,7 +27,6 @@
                 name="arch"
                 type="xml">
                 <tree
-                    string="Module Seances"
                     colors="
                         grey:state in ('canceled','done');
                         blue:state in ('confirmed','validated');
@@ -39,11 +38,11 @@
                     <field name="name"/>
                     <field name="work"/>
                     <field name="module"/>
-                    <field name="period"/>
+                    <field name="section"/>
                     <field name="time"/>
                     <field name="type"/>
                     <field name="employee"/>
-                    <field name="location_id"/>
+                    <field name="location"/>
                     <field
                         name="st_hours"
                         sum="Student Hours"/>
@@ -66,9 +65,7 @@
             <field
                 name="arch"
                 type="xml">
-                <form
-                    string="Module Seance"
-                    version="7.0">
+                <form>
                     <header>
                         <button
                             name="set_confirmed"
@@ -134,11 +131,11 @@
                                     domain="[('module','=',module)]"
                                     on_change="onchange_work(work)"/>
                                 <field name="employee"/>
-                                <field name="location_id"/>
+                                <field name="location"/>
                                 <field name="sequence"/>
                                 <field name="type"/>
                                 <field name="time"/>
-                                <field name="period"/>
+                                <field name="section"/>
                                 <field name="scale"/>
                             </group>
                             <group>
@@ -156,20 +153,8 @@
                                     name="description"
                                     widget="html"/>
                             </page>
-                            <page string="Sections">
-                                <field
-                                    name="sections"
-                                    domain="[('module','=',module)]">
-                                    <tree string="Sections">
-                                        <field
-                                            name="sequence"
-                                            widget="handle"/>
-                                        <field name="name"/>
-                                    </tree>
-                                </field>
-                            </page>
                             <page string="Tasks">
-                                <field name="task_ids">
+                                <field name="tasks">
                                     <tree string="Tasks">
                                         <field
                                             name="sequence"
@@ -211,7 +196,7 @@
                         <filter
                             string="Period"
                             domain="[]"
-                            context="{'group_by':'period'}"/>
+                            context="{'group_by':'section'}"/>
                         <filter
                             string="Time"
                             domain="[]"

@@ -22,19 +22,10 @@
 
 from openerp import models, fields, api
 
-_EDU_DOC_STATES = [
-    ('draft', 'New'),
-    ('confirmed', 'On Validation'),
-    ('validated', 'On Approval'),
-    ('approved', 'Approved'),
-    ('done', 'Done'),
-    ('rejected', 'Rejected'),
-    ('canceled', 'Canceled'),
-]
-
 class edu_module(models.Model):
     _name = 'edu.module'
     _description = 'Education Module'
+    _inherit = ['base.doc']
 #    _inherit = 'edu.doc'
 #    _track = {
 #        'state': {
@@ -193,18 +184,6 @@ class edu_module(models.Model):
 #            return dom
 #        return False
 # Fields
-    name = fields.Char(
-        string='Name',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
-    code = fields.Char(
-        string='Code',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
     program = fields.Many2one(
         comodel_name = 'edu.program',
         string = 'Program',
@@ -320,12 +299,9 @@ class edu_module(models.Model):
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )
-    state = fields.Selection(
-        selection = _EDU_DOC_STATES,
-        string = 'State',
-        index = True,
+    description = fields.Html(
+        string='Description',
         readonly = True,
-        track_visibility = 'onchange',
-        default = 'draft',
-        copy =False,
+        states = {'draft': [('readonly', False)]},
     )
+

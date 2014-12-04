@@ -25,7 +25,8 @@ from openerp import models, fields, api
 class edu_module_seance(models.Model):
     _name = 'edu.module.seance'
     _description = 'Module Seance'
-    _order = 'sequence'
+    _inherit = ['base.doc']
+    _order = 'module, sequence'
 #     _track = {
 #         'state': {
 #             'irsid_edu.mt_module_seance_updated': lambda self, cr, uid, obj, ctx=None: True,
@@ -78,12 +79,6 @@ class edu_module_seance(models.Model):
 #             return dom
 #         return False
 # Fields
-    name = fields.Char(
-        string='Subject',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
     work = fields.Many2one(
         comodel_name = 'edu.module.work',
         string = 'Work',
@@ -91,6 +86,53 @@ class edu_module_seance(models.Model):
         ondelete = 'cascade',
         readonly = True,
         states = {'draft': [('readonly', False)]},
+    )
+    module = fields.Many2one(
+        comodel_name = 'edu.module',
+        related = 'work.module',
+        string = 'Module',
+        readonly = True,
+        store = True,
+    )
+    stage = fields.Many2one(
+        related = 'work.stage',
+        string = 'Stage',
+        readonly = True,
+        store = True,
+    )
+    section = fields.Many2one(
+        related = 'work.section',
+        string = 'Section',
+        readonly = True,
+        store = True,
+    )
+    subsection = fields.Many2one(
+        related = 'work.subsection',
+        string = 'Subsection',
+        readonly = True,
+        store = True,
+    )
+    time = fields.Many2one(
+        related = 'work.time',
+        string = 'Time',
+        readonly = True,
+        store = True,
+    )
+    type = fields.Many2one(
+        comodel_name = 'edu.seance.type',
+        string = 'Seance Type',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+        domain = [('work_type','=',work.type)],
+    )
+    scale = fields.Many2one(
+        related = 'work.scale',
+        string = 'Scale',
+        readonly = True,
+    )
+    ind_work = fields.Boolean(
+        related = 'work.ind_work',
+        string = 'Individual Work',
     )
     location = fields.Many2one(
         comodel_name = 'stock.location',
@@ -123,6 +165,17 @@ class edu_module_seance(models.Model):
     emp_hours = fields.Float(
         string = 'Employee Hours',
         required=True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    tasks = fields.One2many(
+        comodel_name = 'edu.module.task',
+        inverse_name = 'seance',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    description = fields.Html(
+        string='Description',
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )

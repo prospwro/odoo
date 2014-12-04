@@ -11,7 +11,6 @@
                 name="arch"
                 type="xml">
                 <tree
-                    string="Time"
                     colors="
                         grey:state in ('canceled','done');
                         blue:state in ('confirmed','validated');
@@ -24,10 +23,9 @@
                         name="code"
                         invisible="1"/>
                     <field name="name"/>
-                    <field name="program"/>
-                    <field name="stage_id"/>
-                    <field name="period"/>
-                    <field name="category_id"/>
+                    <field name="stage"/>
+                    <field name="section"/>
+                    <field name="subsection"/>
                     <field
                         name="weeks"
                         sum="Weeks"/>
@@ -44,9 +42,7 @@
             <field
                 name="arch"
                 type="xml">
-                <form
-                    string="Time"
-                    version="7.0">
+                <form>
                     <header>
                         <button
                             name="set_confirmed"
@@ -102,8 +98,9 @@
                         </h2>
                         <group>
                             <field name="short_name"/>
-                            <field name="category_id"/>
-                            <field name="period"/>
+                            <field name="stage"/>
+                            <field name="section"/>
+                            <field name="subsection"/>
                             <field name="weeks"/>
                             <field name="sequence"/>
                         </group>
@@ -131,33 +128,33 @@
                 <search string="Training Time">
                     <field name="code"/>
                     <field name="name"/>
-                    <field name="stage_id"/>
-                    <field name="period"/>
-                    <field name="category_id"/>
+                    <field name="stage"/>
+                    <field name="section"/>
+                    <field name="subsection"/>
                     <field name="state"/>
                     <group
                         expand="1"
                         string="Group By...">
                         <filter
-                            name="gr_program"
-                            string="Program"
+                            name="gr_budget"
+                            string="Budget"
                             domain="[]"
-                            context="{'group_by':'program'}"/>
+                            context="{'group_by':'budget'}"/>
                         <filter
-                            name="gr_stage_id"
+                            name="gr_stage"
                             string="Stage"
                             domain="[]"
-                            context="{'group_by':'stage_id'}"/>
+                            context="{'group_by':'stage'}"/>
                         <filter
-                            name="gr_period"
-                            string="Period"
+                            name="gr_section"
+                            string="Section"
                             domain="[]"
-                            context="{'group_by':'period'}"/>
+                            context="{'group_by':'section'}"/>
                         <filter
-                            name="gr_category_id"
-                            string="Category"
+                            name="gr_subsection_id"
+                            string="Subsection"
                             domain="[]"
-                            context="{'group_by':'category_id'}"/>
+                            context="{'group_by':'subsection'}"/>
                         <filter
                             string="State"
                             domain="[]"

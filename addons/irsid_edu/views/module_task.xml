@@ -11,7 +11,6 @@
                 name="arch"
                 type="xml">
                 <tree
-                    string="Module Tasks"
                     colors="
                         grey:state in ('canceled','done');
                         blue:state in ('confirmed','validated');
@@ -20,6 +19,7 @@
                     <field
                         name="sequence"
                         widget="handle"/>
+                    <field name="code"/>
                     <field name="name"/>
                     <field name="module"/>
                     <field name="seance"/>
@@ -37,9 +37,7 @@
             <field
                 name="arch"
                 type="xml">
-                <form
-                    string="Module Task"
-                    version="7.0">
+                <form>
                     <header>
                         <button
                             name="set_confirmed"
@@ -94,16 +92,14 @@
                             <field name="work"/>
                             <field
                                 name="seance"
-                                domain="[('module','=',module)]"
-                                on_change="onchange_seance(seance)"/>
+                                />
                             <field name="type"/>
                             <field name="sequence"/>
                         </group>
                         <notebook>
                             <page string="Text">
                                 <field
-                                    name="description"
-                                    widget="html"/>
+                                    name="description"/>
                             </page>
                         </notebook>
                     </sheet>
@@ -127,7 +123,7 @@
             <field
                 name="arch"
                 type="xml">
-                <search string="Module Tasks">
+                <search>
                     <field name="module"/>
                     <field name="seance"/>
                     <field name="type"/>

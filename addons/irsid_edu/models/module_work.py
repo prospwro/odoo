@@ -21,10 +21,13 @@
 ##############################################################################
 
 from openerp import models, fields, api
+from openerp.osv.fields import related
 
 class edu_module_work(models.Model):
     _name = 'edu.module.work'
     _description = 'Module Work'
+    _inherit = ['base.doc']
+    _order = 'module, time, type'
 #     _rec_name = 'code'
 #     _track = {
 #         'state': {
@@ -32,7 +35,6 @@ class edu_module_work(models.Model):
 #         },
 #     }
 # # Naming Functions
-    @api.one
     @api.depends('time.code','module.code','type.code')
     def _compute_code(self):
         self.code = self.module.code + '/' + self.time.code + '/' + self.type.code
@@ -119,7 +121,6 @@ class edu_module_work(models.Model):
 #             dom = [('state', 'in', ['draft'])]
 #             return dom
 #         return False
-    @api.one
     @api.depends('seances.st_hours','seances.seance_hours','seances.emp_hours')
     def _compute_hours(self):
         self.eff_st_hours = sum(seance.st_hours for seance in self.seances)
@@ -127,12 +128,6 @@ class edu_module_work(models.Model):
         self.eff_emp_hours = sum(seance.emp_hours for seance in self.seances)
 
 # Fields
-    code = fields.Char(
-        string='Code',
-        required=True,
-        readonly = True,
-        compute = _compute_code,
-    )
     module = fields.Many2one(
         comodel_name = 'edu.module',
         string = 'Module',
@@ -141,16 +136,51 @@ class edu_module_work(models.Model):
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )
+    program = fields.Many2one(
+        related = 'module.program',
+        string = 'Program',
+        readonly = True,
+        store = True,
+    )
     time = fields.Many2one(
         comodel_name = 'edu.time',
         string = 'Time',
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )
+    stage = fields.Many2one(
+        related = 'time.stage',
+        string = 'Stage',
+        readonly = True,
+        store = True,
+    )
+    section = fields.Many2one(
+        related = 'time.section',
+        string = 'Section',
+        readonly = True,
+        store = True,
+    )
+    subsection = fields.Many2one(
+        related = 'time.subsection',
+        string = 'Subsection',
+        readonly = True,
+        store = True,
+    )
     type = fields.Many2one(
         comodel_name = 'edu.work.type',
         string = 'Type',
         required = True,
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    scale = fields.Many2one(
+        comodel_name = 'edu.scale',
+        string = 'Scale',
+        readonly = True,
+        states = {'draft': [('readonly', False)]},
+    )
+    ind_work = fields.Boolean(
+        string = 'Individual Work',
         readonly = True,
         states = {'draft': [('readonly', False)]},
     )
@@ -332,4 +362,3 @@ class edu_module_work(models.Model):
 #        ('module_work_uniq', 'unique (module, time, type)', 'The module works must be unique !'),
 #        ]
 # Sorting Order
-    _order = 'module, time, type'

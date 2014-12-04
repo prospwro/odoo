@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 OpenERP SA (<http://openerp.com>).
+#    OpenERP, Open Source Management Solution Addon
+#    Copyright (C) 2009-2012 IRSID (<http://irsid.ru>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,26 +19,26 @@
 #
 ##############################################################################
 
-import competence
-import level
-import mode
-import module
-#import module_record
-import module_seance
-#import module_section
-import module_task
-import module_work
-import plan
-import program
-import program_section
-import program_subsection
-import scale
-import scale_mark
-import speciality
-import stage
-import time
-import time_budget
-import time_section
-import time_subsection
-import work_type
-import seance_type
+{
+    'name': 'IRSID Base',
+    'version': '2.0',
+    'category': 'Hidden',
+    'sequence': 1,
+    'summary': 'IRSID base module',
+    'description': """
+The base module, needed for installation of other IRSID modules.
+===================================================
+    """,
+    'author': 'IRSID',
+    'website': 'irsid.ru',
+    'depends': ['base','mail'],
+    'data': [
+    ],
+    'demo': [],
+    'test': [
+    ],
+    'installable': True,
+    'auto_install': False,
+    'css': [ ],
+}
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

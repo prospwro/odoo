@@ -32,6 +32,7 @@ _TASK_TYPES = [
 class edu_module_task(models.Model):
     _name = 'edu.module.task'
     _description = 'Module Task'
+    _inherit = ['base.doc']
     _order = 'seance, sequence'
 #    _track = {
 #         'state': {
@@ -65,13 +66,8 @@ class edu_module_task(models.Model):
 #             dom = [('state', 'in', ['draft'])]
 #             return dom
 #         return False
+
 # Fields
-    name = fields.Char(
-        string='Name',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
     seance = fields.Many2one(
         comodel_name = 'edu.module.seance',
         string = 'Seance',
@@ -79,6 +75,20 @@ class edu_module_task(models.Model):
         ondelete = 'cascade',
         readonly = True,
         states = {'draft': [('readonly', False)]},
+    )
+    module = fields.Many2one(
+        comodel_name = 'edu.module',
+        related = 'seance.module',
+        string = 'Module',
+        readonly = True,
+        store = True,
+    )
+    work = fields.Many2one(
+        comodel_name = 'edu.module.work',
+        related = 'seance.work',
+        string = 'Module Work',
+        readonly = True,
+        store = True,
     )
     type = fields.Selection(
         selection = _TASK_TYPES,

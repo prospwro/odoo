@@ -20,13 +20,14 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
+from openerp import models, fields, api
 
 class edu_plan(models.Model):
     _name = 'edu.plan'
     _description = 'Training Plan'
+    _inherit = ['base.doc']
     _sql_constraints = [
-        ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
+        ('code_unique', 'UNIQUE(code)', 'Code must be unique !'),
     ]
 #     _track = {
 #         'state': {
@@ -60,19 +61,6 @@ class edu_plan(models.Model):
 #         })
 #         return super(edu_plan, self).copy(cr, uid, id, default, context=context)
 # Fields
-    name = fields.Char(
-        string='Name',
-        required=True,
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
-    code = fields.Char(
-        string='Code',
-        required=True,
-        default = '/',
-        readonly = True,
-        states = {'draft': [('readonly', False)]},
-    )
     program = fields.Many2one(
         comodel_name = 'edu.program',
         string = 'Program',

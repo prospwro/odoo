@@ -38,7 +38,7 @@
                         green:state=='approved'">
                     <field name="program"/>
                     <field name="module"/>
-                    <field name="period"/>
+                    <field name="section"/>
                     <field name="time"/>
                     <field name="type"/>
                     <field
@@ -46,7 +46,7 @@
                         invisible="1"/>
                     <field name="employee"/>
                     <field
-                        name="location_id"
+                        name="location"
                         invisible="1"/>
                     <field
                         name="st_hours"
@@ -85,14 +85,14 @@
                         green:state=='approved'">
                     <field name="program"/>
                     <field name="module"/>
-                    <field name="period"/>
+                    <field name="section"/>
                     <field name="time"/>
                     <field name="type"/>
                     <field
                         name="scale"
                         invisible="1"/>
                     <field name="employee"/>
-                    <field name="location_id"/>
+                    <field name="location"/>
                     <field
                         name="st_hours"
                         sum="Student Hours"/>
@@ -193,9 +193,9 @@
                                 name="type"
                                 on_change="onchange_type(type)"/>
                             <field name="scale"/>
-                            <field name="period"/>
+                            <field name="section"/>
                             <field name="employee"/>
-                            <field name="location_id"/>
+                            <field name="location"/>
                         </group>
                         <group>
                             <group>
@@ -279,9 +279,9 @@
                                 name="type"
                                 on_change="onchange_type(type)"/>
                             <field name="scale"/>
-                            <field name="period"/>
+                            <field name="section"/>
                             <field name="employee"/>
-                            <field name="location_id"/>
+                            <field name="location"/>
                         </group>
                         <group>
                             <group>
@@ -323,12 +323,12 @@
                     <field name="code"/>
                     <field name="program"/>
                     <field name="module"/>
-                    <field name="period"/>
+                    <field name="section"/>
                     <field name="time"/>
                     <field name="type"/>
                     <field name="scale"/>
                     <field name="employee"/>
-                    <field name="location_id"/>
+                    <field name="location"/>
                     <field name="ind_work"/>
                     <field name="state"/>
                     <group
@@ -339,10 +339,10 @@
                             domain="[]"
                             context="{'group_by':'program'}"/>
                         <filter
-                            name="gr_period"
+                            name="gr_section"
                             string="Period"
                             domain="[]"
-                            context="{'group_by':'period'}"/>
+                            context="{'group_by':'section'}"/>
                         <filter
                             name="gr_time"
                             string="Time"
@@ -368,7 +368,7 @@
                         <filter
                             string="Location"
                             domain="[]"
-                            context="{'group_by':'location_id'}"/>
+                            context="{'group_by':'location'}"/>
                         <filter
                             string="State"
                             domain="[]"
@@ -387,7 +387,7 @@
             <field name="context">{
                 'default_module': active_id,
                 'group_by':False,
-                'search_default_gr_period':1,
+                'search_default_gr_section':1,
                 }
             </field>
             <field name="domain">[('module','=',active_id)]</field>
