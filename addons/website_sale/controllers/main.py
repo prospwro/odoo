@@ -192,7 +192,7 @@ class website_sale(http.Controller):
         categories = category_obj.browse(cr, uid, category_ids, context=context)
         categs = filter(lambda x: not x.parent_id, categories)
 
-        domain += [('public_categ_ids', 'in', category_ids)]
+        domain += ['|', ('public_categ_ids', 'in', category_ids), ('public_categ_ids', '=', False)]
         product_obj = pool.get('product.template')
 
         product_count = product_obj.search_count(cr, uid, domain, context=context)
@@ -226,6 +226,8 @@ class website_sale(http.Controller):
             'style_in_product': lambda style, product: style.id in [s.id for s in product.website_style_ids],
             'attrib_encode': lambda attribs: werkzeug.url_encode([('attrib',i) for i in attribs]),
         }
+        if category:
+            values['main_object'] = category
         return request.website.render("website_sale.products", values)
 
     @http.route(['/shop/product/<model("product.template"):product>'], type='http', auth="public", website=True)
@@ -304,7 +306,7 @@ class website_sale(http.Controller):
             compute_currency = lambda price: price
 
         values = {
-            'order': order,
+            'website_sale_order': order,
             'compute_currency': compute_currency,
             'suggested_products': [],
         }
@@ -367,7 +369,7 @@ class website_sale(http.Controller):
 
         order = None
 
-        shipping_id = None
+        shipping_id = data and data.get('shipping_id') or None
         shipping_ids = []
         checkout = {}
         if not data:
@@ -384,8 +386,8 @@ class website_sale(http.Controller):
         else:
             checkout = self.checkout_parse('billing', data)
             try: 
-                shipping_id = int(data["shipping_id"])
-            except ValueError:
+                shipping_id = int(shipping_id)
+            except (ValueError, TypeError):
                 pass
             if shipping_id == -1:
                 checkout.update(self.checkout_parse('shipping', data))
@@ -430,7 +432,8 @@ class website_sale(http.Controller):
             'shipping_id': partner.id != shipping_id and shipping_id or 0,
             'shippings': shippings,
             'error': {},
-            'has_check_vat': hasattr(registry['res.partner'], 'check_vat')
+            'has_check_vat': hasattr(registry['res.partner'], 'check_vat'),
+            'only_services': order and order.only_services or False
         }
 
         return values
@@ -630,7 +633,7 @@ class website_sale(http.Controller):
                 shipping_partner_id = order.partner_invoice_id.id
 
         values = {
-            'order': request.registry['sale.order'].browse(cr, SUPERUSER_ID, order.id, context=context)
+            'website_sale_order': order
         }
         values['errors'] = sale_order_obj._get_errors(cr, uid, order, context=context)
         values.update(sale_order_obj._get_website_data(cr, uid, order, context))

@@ -555,62 +555,6 @@ $sheet-padding: 16px
                 text-decoration: none
         margin-bottom: 1px
     // }}}
-    // Notebook {{{
-    .oe_notebook
-        margin: 8px 0
-        padding: 0 16px
-        list-style: none
-        zoom: 1
-    .oe_notebook.ui-corner-all
-        @include radius(0)
-    .oe_notebook:before, .oe_notebook:after
-        display: table
-        content: ""
-        zoom: 1
-    .oe_notebook:after
-        clear: both
-    .oe_notebook > li
-        float: left
-    .oe_notebook > li > a
-        display: block
-        color: #808080
-    .oe_notebook > li.ui-tabs-active > a
-        color: #4c4c4c
-    .oe_notebook
-        border-color: #ddd
-        border-style: solid
-        border-width: 0 0 1px
-    .oe_notebook > li
-        position: relative
-    .oe_notebook > li > a
-        padding: 0 12px
-        margin-right: 2px
-        line-height: 30px
-        border: 1px solid transparent
-        @include radius(4px 4px 0 0)
-    .oe_notebook > li > a:hover
-        text-decoration: none
-        background-color: #eee
-        border-color: #eee #eee #ddd
-    .ui-tabs .oe_notebook.ui-tabs-nav li.ui-tabs-active
-        border-bottom: none
-        padding-bottom: 1px
-    .oe_notebook > li.ui-state-active > a, .oe_notebook > li.ui-state-active > a:hover
-        background-color: #ffffff
-        border: 1px solid #ddd
-        border-bottom-color: transparent
-        cursor: default
-    .oe_notebook_page
-        padding: 0
-        //Customize label weight according bootstrap3
-        > label:not([for])
-            font-weight: normal !important
-        // End of customize 
-    div.ui-tabs
-        padding: 3px 0px 3px 0px
-    .ui-tabs-hide
-        display: none
-    // }}}
     // Dropdown {{{
     .oe_dropdown, .oe_dropdown_hover, .oe_dropdown_toggle
         position: relative
@@ -908,17 +852,18 @@ $sheet-padding: 16px
         -webkit-user-select: none
         -moz-user-select: none
         user-select: none
+        .oe-button-column
+            height: 30px
         .dropdown-menu
             li
                 position: relative
                 a
                     padding: 3px 25px
-            .oe_searchview_custom_public
-                a:after
-                    font-family: FontAwesome
-                    content: "\f0c0"
-                    color: #666
-                    margin-left: 3px
+            .oe_searchview_custom_public a:after,.oe-share-filter:after
+                font-family: FontAwesome
+                content: "\f0c0"
+                color: #666
+                margin-left: 3px
         .selected
             display: block
             a
@@ -952,6 +897,8 @@ $sheet-padding: 16px
         .oe-view-manager-search-view
             padding-top: 5px
         .oe-view-manager-switch
+            button
+                width: 34px
             .oe-vm-switch-kanban:before
                 content: "\f009"
             .oe-vm-switch-list:before
@@ -1290,6 +1237,96 @@ $sheet-padding: 16px
     .oe_view.oe_cannot_create
         .oe_view_nocontent_create
             display: none
+    // }}}
+    // PivotView.base and dynamic tags {{{
+    .oe_pivot
+        table
+            width: auto
+        col.hover
+            background-color: #f5f5f5    
+        th
+            background-color: #ffffff
+            font-weight: normal
+            vertical-align: top
+            border: 1px solid #bfbfb6
+            border-top: none
+        th.oe-total
+            background-color: #f0eeee
+            font-weight: bold
+            vertical-align: bottom
+        td
+            border: 1px solid #bfbfb6
+            text-align: right
+        td.oe-closed,td.oe-opened
+            cursor: pointer
+        .oe-closed, .oe-opened
+            cursor: pointer
+            background-color: #f0eeee
+            border-left: none
+            text-align: left
+            &:hover
+                background-color: #e6e6e6
+        &.oe-enable-linking 
+            td:not(.oe-closed):not(.oe-opened):not(.oe-empty)
+                cursor: pointer
+                &:hover
+                    color: #428bca
+        .oe-closed:before
+            font-family: FontAwesome
+            margin-right: 5px
+            content: "\f067"
+        .oe-opened:before
+            font-family: FontAwesome
+            margin-right: 5px
+            content: "\f068"
+            text-align: left
+        .measure-row
+            background-color: #f0eeee
+            cursor: pointer
+        .o-sorted:after
+            font-family: FontAwesome
+            margin-left: 5px
+        .o-sorted-asc:after
+            content: "\f0d7"
+        .o-sorted-desc:after
+            content: "\f0d8"
+        .dropdown-menu
+            a
+                color: black
+            .pivot-dropdown-submenu
+                position: relative
+                > .dropdown-menu
+                    top: 0
+                    left: 100%
+                .field-selection:after
+                    content: "\f0da"
+                    width: 3px
+                    float: right
+                    margin-left: 5px
+                    color: #333
+                    font-family: FontAwesome
+            .pivot-dropdown-submenu:hover
+                > .dropdown-menu
+                    display: block
+    .o-dashboard
+        .oe_pivot
+            th
+                border-top: 1px solid #bfbfb6
+            th, .oe-closed, .oe-opened
+                border-left: 1px solid #bfbfb6
+        .oe_graph
+            svg
+                min-height: 250px
+            .nv-pieLabels
+                display: none
+
+    // }}}
+    // GraphView.base and dynamic tags {{{
+    .oe_graph
+        height: 100%
+        > div
+            height: 100%
+
     // }}}
     // FormView.base and dynamic tags {{{
     .oe_formview
@@ -1691,6 +1728,9 @@ $sheet-padding: 16px
                 @include box-sizing(border)
             &:hover .oe_form_field_image_controls
                 display: block
+            img
+                max-width: 256px
+                max-height: 256px
     .oe_fileupload
         display: inline-block
         clear: both
@@ -1955,6 +1995,9 @@ $sheet-padding: 16px
             &.oe_form_field_datetime,&.oe_form_field_date
                 input.oe_datepicker_master
                     width: 100% !important
+                .oe_datepicker_main
+                    width: -webkit-calc(100% - 20px)
+                    width: calc(100% - 20px)
             &.oe_form_field_reference
                 display: table
     .oe_list_group_name
@@ -2539,11 +2582,18 @@ body.oe_single_form
         .oe_tooltip_message
             max-width: 310px
 
-// Hack for ui icon {{{
+// jquery-ui override {{{
 .ui-icon
     width: 18px
     height: 18px
-// End hack}}}
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error
+    border: 1px solid #000000
+    color: #ffffff
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a
+    color: #ffffff
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon
+    background-image: url("/web/static/lib/jquery.ui/images/ui-icons_ffffff_256x240.png")
+// End jquery-ui override}}}
 
 // Customized modal according bootstrap3
 .modal

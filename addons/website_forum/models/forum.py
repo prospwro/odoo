@@ -3,6 +3,7 @@
 from datetime import datetime
 import logging
 import math
+import re
 import uuid
 from werkzeug.exceptions import Forbidden
 
@@ -162,8 +163,11 @@ class Post(models.Model):
     @api.one
     @api.depends('vote_count', 'forum_id.relevancy_post_vote', 'forum_id.relevancy_time_decay')
     def _compute_relevancy(self):
-        days = (datetime.today() - datetime.strptime(self.create_date, tools.DEFAULT_SERVER_DATETIME_FORMAT)).days
-        self.relevancy = math.copysign(1, self.vote_count) * (abs(self.vote_count - 1) ** self.forum_id.relevancy_post_vote / (days + 2) ** self.forum_id.relevancy_time_decay)
+        if self.create_date:
+            days = (datetime.today() - datetime.strptime(self.create_date, tools.DEFAULT_SERVER_DATETIME_FORMAT)).days
+            self.relevancy = math.copysign(1, self.vote_count) * (abs(self.vote_count - 1) ** self.forum_id.relevancy_post_vote / (days + 2) ** self.forum_id.relevancy_time_decay)
+        else:
+            self.relevancy = 0
 
     # vote
     vote_ids = fields.One2many('forum.post.vote', 'post_id', string='Votes')
@@ -278,8 +282,18 @@ class Post(models.Model):
         self.can_comment = user.karma >= self.karma_comment
         self.can_comment_convert = user.karma >= self.karma_comment_convert
 
+    def _update_content(self, content, forum_id):
+        forum = self.env['forum.forum'].browse(forum_id)
+        if content and self.env.user.karma < forum.karma_dofollow:
+            for match in re.findall(r'<a\s.*href=".*?">', content):
+                content = re.sub(match, match[:3] + 'rel="nofollow" ' + match[3:], content)
+        return content
+
     @api.model
     def create(self, vals):
+        if 'content' in vals and vals.get('forum_id'):
+            vals['content'] = self._update_content(vals['content'], vals['forum_id'])
+
         post = super(Post, self.with_context(mail_create_nolog=True)).create(vals)
         # deleted or closed questions
         if post.parent_id and (post.parent_id.state == 'close' or post.parent_id.active is False):
@@ -308,6 +322,8 @@ class Post(models.Model):
 
     @api.multi
     def write(self, vals):
+        if 'content' in vals:
+            vals['content'] = self._update_content(vals['content'], self.forum_id.id)
         if 'state' in vals:
             if vals['state'] in ['active', 'close'] and any(not post.can_close for post in self):
                 raise KarmaError('Not enough karma to close or reopen a post.')

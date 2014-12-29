@@ -34,7 +34,6 @@
         </field>
     </record>
 
-
     <!-- Applicants -->
     <record model="ir.ui.view" id="crm_case_tree_view_job">
         <field name="name">Applicants</field>
@@ -53,7 +52,8 @@
                 <field name="stage_id"/>
                 <field name="title_action" invisible="context.get('invisible_next_action', True)"/>
                 <field name="date_action" invisible="context.get('invisible_next_date', True)"/>
-                <field name="source_id" invisible="1"/>
+                <field name="medium_id"/>
+                <field name="source_id"/>
                 <field name="survey" invisible="1"/>
                 <field name="response_id" invisible="1"/>
                 <field name="priority"/>
@@ -102,6 +102,13 @@
                         type="object">
                         <field name="attachment_number" widget="statinfo" string="Documents"/>
                     </button>
+                    <button name="action_get_created_employee"
+                        class="oe_stat_button"
+                        icon="fa-user"
+                        type="object"
+                        attrs="{'invisible': [('emp_id', '=', False)]}">
+                        <field name="employee_name" widget="statinfo" string="Employee"/>
+                    </button>
                 </div>
                 <div class="oe_title">
                     <label for="name" class="oe_edit_only"/>
@@ -132,6 +139,7 @@
                             <field name="title_action" class="oe_inline" placeholder="e.g. Call for interview"/>
                         </div>
                         <field name="priority" widget="priority"/>
+                        <field name="medium_id"/>
                         <field name="source_id"/>
                         <field name="reference"/>
                     </group>
@@ -159,7 +167,7 @@
                             <span class="oe_inline" attrs="{'invisible':[('salary_proposed_extra','=',False)]}"> + </span>
                             <field name="salary_proposed_extra" class="oe_inline" placeholder="Extra advantages..."/>
                         </div>
-                        <field name="emp_id" readonly="1"/>
+                        <field name="emp_id" invisible="1"/>
                     </group>
                 </group>
                 <group>
@@ -176,13 +184,25 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="crm_case_pivot_view_job">
+        <field name="name">Jobs - Recruitment</field>
+        <field name="model">hr.applicant</field>
+        <field name="arch" type="xml">
+              <pivot string="Cases By Stage and Estimates">
+                <field name="job_id" type="row"/>
+                <field name="stage_id" type="col"/>
+                <field name="salary_expected" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="crm_case_graph_view_job">
         <field name="name">Jobs - Recruitment Graph</field>
         <field name="model">hr.applicant</field>
         <field name="arch" type="xml">
-              <graph string="Cases By Stage and Estimates" type="bar" orientation="vertical" stacked="True">
-                <field name="job_id" type="row"/>
-                <field name="stage_id" type="col"/>
+              <graph string="Cases By Stage and Estimates">
+                <field name="job_id"/>
+                <field name="stage_id"/>
                 <field name="salary_expected" type="measure"/>
             </graph>
         </field>
@@ -318,6 +338,23 @@
               </p>
          </field>
     </record>
+    <record model="ir.actions.act_window" id="action_hr_job_sources">
+        <field name="name">Jobs Sources</field>
+        <field name="res_model">hr.recruitment.source</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('job_id', '=', active_id)]</field>
+        <field name="context">{'default_job_id': active_id}</field>
+        <field name="help" type="html">
+              <p>
+                Create here some alias...
+                That will allow you to track from where the applicant is coming from...
+              </p>
+              <p>
+                Create email and url for each distinct source. <br/>
+                When the applicant will arrive, you will know from wich source the Job position is coming.
+              </p>
+         </field>
+    </record>
 
     <!-- Jobs -->
     <record id="view_job_filter_recruitment" model="ir.ui.view">
@@ -400,6 +437,11 @@
                         type="object">
                         <field name="documents_count" widget="statinfo" string="Documents"/>
                     </button>
+                    <button class="oe_stat_button" type="action"
+                        name="%(action_hr_job_sources)d" icon="fa-share"
+                        context="{'default_job_id': active_id}">
+                        <div>Source / Alias</div>
+                    </button>
                 </div>
             </xpath>
         </field>
@@ -427,10 +469,10 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_job oe_kanban_card oe_kanban_global_click">
                                 <div class="oe_dropdown_toggle oe_dropdown_kanban oe_custom">
-                                    <span class="oe_e">í</span>
+                                    <span class="oe_e">i</span>
                                     <ul class="oe_dropdown_menu">
                                         <t t-if="widget.view.is_action_enabled('edit')">
-                                            <li><a type="edit">Edit...</a></li>
+                                            <li><a type="edit">Edit Job Position</a></li>
                                         </t>
                                         <t t-if="widget.view.is_action_enabled('delete')">
                                             <li><a type="delete">Delete</a></li>
@@ -635,7 +677,10 @@
         <field name="model">hr.recruitment.source</field>
         <field name="arch" type="xml">
             <tree string="Sources of Applicants">
-                <field name="name"/>
+                <field name="source_id"/>
+                <field name="email"/>
+                <field name="url"/>
+                <button name="create_alias" string="Create alias" type="object" icon="gtk-redo" />
             </tree>
         </field>
     </record>
@@ -645,7 +690,11 @@
         <field name="arch" type="xml">
             <form string="Sources of Applicants">
                 <group>
-                    <field name="name"/>
+                    <field name="source_id"/>
+                    <field name="email"/>
+                    <field name="url"/>
+                    <field name="alias_id" invisible="1"/>
+                    <field name="job_id" invisible="1"/>
                 </group>
             </form>
         </field>

@@ -158,10 +158,10 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click oe_event_kanban_view" >
                                 <div class="oe_dropdown_toggle oe_dropdown_kanban">
-                                    <span class="oe_e">í</span>
+                                    <span class="oe_e">i</span>
                                     <ul class="oe_dropdown_menu">
                                         <t t-if="widget.view.is_action_enabled('edit')">
-                                            <li><a type="edit">Event Settings</a></li>
+                                            <li><a type="edit">Edit Event</a></li>
                                         </t>
                                         <t t-if="widget.view.is_action_enabled('delete')">
                                             <li><a type="delete">Delete</a></li>
@@ -305,13 +305,13 @@
                     </header>
                     <sheet string="Registration">
                         <group>
-                            <group string="Attendee Information">
+                            <group string="Attendee Information" name="attendee">
                                 <field name="name"/>
                                 <field name="phone"/>
                                 <field name="email"/>
                                 <field name="partner_id" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
-                            <group string="Event Information">
+                            <group string="Event Information" name="event">
                                 <field name="event_id" readonly="1"/>
                                 <field name="date_open" groups="base.group_no_one"/>
                                 <field name="date_closed" groups="base.group_no_one"/>
@@ -338,12 +338,22 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_event_registration_pivot">
+            <field name="name">event.registration.pivot</field>
+            <field name="model">event.registration</field>
+            <field name="arch" type="xml">
+                <pivot string="Registration" display_quantity="True">
+                    <field name="event_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="view_event_registration_graph">
             <field name="name">event.registration.graph</field>
             <field name="model">event.registration</field>
             <field name="arch" type="xml">
-                <graph string="Registration" type="bar">
-                    <field name="event_id" type="row"/>
+                <graph string="Registration">
+                    <field name="event_id"/>
                 </graph>
             </field>
         </record>
@@ -376,7 +386,7 @@
           <field name="res_model">event.registration</field>
           <field name="view_type">form</field>
           <field name="domain"></field>
-          <field name="view_mode">tree,form,calendar,graph</field>
+          <field name="view_mode">tree,form,calendar,pivot,graph</field>
           <field name="context">{}</field>
           <field name="search_view_id" ref="view_registration_search"/>
         </record>

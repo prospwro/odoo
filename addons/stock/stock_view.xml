@@ -40,8 +40,8 @@
             parent="menu_product_in_config_stock" sequence="5" groups="product.group_uom"/>
         <menuitem
             action="product.product_uom_form_action" id="menu_stock_uom_form_action"
-            parent="menu_product_in_config_stock" sequence="4" groups="product.group_uom"/>
-
+            parent="menu_stock_configuration" sequence="35" groups="product.group_uom"/>
+        
         <record id="stock_inventory_line_tree" model="ir.ui.view">
             <field name="name">stock.inventory.line.tree</field>
             <field name="model">stock.inventory.line</field>
@@ -349,7 +349,7 @@
                             <field name="posx"/>
                             <field name="posy"/>
                             <field name="posz"/>
-                            <field name="loc_barcode"/>
+                            <field name="barcode"/>
                         </group>
                         <group string="Logistics" groups="stock.group_adv_location">
                             <field name="removal_strategy_id" options="{'no_create': True}"/>
@@ -911,12 +911,24 @@
             </field>
         </record>
 
+        <record id="view_move_pivot" model="ir.ui.view">
+            <field name="name">stock.move.pivot</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <pivot string="Stock Moves Analysis">
+                    <field name="product_id" type="row"/>
+                    <field name="location_dest_id" groups="stock.group_locations" type="row"/>
+                    <field name="product_uom_qty" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
         <record id="view_move_graph" model="ir.ui.view">
             <field name="name">stock.move.graph</field>
             <field name="model">stock.move</field>
             <field name="arch" type="xml">
-                <graph string="Stock Moves Analysis" type="pivot">
-                    <field name="product_id" type="row"/>
+                <graph string="Stock Moves Analysis">
+                    <field name="product_id"/>
                     <field name="location_dest_id" groups="stock.group_locations" type="row"/>
                     <field name="product_uom_qty" type="measure"/>
                 </graph>
@@ -1170,11 +1182,18 @@
         <field name="act_window_id" ref="action_move_form2"/>
         </record>
 
+        <record model="ir.actions.act_window.view" id="action_stock_move_pivot_all">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="view_move_pivot"/>
+            <field name="act_window_id" ref="action_move_form2"/>
+        </record>
+
         <record model="ir.actions.act_window.view" id="action_stock_move_graph_all">
             <field name="sequence" eval="3"/>
             <field name="view_mode">graph</field>
             <field name="view_id" ref="view_move_graph"/>
-        <field name="act_window_id" ref="action_move_form2"/>
+            <field name="act_window_id" ref="action_move_form2"/>
         </record>
 
         <menuitem action="action_move_form2" id="menu_action_move_form2" parent="menu_traceability" sequence="1" groups="stock.group_locations"/>
@@ -1355,9 +1374,9 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_stock_picking_type">
                                 <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="stock.group_stock_manager">
-                                    <span class="oe_e">í</span>
+                                    <span class="oe_e">i</span>
                                     <ul class="oe_dropdown_menu">
-                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit Warehouse</a></li></t>
                                         <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
                                         <t t-if="widget.view.is_action_enabled('edit')"><li><ul class="oe_kanban_colorpicker" data-field="color"/></li></t>
                                     </ul>
@@ -1665,6 +1684,7 @@
                     <group>
                         <field name="product_id"/>
                         <field name="qty"/>
+                        <field name="product_uom_id" groups="product.group_uom"/>
                         <field name="lot_id" groups="stock.group_production_lot"/>
                         <field name="package_id" groups="stock.group_tracking_lot"/>
                         <field name="location_id"/>
@@ -1687,6 +1707,7 @@
                 <tree string="Quants" create="0">
                     <field name="product_id"/>
                     <field name="qty"/>
+                    <field name="product_uom_id" groups="product.group_uom"/>
                     <field name="location_id"/>
                     <field name="owner_id" groups="stock.group_tracking_owner"/>
                     <field name="lot_id" groups="stock.group_production_lot"/>
@@ -1933,6 +1954,10 @@
                 </xpath>
             </field>
         </record>
-        
+
+        <!-- Barcode Nomenclatures -->
+        <menuitem parent="menu_stock_configuration" action="barcodes.action_barcode_nomenclature_form" id="menu_wms_barcode_nomenclature_all"
+            sequence="50"/>
+       
     </data>
 </openerp>

@@ -337,6 +337,7 @@ instance.web.ActionManager = instance.web.Widget.extend({
             sidebar : !popup && !inline,
             pager : (!popup || !form) && !inline,
             display_title : !popup,
+            headless: (popup || inline) && form,
             search_disable_custom_filters: action.context && action.context.search_disable_custom_filters
         });
         action.menu_id = options.action_menu_id;
@@ -407,7 +408,7 @@ instance.web.ActionManager = instance.web.Widget.extend({
             this.dialog_widget.setParent(this.dialog);
             var initialized = this.dialog_widget.appendTo(this.dialog.$el);
             this.dialog.open();
-            return initialized;
+            return $.when(initialized);
         }
         if (this.inner_widget && this.webclient.has_uncommitted_changes()) {
             return $.Deferred().reject();
@@ -604,9 +605,7 @@ instance.web.ViewManager =  instance.web.Widget.extend({
         this.$header_col = this.$header.find('.oe-header-title');
         this.$search_col = this.$header.find('.oe-view-manager-search-view');
         this.$switch_buttons.click(function (event) {
-            if (!$(event.target).hasClass('active')) {
-                self.switch_mode($(this).data('view-type'));
-            }
+            self.switch_mode($(this).data('view-type'));
         });
         var views_ids = {};
         _.each(this.views, function (view) {
@@ -638,7 +637,7 @@ instance.web.ViewManager =  instance.web.Widget.extend({
         if (!view) {
             return $.Deferred().reject();
         }
-        if (view_type !== 'form') {
+        if ((view_type !== 'form') && (view_type !== 'diagram')) {
             this.view_stack = [];
         } 
 
@@ -797,13 +796,15 @@ instance.web.ViewManager =  instance.web.Widget.extend({
     search: function(domains, contexts, groupbys) {
         var self = this,
             controller = this.active_view.controller,
-            action_context = this.action.context || {};
+            action_context = this.action.context || {},
+            view_context = controller.get_context();
         instance.web.pyeval.eval_domains_and_contexts({
             domains: [this.action.domain || []].concat(domains || []),
-            contexts: [action_context].concat(contexts || []),
+            contexts: [action_context, view_context].concat(contexts || []),
             group_by_seq: groupbys || []
         }).done(function (results) {
             if (results.error) {
+                self.active_search.resolve();
                 throw new Error(
                         _.str.sprintf(_t("Failed to evaluate search criterions")+": \n%s",
                                       JSON.stringify(results.error)));
@@ -956,6 +957,8 @@ instance.web.ViewManager =  instance.web.Widget.extend({
                         data: {action: JSON.stringify(action)},
                         complete: instance.web.unblockUI
                     });
+                } else {
+                    self.do_warn("Warning", "No record selected.");
                 }
                 break;
             case 'leave_debug':
@@ -1337,10 +1340,16 @@ instance.web.View = instance.web.Widget.extend({
         this.embedded_view = embedded_view;
     },
     do_show: function () {
+        var self = this;
         this.$el.show();
+        setTimeout(function () {
+            self.$el.parent().addClass('in');
+        }, 0);
+
         instance.web.bus.trigger('view_shown', this);
     },
     do_hide: function () {
+        this.$el.parent().removeClass('in');
         this.$el.hide();
     },
     is_active: function () {
@@ -1399,6 +1408,9 @@ instance.web.View = instance.web.Widget.extend({
     is_action_enabled: function(action) {
         var attrs = this.fields_view.arch.attrs;
         return (action in attrs) ? JSON.parse(attrs[action]) : true;
+    },
+    get_context: function () {
+        return {}
     },
 });
 

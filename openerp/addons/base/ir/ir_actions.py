@@ -72,6 +72,17 @@ class actions(osv.osv):
         todo_obj.unlink(cr, uid, todo_ids, context=context)
         return super(actions, self).unlink(cr, uid, ids, context=context)
 
+    def _get_eval_context(self, cr, uid, action=None, context=None):
+        """ evaluation context to pass to safe_eval """
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return {
+            'uid': uid,
+            'user': user,
+            'time': time,
+            'datetime': datetime,
+            'dateutil': dateutil,
+        }
+
 class ir_actions_report_xml(osv.osv):
 
     def _report_content(self, cursor, user, ids, name, arg, context=None):
@@ -367,6 +378,7 @@ VIEW_TYPES = [
     ('tree', 'Tree'),
     ('form', 'Form'),
     ('graph', 'Graph'),
+    ('pivot', 'Pivot'),
     ('calendar', 'Calendar'),
     ('gantt', 'Gantt'),
     ('kanban', 'Kanban')]
@@ -590,6 +602,7 @@ class ir_actions_server(osv.osv):
 #  - context: current context
 #  - time: Python time module
 #  - workflow: Workflow engine
+#  - log : log(message), function to log debug information in logging table
 # If you plan to return an action, assign: action = {...}""",
         'use_relational_model': 'base',
         'use_create': 'new',
@@ -944,33 +957,37 @@ class ir_actions_server(osv.osv):
         if action.link_new_record and action.link_field_id:
             self.pool[action.model_id.model].write(cr, uid, [context.get('active_id')], {action.link_field_id.name: res_id})
 
-    def _get_eval_context(self, cr, uid, action, context=None):
+    def _get_eval_context(self, cr, uid, action=None, context=None):
         """ Prepare the context used when evaluating python code, like the
         condition or code server actions.
 
         :param action: the current server action
         :type action: browse record
         :returns: dict -- evaluation context given to (safe_)eval """
-        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        def log(message, level="info"):
+            val = (uid, 'server', cr.dbname, __name__, level, message, "action", action.id, action.name)
+            cr.execute("""
+                INSERT INTO ir_logging(create_date, create_uid, type, dbname, name, level, message, path, line, func)
+                VALUES (NOW() at time zone 'UTC', %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, val)
+
+        eval_context = super(ir_actions_server, self)._get_eval_context(cr, uid, action=action, context=context)
         obj_pool = self.pool[action.model_id.model]
         obj = None
         if context.get('active_model') == action.model_id.model and context.get('active_id'):
             obj = obj_pool.browse(cr, uid, context['active_id'], context=context)
-        return {
+        eval_context.update({
             'self': obj_pool,
             'object': obj,
             'obj': obj,
             'pool': self.pool,
-            'time': time,
-            'datetime': datetime,
-            'dateutil': dateutil,
             'cr': cr,
-            'uid': uid,
-            'user': user,
             'context': context,
             'workflow': workflow,
             'Warning': openerp.exceptions.Warning,
-        }
+            'log': log,
+        })
+        return eval_context
 
     def run(self, cr, uid, ids, context=None):
         """ Runs the server action. For each server action, the condition is

@@ -216,6 +216,18 @@
         </field>
         </record>
 
+        <!-- CRM Lead Pivot View -->
+        <record model="ir.ui.view" id="crm_case_pivot_view_leads">
+            <field name="name">Opportunities</field>
+            <field name="model">crm.lead</field>
+            <field name="arch" type="xml">
+                <pivot string="Opportunities" display_quantity="true">
+                    <field name="stage_id" type="row"/>
+                    <field name="planned_revenue" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
         <!-- CRM Lead Graph View -->
         <record model="ir.ui.view" id="crm_case_graph_view_leads">
             <field name="name">Opportunities</field>
@@ -290,9 +302,9 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
                                 <div class="oe_dropdown_toggle oe_dropdown_kanban">
-                                    <span class="oe_e">í</span>
+                                    <span class="oe_e">i</span>
                                     <ul class="oe_dropdown_menu">
-                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit Opportunity</a></li></t>
                                         <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
                                         <li><a name="%(mail.action_email_compose_message_wizard)d" type="action" >Send Email</a></li>
                                         <li><a type="action" name="%(crm.crm_phonecall_category_phone_incoming0)d">Calls</a></li>
@@ -346,7 +358,7 @@
                     <field name="tag_ids" string="Tag" filter_domain="[('tag_ids', 'ilike', self)]"/>
                     <field name="team_id" groups="base.group_multi_salesteams"/>
                     <field name="user_id"/>
-                    <field name="partner_id" operator="child_of"/>
+                    <field name="partner_id" operator="child_of" string="Customer"/>
                     <field name="create_date"/>
                     <field name="country_id"/>
                     <separator/>
@@ -356,6 +368,9 @@
                     <filter string="Unassigned" name="unassigned"
                             domain="[('user_id','=', False)]"
                             help="No salesperson"/>
+                    <filter string="To Process" name="to_process"
+                            domain="['|',('stage_id.probability','>', 0),('stage_id.fold','=', False)]"
+                            help="Not marked as Dead"/>   
                     <separator />
                     <filter string="New Mail" name="message_unread" domain="[('message_unread','=',True)]"/>
                     <separator />
@@ -558,7 +573,7 @@
                     <field name="tag_ids" string="Tag" filter_domain="[('tag_ids', 'ilike', self)]"/>
                     <field name="team_id" groups="base.group_multi_salesteams"/>
                     <field name="user_id"/>
-                    <field name="partner_id" operator="child_of"/>
+                    <field name="partner_id" operator="child_of" string="Customer"/>
                     <field name="stage_id" domain="[]"/>
                     <field name="probability"/>
                     <field name="lost_reason"/>

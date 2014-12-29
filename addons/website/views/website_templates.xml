@@ -190,7 +190,7 @@
     </script>
     <link rel='stylesheet' href='/website/static/src/css/snippets.css'/>
     <link rel='stylesheet' href='/website/static/src/css/editor.css'/>
-    <link rel='stylesheet' href="/web/static/lib/jquery.ui/css/smoothness/jquery-ui-1.9.1.custom.css"/>
+    <link rel='stylesheet' href="/web/static/lib/jquery.ui/jquery-ui.css"/>
     
     <script type="text/javascript" src="/web/static/lib/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="/website/static/lib/ace/ace.js"></script>
@@ -199,7 +199,7 @@
     <script type="text/javascript" src="/website/static/lib/vkbeautify/vkbeautify.0.99.00.beta.js"></script>
     <script type="text/javascript" src="/website/static/lib/jQuery.transfo.js"></script>
     <t t-call="web.jqueryui_conflict">
-        <script type="text/javascript" src="/web/static/lib/jquery.ui/js/jquery-ui-1.9.1.custom.js"></script>
+        <script type="text/javascript" src="/web/static/lib/jquery.ui/jquery-ui.js"></script>
     </t>
 
     <!-- mutation observers shim backed by mutation events (8 < IE < 11, Safari < 6, FF < 14, Chrome < 17) -->
@@ -364,10 +364,8 @@
 <template id="publish_short">
     <t groups="base.group_website_publisher" t-ignore="true">
         <div t-attf-class="btn-group pull-right js_publish_management #{object.website_published and 'css_published' or 'css_unpublished'}" t-att-data-id="object.id" t-att-data-object="object._name" t-att-data-controller="publish_controller">
-            <button t-attf-class="btn btn-sm btn-#{object.website_published and 'success' or 'danger'} js_publish_btn">
-                <span class="css_publish">Not Published</span>
-                <span class="css_unpublish">Published</span>
-            </button>
+            <button class="btn btn-danger js_publish_btn">Not Published</button>
+            <button class="btn btn-success js_publish_btn">Published</button>
         </div>
     </t>
 </template>

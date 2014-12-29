@@ -69,6 +69,23 @@ class QWeb(orm.AbstractModel):
 
         return super(QWeb, self).render_attribute(element, name, value, qwebcontext)
 
+    def render_tag_snippet(self, element, template_attributes, generated_attributes, qwebcontext):
+        d = qwebcontext.copy()
+        d[0] = self.render_element(element, template_attributes, generated_attributes, d)
+        cr = d.get('request') and d['request'].cr or None
+        uid = d.get('request') and d['request'].uid or None
+
+        template = self.eval_format(template_attributes["snippet"], d)
+        elements = html.fragments_fromstring(self.render(cr, uid, template, d))
+
+        id = int(elements[0].get('data-oe-id', None))
+        elements[0].set('data-oe-name', self.pool['ir.ui.view'].browse(cr, uid, id, context=qwebcontext.context).name)
+        elements[0].set('data-oe-type', "snippet")
+
+        elements[0].set('data-oe-thumbnail', template_attributes.get('thumbnail', "oe-thumbnail"))
+
+        return "".join(map(html.tostring, elements))
+
     def render_tag_call_assets(self, element, template_attributes, generated_attributes, qwebcontext):
         if request and request.website and request.website.cdn_activated:
             if qwebcontext.context is None:
@@ -289,13 +306,6 @@ class HTML(orm.AbstractModel):
         content.extend(html.tostring(child)
                        for child in element.iterchildren(tag=etree.Element))
         return '\n'.join(content)
-
-    def value_to_html(self, cr, uid, value, column, options=None, context=None):
-        if options and options.get("nofollow") and value:
-            base_url = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.url', context=context)
-            for match in re.findall(r'<a\s.*href="(?!%s).*?">' % base_url, value):
-                value = re.sub(match, match[:3] + 'rel="nofollow" ' + match[3:], value)
-        return super(HTML, self).value_to_html(cr, uid, value, column, options, context=context)
 
 class Image(orm.AbstractModel):
     """

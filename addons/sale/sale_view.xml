@@ -34,10 +34,20 @@
             <field name="name">sale.order.graph</field>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
-                <graph string="Sales Orders" type="bar">
-                    <field name="partner_id" type="row"/>
+                <graph string="Sales Orders">
+                    <field name="partner_id"/>
                     <field name="amount_total" type="measure"/>
                 </graph>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_sale_order_pivot">
+            <field name="name">sale.order.pivot</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <pivot string="Sales Orders">
+                    <field name="partner_id" type="row"/>
+                    <field name="amount_total" type="measure"/>
+                </pivot>
             </field>
         </record>
 
@@ -207,20 +217,20 @@
                         </page>
                         <page string="Other Information" groups="base.group_user">
                             <group>
-                                <group name="sales_person" groups="base.group_user">
+                                <group string="Sales Information" name="sales_person" groups="base.group_user">
                                     <field name="user_id" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'account.group_account_invoice', 'base.group_sale_salesman_all_leads']}"/>
                                     <field name="team_id" options="{'no_create': True}" groups="base.group_multi_salesteams"/>
-                                    <field groups="base.group_no_one" name="origin"/>
                                     <field name="client_order_ref"/>
-                                </group>
-                                <group name="sale_pay">
-                                    <field name="fiscal_position" options="{'no_create': True}"
-                                        on_change="onchange_fiscal_position(fiscal_position, order_line, context)"/>
+                                    <field name="invoice_exists" invisible="1"/>
                                     <field name="company_id" widget="selection" groups="base.group_multi_company"/>
                                 </group>
-                                <group>
-                                    <field name="invoiced"/>
-                                    <field name="invoice_exists" invisible="1"/>
+                                <group name="sale_pay" string="Invoicing">
+                                    <field name="fiscal_position" options="{'no_create': True}"
+                                        on_change="onchange_fiscal_position(fiscal_position, order_line, context)"/>
+                                </group>
+                                <group string="Reporting" name="technical" groups="base.group_no_one">
+                                    <field groups="base.group_no_one" name="origin"/>
+                                    <field groups="base.group_no_one" name="invoiced"/>
                                 </group>
                             </group>
                         </page>
@@ -281,7 +291,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="view_mode">tree,form,calendar,pivot,graph</field>
             <field name="search_view_id" ref="view_sales_order_filter"/>
             <field name="context">{}</field>
             <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
@@ -326,7 +336,7 @@
             <field name="res_model">sale.order</field>
             <field name="view_type">form</field>
             <field name="view_id" ref="view_quotation_tree"/>
-            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="view_mode">tree,form,calendar,pivot,graph</field>
             <field name="context">{}</field>
             <field name="domain">[('state','in',('draft','sent','cancel'))]</field>
             <field name="search_view_id" ref="view_sales_order_filter"/>

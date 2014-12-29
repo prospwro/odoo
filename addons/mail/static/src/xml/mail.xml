@@ -321,6 +321,18 @@
         </div>
     </t>
 
+    <!--
+        mail.compose_message.button_top_bar
+        render of the button on the user bar for open wizard compose message
+        -->
+    <t t-name="mail.compose_message_top_button">
+        <li title='Compose new Message' class="oe_topbar_item oe_topbar_compose_full_email">
+            <a href="#">
+                <i class="fa fa-envelope-o fa-fw"></i>
+            </a>
+        </li>
+    </t>
+
     <!-- mail.thread.message.vote
         Template used to display Like/Unlike in a mail.message
     -->
