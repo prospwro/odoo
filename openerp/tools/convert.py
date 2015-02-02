@@ -751,6 +751,10 @@ form: module.record_id""" % (xml_id,)
         record.append(Field(el.get('priority', "16"), name='priority'))
         if 'inherit_id' in el.attrib:
             record.append(Field(name='inherit_id', ref=el.get('inherit_id')))
+        if 'website_id' in el.attrib:
+            record.append(Field(name='website_id', ref=el.get('website_id')))
+        if 'key' in el.attrib:
+            record.append(Field(el.get('key'), name='key'))
         if el.get('active') in ("True", "False"):
             view_id = self.id_get(cr, tpl_id, raise_if_not_found=False)
             if mode != "update" or not view_id:
@@ -855,7 +859,7 @@ def convert_file(cr, module, filename, idref, mode='update', noupdate=False, kin
         elif ext == '.js':
             pass # .js files are valid but ignored here.
         else:
-            _logger.warning("Can't load unknown file type %s.", filename)
+            raise ValueError("Can't load unknown file type %s.", filename)
     finally:
         fp.close()
 
@@ -927,8 +931,8 @@ def convert_xml_import(cr, module, xmlfile, idref=None, mode='init', noupdate=Fa
     try:
         relaxng.assert_(doc)
     except Exception:
-        _logger.error('The XML file does not fit the required schema !')
-        _logger.error(misc.ustr(relaxng.error_log.last_error))
+        _logger.info('The XML file does not fit the required schema !', exc_info=True)
+        _logger.info(misc.ustr(relaxng.error_log.last_error))
         raise
 
     if idref is None:
@@ -940,4 +944,3 @@ def convert_xml_import(cr, module, xmlfile, idref=None, mode='init', noupdate=Fa
     obj = xml_import(cr, module, idref, mode, report=report, noupdate=noupdate, xml_filename=xml_filename)
     obj.parse(doc.getroot(), mode=mode)
     return True
-

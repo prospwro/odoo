@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- vim:fdl=1:
--->
 <templates id="template" xml:space="preserve">
 <t t-name="EmptyComponent">
     <div></div>
@@ -31,7 +29,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 class="modal-title"><t t-raw="title"/></h3>
+                    <h3 class="modal-title"><t t-raw="title"/><span class="text-muted"><t t-esc="subtitle"/></span></h3>
                 </div>
                 <div class="modal-body">
                 </div>
@@ -84,7 +82,7 @@
                 </p>
                 <p class="oe_grey" style="margin: 10px">
                     By default, the master password is 'admin'. This password
-                    is required to created, delete dump or restore databases.
+                    is required to create, delete, dump or restore databases.
                 </p>
                 <table class="db_option_table" style="margin: 10px">
                     <tr>
@@ -215,6 +213,15 @@
                                 </t>
                             </select>
                             <input t-if="!widget.db_list" name="backup_db" class="required" type="text" autofocus="autofocus"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="backup_format">Backup format:</label></td>
+                        <td class="oe_form_field oe_form_field_selection">
+                            <select name="backup_format">
+                                <option value="zip">zip (includes filestore)</option>
+                                <option value="dump">pg_dump custom format (without filestore)</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -497,7 +504,7 @@
                     <t t-if="widget.multiple_views">
                         <div class="oe-view-manager-switch btn-group btn-group-sm">
                             <t t-foreach="widget.view_order" t-as="view">
-                                <button type="button" t-attf-class="btn btn-default fa oe-vm-switch-#{view.type}" t-att-data-view-type="view.type" t-att-title="view.label" t-if="view.type!=='form'">
+                                <button type="button" t-attf-class="btn btn-default fa oe-vm-switch-#{view.type}" t-att-data-view-type="view.type" t-att-title="view.label">
                                 </button>
                             </t>
                         </div>
@@ -896,7 +903,7 @@
             </li>
         </ul>
         <div class="tab-content">
-            <div role="tabpanel" t-foreach="pages" t-as="page" t-attf-class="tab-pane fade #{classnames}" t-att-id="id">
+            <div role="tabpanel" t-foreach="pages" t-as="page" t-attf-class="tab-pane #{classnames}" t-att-id="id">
                 <t t-raw="page.contents"/>
             </div>
         </div>
@@ -1110,7 +1117,7 @@
         <t t-foreach="widget.priorities" t-as="rec" >
             <li t-att-data-value="rec.click_value" style="display: inline-block;">
                 <a href="#" t-att-title="rec.name">
-                    <span t-att-class="widget.get('value') gte rec.value and 'oe_e oe_star_on' or 'oe_e oe_star_off'">7</span>
+                    <i t-att-class="widget.get('value') gte rec.value and 'fa fa-star oe_star_on' or 'fa fa-star oe_star_off'"/>
                 </a>
             </li>
         </t>
@@ -1246,8 +1253,8 @@
             <span class="oe_form_m2o_follow"/>
         </t>
         <t t-if="!widget.get('effective_readonly')">
-            <a t-if="! widget.options.no_open" href="#" tabindex="-1"
-                class="oe_m2o_cm_button oe_e" draggable="false">/</a>
+            <i t-if="! widget.options.no_open" href="#" tabindex="-1"
+                class="oe_m2o_cm_button fa fa-external-link" draggable="false"/>
             <div>
                 <input type="text"
                     t-att-id="widget.id_for_label"
@@ -1456,7 +1463,7 @@
                         <t t-raw="file.name || file.filename"/>
                     </a>
                     <t t-if="(!file.upload or file.percent_loaded&gt;=100)">
-                        <a class="oe_right oe_delete oe_e" title="Delete this file" t-attf-data-id="#{file.id}">[</a>
+                        <i class="oe_right oe_delete fa fa-times-circle" title="Delete this file" t-attf-data-id="#{file.id}"/>
                     </t>
                 </div>
             </t>
@@ -1478,7 +1485,7 @@
         <div class="oe_placeholder_files"/>
         <div class="oe_add" t-if="!widget.get('effective_readonly')">
             <!-- uploader of file -->
-            <button class="oe_attach"><span class="oe_e">'</span></button> 
+            <button class="oe_attach"><i class="fa fa-paperclip"/></button> 
             <span class='oe_attach_label'><t t-esc="widget.string"/></span>
             <t t-call="HiddenInputFile">
                 <t t-set="fileupload_id" t-value="widget.fileupload_id"/>
@@ -1541,6 +1548,7 @@
         <div class="o-modal-header">
             <div class="o-popup-search"/>
             <div class="o-search-options oe-search-options"/>
+            <div class="oe_popup_list_pager"/>
         </div>
         <div class="oe_popup_list"/>
         <div class="oe_popup_form"/>
@@ -2021,6 +2029,10 @@
     style="box-shadow: none; white-space:nowrap;">
     <img t-attf-src="#{prefix}/web/static/src/img/icons/#{widget.icon}.png"
     t-att-alt="widget.string"/>
+</button>
+<button t-name="FieldToggleBoolean" type="button"
+    t-att-title="widget.string" class="oe_toggle_button">
+    <img t-attf-src="#{_s}/web/static/src/img/icons/#{widget.icon}" t-att-alt="widget.string"/>
 </button>
 
 </templates>

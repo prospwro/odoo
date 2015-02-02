@@ -141,6 +141,12 @@ def main(args):
 
     config = openerp.tools.config
 
+    if config["db_name"]:
+        try:
+            openerp.service.db._create_empty_database(config["db_name"])
+        except openerp.service.db.DatabaseExists:
+            pass
+
     if config["test_file"]:
         config["test_enable"] = True
 
@@ -171,5 +177,3 @@ class Server(Command):
     """Start the odoo server (default command)"""
     def run(self, args):
         main(args)
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

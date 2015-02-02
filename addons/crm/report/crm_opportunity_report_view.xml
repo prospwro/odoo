@@ -93,7 +93,7 @@
                         <field name="medium_id" widget="selection"/>
                         <field name="source_id" widget="selection"/>
                         <separator orientation="vertical"/>
-                        <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                         <newline/>
                         <field name="create_date"/>
                         <field name="opening_date"/>
@@ -107,7 +107,8 @@
                         <filter string="Stage" context="{'group_by':'stage_id'}"/>
                         <separator orientation="vertical" />
                         <filter string="Creation Month" context="{'group_by':'create_date:month'}" name="month"/>
-                        <filter string="Expected Closing" context="{'group_by':'date_deadline:month'}" name="month" help="Expiration Closing Month"/>
+                        <filter string="Expected Closing" context="{'group_by':'date_deadline:month'}" name="date_deadline" help="Expiration Closing Month"/>
+                        <filter string="Conversion Date" context="{'group_by':'date_conversion:month'}" name="conversion_date" help="Conversion Date from Lead to Opportunity"/>
                         <filter string="Lost Reason" context="{'group_by':'lost_reason'}"/>
                     </group>
                 </search>

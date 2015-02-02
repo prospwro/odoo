@@ -31,6 +31,15 @@ class tax_report(report_sxw.rml_parse, common_report_header):
     def set_context(self, objects, data, ids, report_type=None):
         new_ids = ids
         res = {}
+        if not data:
+            company_id = self.pool['res.users'].browse(self.cr, self.uid, self.uid).company_id.id
+            data = {
+                'form': {
+                    'based_on': 'invoices',
+                    'company_id': company_id,
+                    'display_detail': False,
+                }
+            }
         self.period_ids = []
         period_obj = self.pool.get('account.period')
         self.display_detail = data['form']['display_detail']
@@ -242,5 +251,3 @@ class report_vat(osv.AbstractModel):
     _inherit = 'report.abstract_report'
     _template = 'account.report_vat'
     _wrapped_report_class = tax_report
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -8,7 +8,7 @@ from openerp import tools
 from openerp.addons.web import http
 from openerp.addons.web.http import request
 from openerp.addons.website.models.website import slug
-from openerp.osv import osv
+from openerp.exceptions import UserError
 from openerp.osv.orm import browse_record
 from openerp.tools.translate import _
 from openerp import SUPERUSER_ID
@@ -160,8 +160,8 @@ class WebsiteBlog(http.Controller):
             'tags_list' : tags_list,
             'blog_posts': blog_posts,
             'pager': pager,
-			'nav_list': self.nav_list(blog),
-			'blog_url': blog_url,
+            'nav_list': self.nav_list(blog),
+            'blog_url': blog_url,
             'date': date_begin,
         }
         response = request.website.render("website_blog.blog_post_short", values)
@@ -231,8 +231,8 @@ class WebsiteBlog(http.Controller):
             'blog': blog,
             'blog_post': blog_post,
             'main_object': blog_post,
-			'nav_list': self.nav_list(blog),
-			'enable_editor': enable_editor,
+            'nav_list': self.nav_list(blog),
+            'enable_editor': enable_editor,
             'next_post': next_post,
             'date': date_begin,
             'blog_url': blog_url,
@@ -251,13 +251,13 @@ class WebsiteBlog(http.Controller):
             },context=context)
         return response
 
-    def _blog_post_message(self, uid, blog_post_id, message_content, **post):
+    def _blog_post_message(self, blog_post_id, message_content, **post):
         cr, uid, context = request.cr, request.uid, request.context
         BlogPost = request.registry['blog.post']
         User = request.registry['res.users']
         # for now, only portal and user can post comment on blog post.
         if uid == request.website.user_id.id:
-            raise osv.except_osv(_('Error!'), _('Public user cannot post comments on blog post.'))
+            raise UserError(_('Public user cannot post comments on blog post.'))
         # get the partner of the current user
         user = User.browse(cr, uid, uid, context=context)
         partner_id = user.partner_id.id
@@ -272,7 +272,7 @@ class WebsiteBlog(http.Controller):
             context=context)
         return message_id
 
-    @http.route(['/blog/post_comment'], type='http', auth="public", methods=['GET','POST'], website=True)
+    @http.route(['/blog/post_comment'], type='http', auth="public", methods=['GET', 'POST'], website=True)
     def blog_post_comment(self, blog_post_id=0, **kw):
         cr, uid, context = request.cr, request.uid, request.context
         redirect_url = request.httprequest.referrer + "#comments"
@@ -285,7 +285,7 @@ class WebsiteBlog(http.Controller):
                 blog_post_id = int(blog_post_id)
                 blog_post = request.registry['blog.post']
                 post = blog_post.browse(cr, uid, blog_post_id, context=context)
-                self._blog_post_message(uid, blog_post_id, kw.get('comment'), **kw)
+                self._blog_post_message(blog_post_id, kw.get('comment'), **kw)
                 redirect_url = "/blog/%s/post/%s#comments" % (slug(post.blog_id), slug(post))
         return werkzeug.utils.redirect(redirect_url)
 
@@ -310,9 +310,9 @@ class WebsiteBlog(http.Controller):
 
     @http.route(['/blog/post_discussion'], type='json', auth="public", website=True)
     def post_discussion(self, blog_post_id, **post):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, uid = request.cr, request.uid
         publish = request.registry['res.users'].has_group(cr, uid, 'base.group_website_publisher')
-        id = self._blog_post_message(uid, blog_post_id, post.get('comment'), **post)
+        id = self._blog_post_message(blog_post_id, post.get('comment'), **post)
         return self._get_discussion_detail([id], publish, **post)
 
     @http.route('/blog/<int:blog_id>/post/new', type='http', auth="public", website=True)

@@ -39,6 +39,7 @@ from openerp.report.report_sxw import report_sxw, report_rml
 from openerp.tools.safe_eval import safe_eval as eval
 from openerp.tools.translate import _
 import openerp.workflow
+from openerp.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -328,7 +329,6 @@ class ir_actions_act_window(osv.osv):
         'auto_search':True,
         'multi': False,
     }
-
     def read(self, cr, uid, ids, fields=None, context=None, load='_classic_read'):
         """ call the method get_empty_list_help of the model and set the window action help message
         """
@@ -337,24 +337,22 @@ class ir_actions_act_window(osv.osv):
             ids = [ids]
         results = super(ir_actions_act_window, self).read(cr, uid, ids, fields=fields, context=context, load=load)
 
-        context = dict(context or {})
-        eval_dict = {
-            'active_model': context.get('active_model'),
-            'active_id': context.get('active_id'),
-            'active_ids': context.get('active_ids'),
-            'uid': uid,
-            'context': context,
-        }
-        for res in results:
-            model = res.get('res_model')
-            if model in self.pool:
-                try:
-                    with tools.mute_logger("openerp.tools.safe_eval"):
-                        eval_context = eval(res['context'] or "{}", eval_dict) or {}
-                        res['context'] = str(eval_context)
-                except Exception:
-                    continue
-                if not fields or 'help' in fields:
+        if not fields or 'help' in fields:
+            context = dict(context or {})
+            eval_dict = {
+                'active_model': context.get('active_model'),
+                'active_id': context.get('active_id'),
+                'active_ids': context.get('active_ids'),
+                'uid': uid,
+            }
+            for res in results:
+                model = res.get('res_model')
+                if model and self.pool.get(model):
+                    try:
+                        with tools.mute_logger("openerp.tools.safe_eval"):
+                            eval_context = eval(res['context'] or "{}", eval_dict) or {}
+                    except Exception:
+                        continue
                     custom_context = dict(context, **eval_context)
                     res['help'] = self.pool[model].get_empty_list_help(cr, uid, res.get('help', ""), context=custom_context)
         if ids_int:
@@ -855,12 +853,12 @@ class ir_actions_server(osv.osv):
                 try:
                     self.pool.get('ir.values').unlink(cr, SUPERUSER_ID, action.menu_ir_values_id.id, context)
                 except Exception:
-                    raise osv.except_osv(_('Warning'), _('Deletion of the action record failed.'))
+                    raise UserError(_('Deletion of the action record failed.'))
         return True
 
     def run_action_client_action(self, cr, uid, action, eval_context=None, context=None):
         if not action.action_id:
-            raise osv.except_osv(_('Error'), _("Please specify an action to launch!"))
+            raise UserError(_("Please specify an action to launch!"))
         return self.pool[action.action_id.type].read(cr, uid, [action.action_id.id], context=context)[0]
 
     def run_action_code_multi(self, cr, uid, action, eval_context=None, context=None):
@@ -1235,5 +1233,3 @@ class ir_actions_act_client(osv.osv):
         'context': '{}',
 
     }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

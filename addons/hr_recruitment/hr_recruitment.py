@@ -26,6 +26,7 @@ from openerp import tools
 from openerp import SUPERUSER_ID
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+from openerp.exceptions import UserError
 
 
 AVAILABLE_PRIORITIES = [
@@ -99,7 +100,7 @@ class hr_recruitment_stage(osv.osv):
         'sequence': fields.integer('Sequence', help="Gives the sequence order when displaying a list of stages."),
         'department_id':fields.many2one('hr.department', 'Specific to a Department', help="Stages of the recruitment process may be different per department. If this stage is common to all departments, keep this field empty."),
         'requirements': fields.text('Requirements'),
-        'template_id': fields.many2one('email.template', 'Use template', help="If set, a message is posted on the applicant using the template when the applicant is set to the stage."),
+        'template_id': fields.many2one('mail.template', 'Use template', help="If set, a message is posted on the applicant using the template when the applicant is set to the stage."),
         'legend_priority': fields.text(
             'Priority Management Explanation', translate=True,
             help='Explanation text to help users using the star and priority mechanism on applicants that are in this stage.'),
@@ -316,9 +317,13 @@ class hr_applicant(osv.Model):
         return {'value': {'department_id': department_id, 'user_id': user_id}}
 
     def onchange_department_id(self, cr, uid, ids, department_id=False, stage_id=False, context=None):
+        values = {}
         if not stage_id:
-            stage_id = self.stage_find(cr, uid, [], department_id, [('fold', '=', False)], context=context)
-        return {'value': {'stage_id': stage_id}}
+            values['stage_id'] = self.stage_find(cr, uid, [], department_id, [('fold', '=', False)], context=context)
+        if department_id:
+            department = self.pool['hr.department'].browse(cr, uid, department_id, context=context)
+            values['company_id'] = department.company_id.id
+        return {'value': values}
 
     def onchange_partner_id(self, cr, uid, ids, partner_id, context=None):
         data = {'partner_phone': False,
@@ -564,7 +569,7 @@ class hr_applicant(osv.Model):
                     body=_('New Employee %s Hired') % applicant.partner_name if applicant.partner_name else applicant.name,
                     subtype="hr_recruitment.mt_job_applicant_hired", context=context)
             else:
-                raise osv.except_osv(_('Warning!'), _('You must define an Applied Job and a Contact Name for this applicant.'))
+                raise UserError(_('You must define an Applied Job and a Contact Name for this applicant.'))
 
         action_model, action_id = model_data.get_object_reference(cr, uid, 'hr', 'open_view_employee_list')
         dict_act_window = act_window.read(cr, uid, [action_id], [])[0]
