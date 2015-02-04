@@ -25,7 +25,7 @@ from openerp import models, fields, api
 class edu_module_seance(models.Model):
     _name = 'edu.module.seance'
     _description = 'Module Seance'
-    _inherit = ['base.doc']
+    _inherit = ['base.abstract.doc']
     _order = 'module, sequence'
 #     _track = {
 #         'state': {

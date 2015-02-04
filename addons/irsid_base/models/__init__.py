@@ -20,3 +20,5 @@
 ##############################################################################
 
 import doc
+import doc_signature
+import abstract_doc

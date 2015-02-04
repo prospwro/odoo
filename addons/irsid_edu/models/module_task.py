@@ -32,7 +32,7 @@ _TASK_TYPES = [
 class edu_module_task(models.Model):
     _name = 'edu.module.task'
     _description = 'Module Task'
-    _inherit = ['base.doc']
+    _inherit = ['base.abstract.doc']
     _order = 'seance, sequence'
 #    _track = {
 #         'state': {

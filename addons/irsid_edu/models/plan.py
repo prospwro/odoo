@@ -25,7 +25,7 @@ from openerp import models, fields, api
 class edu_plan(models.Model):
     _name = 'edu.plan'
     _description = 'Training Plan'
-    _inherit = ['base.doc']
+    _inherit = ['base.abstract.doc']
     _sql_constraints = [
         ('code_unique', 'UNIQUE(code)', 'Code must be unique !'),
     ]

@@ -26,7 +26,7 @@ from openerp.osv.fields import related
 class edu_module_work(models.Model):
     _name = 'edu.module.work'
     _description = 'Module Work'
-    _inherit = ['base.doc']
+    _inherit = ['base.abstract.doc']
     _order = 'module, time, type'
 #     _rec_name = 'code'
 #     _track = {

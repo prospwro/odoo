@@ -26,7 +26,7 @@ class edu_program(models.Model):
     _name = 'edu.program'
     _description = 'Education Program'
     _order = 'speciality,mode,code'
-    _inherit = ['base.doc']
+    _inherit = ['base.abstract.doc']
 #     _track = {
 #         'state': {
 #             'irsid_edu.mt_program_updated': lambda self, cr, uid, obj, ctx=None: True,
