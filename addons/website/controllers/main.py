@@ -77,6 +77,7 @@ class Website(openerp.addons.web.controllers.main.Home):
         except ValueError, e:
             # page not found
             if request.website.is_publisher():
+                values.pop('deletable')
                 page = 'website.page_404'
             else:
                 return request.registry['ir.http']._handle_exception(e, 404)
@@ -537,3 +538,23 @@ class Website(openerp.addons.web.controllers.main.Home):
         if res:
             return res
         return request.redirect('/')
+
+    #------------------------------------------------------
+    # Backend html field
+    #------------------------------------------------------
+    @http.route('/website/field/html', type='http', auth="public", website=True)
+    def FieldTextHtml(self, model=None, res_id=None, field=None, callback=None, **kwargs):
+        record = None
+        if model and res_id:
+            res_id = int(res_id)
+            record = request.registry[model].browse(request.cr, request.uid, res_id, request.context)
+
+        datarecord = json.loads(kwargs['datarecord'])
+        kwargs.update({
+            'content': record and getattr(record, field) or "",
+            'model': model,
+            'res_id': res_id,
+            'field': field,
+            'datarecord': datarecord
+        })
+        return request.website.render(kwargs.get("template") or "website.FieldTextHtml", kwargs)

@@ -182,7 +182,7 @@ instance.web.ListView = instance.web.View.extend( /** @lends instance.web.ListVi
                 pair = this.fonts[i];
                 var font = pair[0];
                 expression = pair[1];
-                if (py.evaluate(expression, context).toJSON()) {
+                if (py.PY_isTrue(py.evaluate(expression, context))) {
                     switch(font) {
                     case 'bold':
                         style += 'font-weight: bold;';
@@ -203,7 +203,7 @@ instance.web.ListView = instance.web.View.extend( /** @lends instance.web.ListVi
             pair = this.colors[i];
             var color = pair[0];
             expression = pair[1];
-            if (py.evaluate(expression, context).toJSON()) {
+            if (py.PY_isTrue(py.evaluate(expression, context))) {
                 return style += 'color: ' + color + ';';
             }
             // TODO: handle evaluation errors
@@ -356,7 +356,7 @@ instance.web.ListView = instance.web.View.extend( /** @lends instance.web.ListVi
         //Sort
         var default_order = this.fields_view.arch.attrs.default_order,
             unsorted = !this.dataset._sort.length;
-        if (unsorted && default_order) {
+        if (unsorted && default_order && !this.grouped) {
             this.dataset.set_sort(default_order.split(','));
         }
 
@@ -2230,7 +2230,7 @@ instance.web.list.Column = instance.web.Class.extend({
         }
         if (attrs.invisible) { return ''; }
 
-        if (!(row_data[this.id] && row_data[this.id].value)) {
+        if (!row_data[this.id]) {
             return options.value_if_empty === undefined
                     ? ''
                     : options.value_if_empty;
@@ -2299,8 +2299,12 @@ instance.web.list.Binary = instance.web.list.Column.extend({
     _format: function (row_data, options) {
         var text = _t("Download");
         var value = row_data[this.id].value;
+        if (!value) {
+            return options.value_if_empty || '';
+        }
+
         var download_url;
-        if (value && value.substr(0, 10).indexOf(' ') == -1) {
+        if (value.substr(0, 10).indexOf(' ') == -1) {
             download_url = "data:application/octet-stream;base64," + value;
         } else {
             download_url = instance.session.url('/web/binary/saveas', {model: options.model, field: this.id, id: options.id});

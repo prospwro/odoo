@@ -600,7 +600,7 @@
                     <notebook>
                         <page string="Transactions" name="statement_line_ids">
                             <field name="line_ids" context="{'date':date}">
-                                <tree editable="bottom" string="Statement lines">
+                                <tree editable="bottom" string="Statement lines" colors="grey:journal_entry_ids">
                                     <field name="sequence" readonly="1" invisible="1"/>
                                     <field name="journal_entry_ids" invisible="1"/>
                                     <field name="date" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
@@ -615,7 +615,8 @@
                                     <field name="amount" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
                                     <field name="amount_currency" groups="base.group_multi_currency" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
                                     <field name="currency_id" groups="base.group_multi_currency" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
-                                    <field name="bank_account_id" groups="base.group_no_one"/>
+                                    <field name="bank_account_id" groups="base.group_no_one" attrs="{'readonly' : [('journal_entry_id', '!=', False)] }"
+                                        domain="['|', ('partner_id', '=', partner_id), ('partner_id', '=', False)]"/>
                                 </tree>
                             </field>
                         </page>

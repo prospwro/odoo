@@ -21,6 +21,7 @@
 
 """ High-level objects for fields. """
 
+from collections import OrderedDict
 from datetime import date, datetime
 from functools import partial
 from operator import attrgetter
@@ -145,6 +146,9 @@ class Field(object):
 
         :param store: whether the field is stored in database (boolean, by
             default ``False`` on computed fields)
+
+        :param compute_sudo: whether the field should be recomputed as superuser
+            to bypass access rights (boolean, by default ``False``)
 
         The methods given for `compute`, `inverse` and `search` are model
         methods. Their signature is shown in the following example::
@@ -271,6 +275,7 @@ class Field(object):
     depends = ()                # collection of field dependencies
     recursive = False           # whether self depends on itself
     compute = None              # compute(recs) computes field on recs
+    compute_sudo = False        # whether field should be recomputed as admin
     inverse = None              # inverse(recs) inverses field on recs
     search = None               # search(recs, operator, value) searches on self
     related = None              # sequence of field names, for related fields
@@ -291,6 +296,13 @@ class Field(object):
         kwargs['string'] = string
         self._attrs = {key: val for key, val in kwargs.iteritems() if val is not None}
         self._free_attrs = []
+
+        # self._triggers is a set of pairs (field, path) that represents the
+        # computed fields that depend on `self`. When `self` is modified, it
+        # invalidates the cache of each `field`, and registers the records to
+        # recompute based on `path`. See method `modified` below for details.
+        self._triggers = set()
+        self.inverse_fields = []
 
     def new(self, **kwargs):
         """ Return a field of the same type as `self`, with its own parameters. """
@@ -390,16 +402,6 @@ class Field(object):
     #
     # Field setup
     #
-
-    def reset(self):
-        """ Prepare `self` for a new setup. """
-        self.setup_done = False
-        # self._triggers is a set of pairs (field, path) that represents the
-        # computed fields that depend on `self`. When `self` is modified, it
-        # invalidates the cache of each `field`, and registers the records to
-        # recompute based on `path`. See method `modified` below for details.
-        self._triggers = set()
-        self.inverse_fields = []
 
     def setup(self, env):
         """ Make sure that `self` is set up, except for recomputation triggers. """
@@ -635,8 +637,11 @@ class Field(object):
     #
 
     def to_column(self):
-        """ return a low-level field object corresponding to `self` """
-        assert self.store or self.column
+        """ Return a column object corresponding to `self`, or ``None``. """
+        if not self.store and self.compute:
+            # non-stored computed fields do not have a corresponding column
+            self.column = None
+            return None
 
         # determine column parameters
         #_logger.debug("Create fields._column for Field %s", self)
@@ -672,6 +677,7 @@ class Field(object):
     _column_groups = property(attrgetter('groups'))
     _column_change_default = property(attrgetter('change_default'))
     _column_deprecated = property(attrgetter('deprecated'))
+    _column_compute = property(lambda self: bool(self.compute))
 
     ############################################################################
     #
@@ -903,7 +909,13 @@ class Field(object):
                 target = env[field.model_name].search([(path, 'in', records.ids)])
                 if target:
                     spec.append((field, target._ids))
-                    target.with_env(records.env)._recompute_todo(field)
+                    # recompute field on target in the environment of records,
+                    # and as user admin if required
+                    if field.compute_sudo:
+                        target = target.with_env(records.env(user=SUPERUSER_ID))
+                    else:
+                        target = target.with_env(records.env)
+                    target._recompute_todo(field)
             else:
                 spec.append((field, None))
 
@@ -1259,7 +1271,9 @@ class Selection(Field):
                 if 'selection' in field._attrs:
                     selection = field._attrs['selection']
                 if 'selection_add' in field._attrs:
-                    selection = selection + field._attrs['selection_add']
+                    # use an OrderedDict to update existing values
+                    selection_add = field._attrs['selection_add']
+                    selection = OrderedDict(selection + selection_add).items()
             else:
                 selection = None
         self.selection = selection
@@ -1714,10 +1728,12 @@ class Many2many(_RelationalMulti):
     def _setup_regular(self, env):
         super(Many2many, self)._setup_regular(env)
 
-        if not self.relation:
-            if isinstance(self.column, fields.many2many):
+        if not self.relation and self.store:
+            # retrieve self.relation from the corresponding column
+            column = self.to_column()
+            if isinstance(column, fields.many2many):
                 self.relation, self.column1, self.column2 = \
-                    self.column._sql_names(env[self.model_name])
+                    column._sql_names(env[self.model_name])
 
         if self.relation:
             m2m = env.registry._m2m

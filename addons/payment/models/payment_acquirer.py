@@ -51,6 +51,7 @@ class PaymentAcquirer(osv.Model):
     """
     _name = 'payment.acquirer'
     _description = 'Payment Acquirer'
+    _order = 'sequence'
 
     def _get_providers(self, cr, uid, context=None):
         return []
@@ -87,6 +88,7 @@ class PaymentAcquirer(osv.Model):
         'fees_dom_var': fields.float('Variable domestic fees (in percents)'),
         'fees_int_fixed': fields.float('Fixed international fees'),
         'fees_int_var': fields.float('Variable international fees (in percents)'),
+        'sequence': fields.integer('Sequence', help="Determine the display order"),
     }
 
     _defaults = {
@@ -377,8 +379,15 @@ class PaymentTransaction(osv.Model):
                                          help='Reference of the customer in the acquirer database'),
     }
 
-    _sql_constraints = [
-        ('reference_uniq', 'UNIQUE(reference)', 'The payment transaction reference must be unique!'),
+    def _check_reference(self, cr, uid, ids, context=None):
+        transaction = self.browse(cr, uid, ids[0], context=context)
+        if transaction.state not in ['cancel', 'error']:
+            if self.search(cr, uid, [('reference', '=', transaction.reference), ('id', '!=', transaction.id)], context=context, count=True):
+                return False
+        return True
+
+    _constraints = [
+        (_check_reference, 'The payment transaction reference must be unique!', ['reference', 'state']),
     ]
 
     _defaults = {
