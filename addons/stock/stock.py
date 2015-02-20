@@ -320,6 +320,11 @@ class stock_quant(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'stock.quant', context=c),
     }
 
+    def init(self, cr):
+        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s', ('stock_quant_product_location_index',))
+        if not cr.fetchone():
+            cr.execute('CREATE INDEX stock_quant_product_location_index ON stock_quant (product_id, location_id, company_id, qty, in_date, reservation_id)')
+
     def read_group(self, cr, uid, domain, fields, groupby, offset=0, limit=None, context=None, orderby=False, lazy=True):
         ''' Overwrite the read_group in order to sum the function field 'inventory_value' in group by'''
         res = super(stock_quant, self).read_group(cr, uid, domain, fields, groupby, offset=offset, limit=limit, context=context, orderby=orderby, lazy=lazy)
@@ -411,7 +416,12 @@ class stock_quant(osv.osv):
             self.move_quants_write(cr, uid, to_move_quants, move, location_to, dest_package_id, context=context)
             self.pool.get('stock.move').recalculate_move_state(cr, uid, to_recompute_move_ids, context=context)
         if location_to.usage == 'internal':
-            if self.search(cr, uid, [('product_id', '=', move.product_id.id), ('qty','<', 0)], limit=1, context=context):
+            # Do manual search for quant to avoid full table scan (order by id)
+            cr.execute("""
+                SELECT 0 FROM stock_quant, stock_location WHERE product_id = %s AND stock_location.id = stock_quant.location_id AND
+                ((stock_location.parent_left >= %s AND stock_location.parent_left < %s) OR stock_location.id = %s) AND qty < 0.0 LIMIT 1
+            """, (move.product_id.id, location_to.parent_left, location_to.parent_right, location_to.id))
+            if cr.fetchone():
                 for quant in quants_reconcile:
                     self._quant_reconcile_negative(cr, uid, quant, move, context=context)
 
@@ -525,7 +535,10 @@ class stock_quant(osv.osv):
             return False
         qty_round = float_round(qty, precision_rounding=rounding)
         new_qty_round = float_round(quant.qty - qty, precision_rounding=rounding)
-        new_quant = self.copy(cr, SUPERUSER_ID, quant.id, default={'qty': new_qty_round, 'history_ids': [(4, x.id) for x in quant.history_ids]}, context=context)
+        # Fetch the history_ids manually as it will not do a join with the stock moves then (=> a lot faster)
+        cr.execute("""SELECT move_id FROM stock_quant_move_rel WHERE quant_id = %s""", (quant.id,))
+        res = cr.fetchall()
+        new_quant = self.copy(cr, SUPERUSER_ID, quant.id, default={'qty': new_qty_round, 'history_ids': [(4, x[0]) for x in res]}, context=context)
         self.write(cr, SUPERUSER_ID, quant.id, {'qty': qty_round}, context=context)
         return self.browse(cr, uid, new_quant, context=context)
 
@@ -1833,6 +1846,10 @@ class stock_move(osv.osv):
             'You try to move a product using a UoM that is not compatible with the UoM of the product moved. Please use an UoM in the same UoM category.',
             ['product_uom']),
     ]
+    def init(self, cr):
+        cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = %s', ('stock_move_product_location_index',))
+        if not cr.fetchone():
+            cr.execute('CREATE INDEX stock_move_product_location_index ON stock_move (product_id, location_id, location_dest_id, company_id, state)')
 
     @api.cr_uid_ids_context
     def do_unreserve(self, cr, uid, move_ids, context=None):
@@ -2057,14 +2074,25 @@ class stock_move(osv.osv):
         (and company). Those attributes are also given as parameters.
         """
         pick_obj = self.pool.get("stock.picking")
-        picks = pick_obj.search(cr, uid, [
-                ('group_id', '=', procurement_group),
-                ('location_id', '=', location_from),
-                ('location_dest_id', '=', location_to),
-                ('state', 'in', ['draft', 'confirmed', 'waiting'])], context=context)
-        if picks:
-            pick = picks[0]
+        # Use a SQL query as doing with the ORM will split it in different queries with id IN (,,)
+        # In the next version, the locations on the picking should be stored again.
+        query = """
+            SELECT stock_picking.id FROM stock_picking, stock_move
+            WHERE
+                stock_picking.state in ('draft', 'confirmed', 'waiting') AND
+                stock_move.picking_id = stock_picking.id AND
+                stock_move.location_id = %s AND
+                stock_move.location_dest_id = %s AND
+        """
+        params = (location_from, location_to)
+        if not procurement_group:
+            query += "stock_picking.group_id IS NULL LIMIT 1"
         else:
+            query += "stock_picking.group_id = %s LIMIT 1"
+            params += (procurement_group,)
+        cr.execute(query, params)
+        pick = cr.fetchone()
+        if not pick:
             move = self.browse(cr, uid, move_ids, context=context)[0]
             values = {
                 'origin': move.origin,
