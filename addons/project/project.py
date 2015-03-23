@@ -206,7 +206,7 @@ class project(osv.osv):
         return res
     def _task_count(self, cr, uid, ids, field_name, arg, context=None):
         res={}
-        for tasks in self.browse(cr, uid, ids, context):
+        for tasks in self.browse(cr, uid, ids, dict(context, active_test=False)):
             res[tasks.id] = len(tasks.task_ids)
         return res
     def _get_alias_models(self, cr, uid, context=None):
@@ -370,7 +370,7 @@ class project(osv.osv):
         return True
 
     _constraints = [
-        (_check_dates, 'Error! project start-date must be lower then project end-date.', ['date_start', 'date'])
+        (_check_dates, 'Error! project start-date must be lower than project end-date.', ['date_start', 'date'])
     ]
 
     def set_template(self, cr, uid, ids, context=None):
@@ -612,22 +612,7 @@ class task(osv.osv):
     _description = "Task"
     _date_name = "date_start"
     _inherit = ['mail.thread', 'ir.needaction_mixin']
-
     _mail_post_access = 'read'
-    _track = {
-        'stage_id': {
-            # this is only an heuristics; depending on your particular stage configuration it may not match all 'new' stages
-            'project.mt_task_new': lambda self, cr, uid, obj, ctx=None: obj.stage_id and obj.stage_id.sequence <= 1,
-            'project.mt_task_stage': lambda self, cr, uid, obj, ctx=None: obj.stage_id.sequence > 1,
-        },
-        'user_id': {
-            'project.mt_task_assigned': lambda self, cr, uid, obj, ctx=None: obj.user_id and obj.user_id.id,
-        },
-        'kanban_state': {
-            'project.mt_task_blocked': lambda self, cr, uid, obj, ctx=None: obj.kanban_state == 'blocked',
-            'project.mt_task_ready': lambda self, cr, uid, obj, ctx=None: obj.kanban_state == 'done',
-        },
-    }
 
     def _get_default_partner(self, cr, uid, context=None):
         project_id = self._get_default_project_id(cr, uid, context)
@@ -897,7 +882,7 @@ class task(osv.osv):
 
     _constraints = [
         (_check_recursion, 'Error ! You cannot create recursive tasks.', ['parent_ids']),
-        (_check_dates, 'Error ! Task starting date must be lower then its ending date.', ['date_start','date_end'])
+        (_check_dates, 'Error ! Task starting date must be lower than its ending date.', ['date_start','date_end'])
     ]
 
     # Override view according to the company definition
@@ -1137,6 +1122,20 @@ class task(osv.osv):
     # Mail gateway
     # ---------------------------------------------------
 
+    def _track_subtype(self, cr, uid, ids, init_values, context=None):
+        record = self.browse(cr, uid, ids[0], context=context)
+        if 'kanban_state' in init_values and record.kanban_state == 'blocked':
+            return 'project.mt_task_blocked'
+        elif 'kanban_state' in init_values and record.kanban_state == 'done':
+            return 'project.mt_task_ready'
+        elif 'user_id' in init_values and record.user_id:  # assigned -> new
+            return 'project.mt_task_new'
+        elif 'stage_id' in init_values and record.stage_id and record.stage_id.sequence <= 1:  # start stage -> new
+            return 'project.mt_task_new'
+        elif 'stage_id' in init_values:
+            return 'project.mt_task_stage'
+        return super(task, self)._track_subtype(cr, uid, ids, init_values, context=context)
+
     def message_get_reply_to(self, cr, uid, ids, context=None):
         """ Override to get the reply_to of the parent project. """
         tasks = self.browse(cr, SUPERUSER_ID, ids, context=context)
@@ -1151,10 +1150,11 @@ class task(osv.osv):
         defaults = {
             'name': msg.get('subject'),
             'planned_hours': 0.0,
+            'partner_id': msg.get('author_id', False)
         }
         defaults.update(custom_values)
         res = super(task, self).message_new(cr, uid, msg, custom_values=defaults, context=context)
-        email_list = tools.email_split(msg.get('to', '') + ',' + msg.get('cc', ''))
+        email_list = tools.email_split((msg.get('to') or '') + ',' + (msg.get('cc') or ''))
         new_task = self.browse(cr, uid, res, context=context)
         if new_task.project_id and new_task.project_id.alias_name:  # check left-part is not already an alias
             email_list = filter(lambda x: x.split('@')[0] != new_task.project_id.alias_name, email_list)

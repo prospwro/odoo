@@ -24,8 +24,11 @@ import time
 import uuid
 import sets
 
+from functools import partial
+
 from openerp import tools, models
 from openerp.osv import fields, osv
+from openerp.tools import float_is_zero
 from openerp.tools.translate import _
 from openerp.exceptions import UserError
 
@@ -573,11 +576,12 @@ class pos_order(osv.osv):
     _order = "id desc"
 
     def _order_fields(self, cr, uid, ui_order, context=None):
+        process_line = partial(self.pool['pos.order.line']._order_line_fields, cr, uid, context=context)
         return {
             'name':         ui_order['name'],
             'user_id':      ui_order['user_id'] or False,
             'session_id':   ui_order['pos_session_id'],
-            'lines':        ui_order['lines'],
+            'lines':        [process_line(l) for l in ui_order['lines']] if ui_order['lines'] else False,
             'pos_reference':ui_order['name'],
             'partner_id':   ui_order['partner_id'] or False,
         }
@@ -602,7 +606,7 @@ class pos_order(osv.osv):
             session.write({'sequence_number': order['sequence_number'] + 1})
             session.refresh()
 
-        if order['amount_return']:
+        if not float_is_zero(order['amount_return'], self.pool.get('decimal.precision').precision_get(cr, uid, 'Account')):
             cash_journal = session.cash_journal_id
             if not cash_journal:
                 cash_journal_ids = filter(lambda st: st.journal_id.type=='cash', session.statement_ids)
@@ -1004,7 +1008,8 @@ class pos_order(osv.osv):
                 inv_line['price_unit'] = line.price_unit
                 inv_line['discount'] = line.discount
                 inv_line['name'] = inv_name
-                inv_line['invoice_line_tax_id'] = [(6, 0, [x.id for x in line.product_id.taxes_id] )]
+                if line.tax_ids:
+                    inv_line['invoice_line_tax_id'] = [(6, 0, [x.id for x in line.tax_ids])]
                 inv_line_ref.create(cr, uid, inv_line, context=context)
             inv_ref.button_reset_taxes(cr, uid, [inv_id], context=context)
             self.signal_workflow(cr, uid, [order.id], 'invoice')
@@ -1123,11 +1128,16 @@ class pos_order(osv.osv):
                     if not grouped_data[key]:
                         grouped_data[key].append(values)
                     else:
-                        current_value = grouped_data[key][0]
-                        current_value['quantity'] = current_value.get('quantity', 0.0) +  values.get('quantity', 0.0)
-                        current_value['credit'] = current_value.get('credit', 0.0) + values.get('credit', 0.0)
-                        current_value['debit'] = current_value.get('debit', 0.0) + values.get('debit', 0.0)
-                        current_value['tax_amount'] = current_value.get('tax_amount', 0.0) + values.get('tax_amount', 0.0)
+                        for line in grouped_data[key]:
+                            if line.get('tax_code_id') == values.get('tax_code_id'):
+                                current_value = line
+                                current_value['quantity'] = current_value.get('quantity', 0.0) +  values.get('quantity', 0.0)
+                                current_value['credit'] = current_value.get('credit', 0.0) + values.get('credit', 0.0)
+                                current_value['debit'] = current_value.get('debit', 0.0) + values.get('debit', 0.0)
+                                current_value['tax_amount'] = current_value.get('tax_amount', 0.0) + values.get('tax_amount', 0.0)
+                                break
+                        else:
+                            grouped_data[key].append(values)
                 else:
                     grouped_data[key].append(values)
 
@@ -1141,11 +1151,7 @@ class pos_order(osv.osv):
             cur = order.pricelist_id.currency_id
             for line in order.lines:
                 tax_amount = 0
-                taxes = []
-                for t in line.product_id.taxes_id:
-                    if t.company_id.id == current_company.id:
-                        taxes.append(t)
-                computed_taxes = account_tax_obj.compute_all(cr, uid, taxes, line.price_unit * (100.0-line.discount) / 100.0, line.qty)['taxes']
+                computed_taxes = account_tax_obj.compute_all(cr, uid, line.tax_ids, line.price_unit * (100.0-line.discount) / 100.0, line.qty)['taxes']
 
                 for tax in computed_taxes:
                     tax_amount += cur_obj.round(cr, uid, cur, tax['amount'])
@@ -1288,6 +1294,12 @@ class pos_order_line(osv.osv):
     _description = "Lines of Point of Sale"
     _rec_name = "product_id"
 
+    def _order_line_fields(self, cr, uid, line, context=None):
+        if line and 'tax_ids' not in line[2]:
+            product = self.pool['product.product'].browse(cr, uid, line[2]['product_id'], context=context)
+            line[2]['tax_ids'] = [(6, 0, [x.id for x in product.taxes_id])]
+        return line
+
     def _amount_line_all(self, cr, uid, ids, field_names, arg, context=None):
         res = dict([(i, {}) for i in ids])
         account_tax_obj = self.pool.get('account.tax')
@@ -1346,6 +1358,7 @@ class pos_order_line(osv.osv):
         'discount': fields.float('Discount (%)', digits_compute=dp.get_precision('Account')),
         'order_id': fields.many2one('pos.order', 'Order Ref', ondelete='cascade'),
         'create_date': fields.datetime('Creation Date', readonly=True),
+        'tax_ids': fields.many2many('account.tax', string='Taxes', readonly=True),
     }
 
     _defaults = {

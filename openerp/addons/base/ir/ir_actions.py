@@ -312,7 +312,7 @@ class ir_actions_act_window(osv.osv):
         return res
 
     _columns = {
-        'name': fields.char('Action Name', translate=True),
+        'name': fields.char('Action Name', required=True, translate=True),
         'type': fields.char('Action Type', required=True),
         'view_id': fields.many2one('ir.ui.view', 'View Ref.', ondelete='set null'),
         'domain': fields.char('Domain Value',
@@ -449,7 +449,7 @@ class ir_actions_act_url(osv.osv):
     _sequence = 'ir_actions_id_seq'
     _order = 'name'
     _columns = {
-        'name': fields.char('Action Name', translate=True),
+        'name': fields.char('Action Name', required=True, translate=True),
         'type': fields.char('Action Type', required=True),
         'url': fields.text('Action URL',required=True),
         'target': fields.selection((
@@ -1086,7 +1086,7 @@ class ir_server_object_lines(osv.osv):
     _sequence = 'ir_actions_id_seq'
 
     _columns = {
-        'server_id': fields.many2one('ir.actions.server', 'Related Server Action'),
+        'server_id': fields.many2one('ir.actions.server', 'Related Server Action', ondelete='cascade'),
         'col1': fields.many2one('ir.model.fields', 'Field', required=True),
         'value': fields.text('Value', required=True, help="Expression containing a value specification. \n"
                                                           "When Formula type is selected, this field may be a Python expression "
