@@ -24,6 +24,7 @@ import time
 
 from openerp import tools
 from openerp.osv import fields, osv
+from openerp.tools import float_is_zero
 from openerp.tools.translate import _
 
 import openerp.addons.decimal_precision as dp
@@ -585,7 +586,7 @@ class pos_order(osv.osv):
             session.write({'sequence_number': order['sequence_number'] + 1})
             session.refresh()
 
-        if order['amount_return']:
+        if not float_is_zero(order['amount_return'], self.pool.get('decimal.precision').precision_get(cr, uid, 'Account')):
             cash_journal = session.cash_journal_id
             if not cash_journal:
                 cash_journal_ids = filter(lambda st: st.journal_id.type=='cash', session.statement_ids)
@@ -1107,11 +1108,16 @@ class pos_order(osv.osv):
                     if not grouped_data[key]:
                         grouped_data[key].append(values)
                     else:
-                        current_value = grouped_data[key][0]
-                        current_value['quantity'] = current_value.get('quantity', 0.0) +  values.get('quantity', 0.0)
-                        current_value['credit'] = current_value.get('credit', 0.0) + values.get('credit', 0.0)
-                        current_value['debit'] = current_value.get('debit', 0.0) + values.get('debit', 0.0)
-                        current_value['tax_amount'] = current_value.get('tax_amount', 0.0) + values.get('tax_amount', 0.0)
+                        for line in grouped_data[key]:
+                            if line.get('tax_code_id') == values.get('tax_code_id'):
+                                current_value = line
+                                current_value['quantity'] = current_value.get('quantity', 0.0) +  values.get('quantity', 0.0)
+                                current_value['credit'] = current_value.get('credit', 0.0) + values.get('credit', 0.0)
+                                current_value['debit'] = current_value.get('debit', 0.0) + values.get('debit', 0.0)
+                                current_value['tax_amount'] = current_value.get('tax_amount', 0.0) + values.get('tax_amount', 0.0)
+                                break
+                        else:
+                            grouped_data[key].append(values)
                 else:
                     grouped_data[key].append(values)
 
