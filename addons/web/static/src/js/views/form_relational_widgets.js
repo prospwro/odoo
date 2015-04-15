@@ -16,7 +16,7 @@ var ViewManager = require('web.ViewManager');
 
 var _t = core._t;
 var QWeb = core.qweb;
-var commands = common.commands;
+var COMMANDS = common.commands;
 var list_widget_registry = core.list_widget_registry;
 
 var M2ODialog = Dialog.extend({
@@ -435,50 +435,6 @@ var FieldMany2One = common.AbstractField.extend(common.CompletionFieldMixin, com
     }
 });
 
-var Many2OneButton = common.AbstractField.extend({
-    template: 'Many2OneButton',
-    init: function(field_manager, node) {
-        this._super.apply(this, arguments);
-    },
-    start: function() {
-        this._super.apply(this, arguments);
-        this.set_button();
-    },
-    set_button: function() {
-        var self = this;
-        if (this.$button) {
-            this.$button.remove();
-        }
-        this.string = '';
-        this.node.attrs.icon = this.get('value') ? '/web/static/src/img/icons/gtk-yes.png' : '/web/static/src/img/icons/gtk-no.png';
-        this.$button = $(QWeb.render('WidgetButton', {'widget': this}));
-        this.$button.addClass('oe_link').css({'padding':'4px'});
-        this.$el.append(this.$button);
-        this.$button.on('click', self.on_click);
-    },
-    on_click: function(ev) {
-        var self = this;
-        this.popup =  new common.FormOpenPopup(this);
-        this.popup.show_element(
-            this.field.relation,
-            this.get('value'),
-            this.build_context(),
-            {title: this.string}
-        );
-        this.popup.on('create_completed', self, function(r) {
-            self.set_value(r);
-        });
-    },
-    set_value: function(value_) {
-        if (value_ instanceof Array) {
-            value_ = value_[0];
-        }
-        value_ = value_ || false;
-        this.set('value', value_);
-        this.set_button();
-     },
-});
-
 /**
  * Abstract-ish ListView.List subclass adding an "Add an item" row to replace
  * the big ugly button in the header.
@@ -540,26 +496,242 @@ var AddAnItemList = ListView.List.extend({
     }
 });
 
+/**
+ * A Abstract field for one2many and many2many field
+ * For all fields on2many or many2many:
+ *  - this.get('value') contains a list of ids and virtual ids
+ *  - get_value() return an odoo write command list
+ */
+var AbstractManyField = common.AbstractField.extend({
+    init: function(field_manager, node) {
+        var self = this;
+        this._super(field_manager, node);
+        this.dataset = new One2ManyDataSet(this, this.field.relation, this.build_context());
+        this.dataset.o2m = this;
+        this.dataset.parent_view = this.view;
+        this.dataset.child_name = this.name;
+        this.set('value', []);
+        this.starting_ids = [];
+        this.view.on("load_record", this, function () {
+            self.starting_ids = self.get('value');
+        });
+        this.dataset.on('dataset_changed', this, function() {
+            // the editable lists change the dataset without call AbstractManyField methods
+            if (!this.internal_dataset_changed) {
+                this.trigger("change:commands");
+            }
+        });
+        this.on("change:commands", this, function () {
+            this.set({'value': this.dataset.ids.slice()});
+        });
+    },
 
-var FieldOne2Many = common.AbstractField.extend({
+    set_value: function(ids) {
+        ids = (ids || []).slice();
+        if (_.find(ids, function(id) { return typeof(id) === "string"; } )) {
+            throw new Error("set_value of '"+this.name+"' must receive an list of ids without virtual ids.", ids);
+        }
+        if (_.find(ids, function(id) { return typeof(id) !== "number"; } )) {
+            return this.send_commands(ids);
+        }
+        this.dataset.reset_ids(ids);
+        this.set({'value': ids});
+    },
+
+    internal_set_value: function(ids) {
+        if (_.isEqual(ids, this.get("value"))) {
+            return;
+        }
+        var tmp = this.no_rerender;
+        this.no_rerender = true;
+        this.data_replace(ids.slice());
+        this.no_rerender = tmp;
+    },
+
+    /*
+    *@value: data {object} contains all value to send to the db
+    *        options {object} options sent to the dataset (like the default values)
+    *@return deferred resolve with the created virtual id
+    */
+    data_create: function (data, options) {
+        return this.send_commands([COMMANDS.create(data)], options);
+    },
+
+    /*
+    *@value: id {int or string} id or virtual id of the record to update
+    *        data {object} contains all value to send to the db
+    *        options {object} options sent to the dataset
+    *@return deferred
+    */
+    data_update: function (id, data, options) {
+        return this.send_commands([COMMANDS.update(id, data)], options);
+    },
+
+    /*
+    *@value: id {int or string} id or virtual id of the record to add
+    *        options {object} options sent to the dataset
+    *@return deferred
+    */
+    data_link: function (id, options) {
+        return this.send_commands([COMMANDS.link_to(id)], options);
+    },
+
+    /*
+    *@value: ids {array} list of ids or virtual ids of the record to add
+    *        options {object} options sent to the dataset
+    *@return deferred
+    */
+    data_link_multi: function (ids, options) {
+        return this.send_commands(_.map(ids, function (id) { return COMMANDS.link_to(id); }), options);
+    },
+
+    /*
+    *@value: id {int or string} id or virtual id of the record to unlink or delete (function of field type)
+    *@return deferred
+    */
+    data_delete: function (id) {
+        return this.send_commands([COMMANDS.delete(id)]);
+    },
+
+    /*
+    *@value: ids {array} list of ids or virtual ids of the record who replace the previous list
+    *        options {object} options sent to the dataset
+    *@return deferred
+    */
+    data_replace: function (ids, options) {
+        return this.send_commands([COMMANDS.replace_with(ids)], options);
+    },
+
+    /*
+    *@value: ids {array} list of ids or virtual ids of the record to read
+    *        fields {array} list of the field to read
+    *        options {object} options sent to the dataset
+    *@return deferred resolve with the records
+    */
+    data_read: function (ids, fields, options) {
+        return this.dataset.read_ids(ids, fields, options);
+    },
+
+    /**
+     *Compute the write command list into the dataset
+     *@value: command_list {array} command list
+     *        options {object} options for the datasets (eg: the default values)
+     *@return : deferred
+     */
+    send_commands: function (command_list, options) {
+        var self = this;
+        var def = $.Deferred();
+        var mutex = new utils.Mutex();
+        var dataset = this.dataset;
+        var res = true;
+        options = options || {};
+        this.internal_dataset_changed = true;
+
+        _.each(command_list, function(command) {
+            mutex.exec(function() {
+                switch (command[0]) {
+                    case COMMANDS.CREATE:
+                        var data = _.clone(command[2]);
+                        delete data.id;
+                        return dataset.create(data, options).then(function (id) {
+                            dataset.ids.push(id);
+                            res = id;
+                        });
+                    case COMMANDS.UPDATE:
+                        return dataset.write(command[1], command[2], options);
+                    case COMMANDS.DELETE:
+                        return dataset.unlink(command[1]);
+                    case COMMANDS.LINK_TO:
+                        if (dataset.ids.indexOf(command[1]) === -1) {
+                            return dataset.add_ids([command[1]], options);
+                        }
+                        return;
+                    case COMMANDS.DELETE_ALL:
+                        return dataset.reset_ids([]);
+                    case COMMANDS.REPLACE_WITH:
+                        dataset.ids = [];
+                        return dataset.alter_ids(command[2], options);
+                    default:
+                        throw new Error("send_commands to '"+self.name+"' receive a non command value.", command_list);
+                }
+            });
+        });
+
+        mutex.exec(function () {
+            def.resolve(res);
+            self.internal_dataset_changed = true;
+            self.trigger("change:commands");
+        });
+        return def;
+    },
+
+    /**
+     *return list of commands: create and update (and delete_all if need) (function of the field type)
+     */
+    get_value: function() {
+        var self = this,
+            is_one2many = this.field.type === "one2many",
+            starting_ids = this.starting_ids.slice(),
+            replace_with_ids = [],
+            add_ids = [],
+            command_list = [],
+            id, index, alter_order;
+        
+        _.each(this.get('value'), function (id) {
+            index = starting_ids.indexOf(id);
+            if (index !== -1) {
+                starting_ids.splice(index, 1);
+            }
+            if (alter_order = _.detect(self.dataset.to_create, function(x) {return x.id === id;})) {
+                command_list.push(COMMANDS.create(alter_order.values));
+                return;
+            }
+            if (alter_order = _.detect(self.dataset.to_write, function(x) {return x.id === id;})) {
+                command_list.push(COMMANDS.update(alter_order.id, alter_order.values));
+                return;
+            }
+            if (!is_one2many || self.dataset.delete_all) {
+                replace_with_ids.push(id);
+            } else {
+                command_list.push(COMMANDS.link_to(id));
+            }
+        });
+        if ((!is_one2many || self.dataset.delete_all) && (replace_with_ids.length || starting_ids.length)) {
+            command_list.unshift(COMMANDS.replace_with(replace_with_ids));
+        }
+
+        _.each(starting_ids, function(id) {
+            if (is_one2many) {
+                command_list.push(COMMANDS.delete(id));
+            } else if (is_one2many && !self.dataset.delete_all) {
+                command_list.push(COMMANDS.unlink(id));
+            }
+        });
+
+        return command_list;
+    },
+
+    is_false: function() {
+        return _(this.get('value')).isEmpty();
+    },
+});
+
+
+var FieldOne2Many = AbstractManyField.extend({
     multi_selection: false,
     disable_utility_classes: true,
     init: function(field_manager, node) {
         this._super(field_manager, node);
+        
         this.is_loaded = $.Deferred();
         this.initial_is_loaded = this.is_loaded;
-        this.form_last_update = $.Deferred();
-        this.init_form_last_update = this.form_last_update;
         this.is_started = false;
-        this.dataset = new One2ManyDataSet(this, this.field.relation);
-        this.dataset.o2m = this;
-        this.dataset.parent_view = this.view;
-        this.dataset.child_name = this.name;
-        var self = this;
-        this.dataset.on('dataset_changed', this, function() {
-            self.trigger_on_change();
-        });
         this.set_value([]);
+        this.on('change:commands', this, function () {
+            if (this.is_started && !this.no_rerender) {
+                this.reload_current_view();
+            }
+        });
     },
     start: function() {
         this._super.apply(this, arguments);
@@ -582,9 +754,6 @@ var FieldOne2Many = common.AbstractField.extend({
         this.view.on("on_button_cancel", self, destroy);
         this.is_started = true;
         this.reload_current_view();
-    },
-    trigger_on_change: function() {
-        this.trigger('changed_value');
     },
     load_views: function() {
         var self = this;
@@ -618,13 +787,6 @@ var FieldOne2Many = common.AbstractField.extend({
                         reorderable: false,
                     });
                 }
-            } else if (view.view_type === "form") {
-                if (self.get("effective_readonly")) {
-                    view.view_type = 'form';
-                }
-                _.extend(view.options, {
-                    not_interactible_on_create: true,
-                });
             } else if (view.view_type === "kanban") {
                 _.extend(view.options, {
                     confirm_on_delete: false,
@@ -644,9 +806,6 @@ var FieldOne2Many = common.AbstractField.extend({
 
         this.viewmanager = new One2ManyViewManager(this, this.dataset, views, {});
         this.viewmanager.o2m = self;
-        var once = $.Deferred().done(function() {
-            self.init_form_last_update.resolve();
-        });
         var def = $.Deferred().done(function() {
             self.initial_is_loaded.resolve();
         });
@@ -665,14 +824,6 @@ var FieldOne2Many = common.AbstractField.extend({
                         return true;
                     });
                 }
-            } else if (view_type === "form") {
-                if (self.get("effective_readonly")) {
-                    $(".oe_form_buttons", controller.$el).children().remove();
-                }
-                controller.on("load_record", self, function(){
-                     once.resolve();
-                 });
-                controller.on('pager_action_executed',self,self.save_any_view);
             } else if (view_type == "graph") {
                 self.reload_current_view();
             }
@@ -698,15 +849,6 @@ var FieldOne2Many = common.AbstractField.extend({
             var view = self.get_active_view();
             if (view.type === "list") {
                 return view.controller.reload_content();
-            } else if (view.type === "form") {
-                if (self.dataset.index === null && self.dataset.ids.length >= 1) {
-                    self.dataset.index = 0;
-                }
-                var act = function() {
-                    return view.controller.do_show();
-                };
-                self.form_last_update = self.form_last_update.then(act, act);
-                return self.form_last_update;
             } else if (view.controller.do_search) {
                 return view.controller.do_search(self.build_domain(), self.dataset.get_context(), []);
             }
@@ -720,88 +862,10 @@ var FieldOne2Many = common.AbstractField.extend({
         return (this.viewmanager && this.viewmanager.active_view);
     },
     set_value: function(value_) {
-        value_ = value_ || [];
-        var self = this;
-        var view = this.get_active_view();
-        this.dataset.reset_ids([]);
-        var ids;
-        if(value_.length >= 1 && value_[0] instanceof Array) {
-            ids = [];
-            _.each(value_, function(command) {
-                var obj = {values: command[2]};
-                switch (command[0]) {
-                    case commands.CREATE:
-                        obj.id = _.uniqueId(self.dataset.virtual_id_prefix);
-                        obj.defaults = {};
-                        self.dataset.to_create.push(obj);
-                        self.dataset.cache.push(_.extend(_.clone(obj), {values: _.clone(command[2])}));
-                        ids.push(obj.id);
-                        return;
-                    case commands.UPDATE:
-                        obj.id = command[1];
-                        self.dataset.to_write.push(obj);
-                        self.dataset.cache.push(_.extend(_.clone(obj), {values: _.clone(command[2])}));
-                        ids.push(obj.id);
-                        return;
-                    case commands.DELETE:
-                        self.dataset.to_delete.push({id: command[1]});
-                        return;
-                    case commands.LINK_TO:
-                        ids.push(command[1]);
-                        return;
-                    case commands.DELETE_ALL:
-                        self.dataset.delete_all = true;
-                        return;
-                }
-            });
-            this._super(ids);
-            this.dataset.set_ids(ids);
-        } else if (value_.length >= 1 && typeof(value_[0]) === "object") {
-            ids = [];
-            this.dataset.delete_all = true;
-            _.each(value_, function(command) {
-                var obj = {values: command};
-                obj.id = _.uniqueId(self.dataset.virtual_id_prefix);
-                obj.defaults = {};
-                self.dataset.to_create.push(obj);
-                self.dataset.cache.push(_.clone(obj));
-                ids.push(obj.id);
-            });
-            this._super(ids);
-            this.dataset.set_ids(ids);
-        } else {
-            this._super(value_);
-            this.dataset.reset_ids(value_);
-        }
-        if (this.dataset.index === null && this.dataset.ids.length > 0) {
-            this.dataset.index = 0;
-        }
-        this.trigger_on_change();
+        this._super(value_);
         if (this.is_started && !this.no_rerender) {
-            return self.reload_current_view();
-        } else {
-            return $.when();
+            this.reload_current_view();
         }
-    },
-    get_value: function() {
-        var self = this;
-        if (!this.dataset)
-            return [];
-        var val = this.dataset.delete_all ? [commands.delete_all()] : [];
-        val = val.concat(_.map(this.dataset.ids, function(id) {
-            var alter_order = _.detect(self.dataset.to_create, function(x) {return x.id === id;});
-            if (alter_order) {
-                return commands.create(alter_order.values);
-            }
-            alter_order = _.detect(self.dataset.to_write, function(x) {return x.id === id;});
-            if (alter_order) {
-                return commands.update(alter_order.id, alter_order.values);
-            }
-            return commands.link_to(id);
-        }));
-        return val.concat(_.map(
-            this.dataset.to_delete, function(x) {
-                return commands['delete'](x.id);}));
     },
     commit_value: function() {
         return this.save_any_view();
@@ -854,11 +918,6 @@ var One2ManyListView = ListView.extend({
         }));
         this.on('edit:after', this, this.proxy('_after_edit'));
         this.on('save:before cancel:before', this, this.proxy('_before_unedit'));
-
-        this.records
-            .bind('add', this.proxy("changed_records"))
-            .bind('remove', this.proxy("changed_records"));
-        this.on('save:after', this, this.proxy("changed_records"));
     },
     start: function () {
         var ret = this._super();
@@ -866,9 +925,6 @@ var One2ManyListView = ListView.extend({
             .off('mousedown.handleButtons')
             .on('mousedown.handleButtons', 'table button, div a.oe_m2o_cm_button', this.proxy('_button_down'));
         return ret;
-    },
-    changed_records: function () {
-        this.o2m.trigger_on_change();
     },
     is_valid: function () {
         var self = this;
@@ -914,13 +970,10 @@ var One2ManyListView = ListView.extend({
                     initial_view: "form",
                     alternative_form_view: self.o2m.field.views ? self.o2m.field.views.form : undefined,
                     create_function: function(data, options) {
-                        return self.o2m.dataset.create(data, options).done(function(r) {
-                            self.o2m.dataset.set_ids(self.o2m.dataset.ids.concat([r]));
-                            self.o2m.dataset.trigger("dataset_changed", r);
-                        });
+                        return self.o2m.data_create(data, options);
                     },
-                    read_function: function() {
-                        return self.o2m.dataset.read_ids.apply(self.o2m.dataset, arguments);
+                    read_function: function(ids, fields, options) {
+                        return self.o2m.data_read(ids, fields, options);
                     },
                     parent_view: self.o2m.view,
                     child_name: self.o2m.name,
@@ -940,15 +993,15 @@ var One2ManyListView = ListView.extend({
         pop.show_element(self.o2m.field.relation, id, self.o2m.build_context(), {
             title: _t("Open: ") + self.o2m.string,
             write_function: function(id, data) {
-                return self.o2m.dataset.write(id, data, {}).done(function() {
+                return self.o2m.data_update(id, data, {}).done(function() {
                     self.o2m.reload_current_view();
                 });
             },
             alternative_form_view: self.o2m.field.views ? self.o2m.field.views.form : undefined,
             parent_view: self.o2m.view,
             child_name: self.o2m.name,
-            read_function: function() {
-                return self.o2m.dataset.read_ids.apply(self.o2m.dataset, arguments);
+            read_function: function(ids, fields, options) {
+                return self.o2m.data_read(ids, fields, options);
             },
             form_view_options: {'not_interactible_on_create':true},
             readonly: !this.is_action_enabled('edit') || self.o2m.get("effective_readonly")
@@ -1111,21 +1164,18 @@ var One2ManyViewManager = ViewManager.extend({
         pop.show_element(self.o2m.field.relation, id, self.o2m.build_context(), {
             title: _t("Open: ") + self.o2m.string,
             create_function: function(data, options) {
-                return self.o2m.dataset.create(data, options).done(function(r) {
-                    self.o2m.dataset.set_ids(self.o2m.dataset.ids.concat([r]));
-                    self.o2m.dataset.trigger("dataset_changed", r);
-                });
+                return self.o2m.data_create(data, options);
             },
             write_function: function(id, data, options) {
-                return self.o2m.dataset.write(id, data, {}).done(function() {
+                return self.o2m.data_update(id, data, {}).done(function() {
                     self.o2m.reload_current_view();
                 });
             },
             alternative_form_view: self.o2m.field.views ? self.o2m.field.views.form : undefined,
             parent_view: self.o2m.view,
             child_name: self.o2m.name,
-            read_function: function() {
-                return self.o2m.dataset.read_ids.apply(self.o2m.dataset, arguments);
+            read_function: function(ids, fields, options) {
+                return self.o2m.data_read(ids, fields, options);
             },
             form_view_options: {'not_interactible_on_create':true},
             readonly: self.o2m.get("effective_readonly")
@@ -1136,7 +1186,7 @@ var One2ManyViewManager = ViewManager.extend({
     },
 });
 
-var FieldMany2ManyTags = common.AbstractField.extend(common.CompletionFieldMixin, common.ReinitializeFieldMixin, {
+var FieldMany2ManyTags = AbstractManyField.extend(common.CompletionFieldMixin, common.ReinitializeFieldMixin, {
     template: "FieldMany2ManyTags",
     tag_template: "FieldMany2ManyTag",
     init: function() {
@@ -1238,31 +1288,6 @@ var FieldMany2ManyTags = common.AbstractField.extend(common.CompletionFieldMixin
                 }
             });
     },
-    // WARNING: duplicated in 4 other M2M widgets
-    set_value: function(value_) {
-        value_ = value_ || [];
-        if (value_.length >= 1 && value_[0] instanceof Array) {
-            // value_ is a list of m2m commands. We only process
-            // LINK_TO and REPLACE_WITH in this context
-            var val = [];
-            _.each(value_, function (command) {
-                if (command[0] === commands.LINK_TO) {
-                    val.push(command[1]);                   // (4, id[, _])
-                } else if (command[0] === commands.REPLACE_WITH) {
-                    val = command[2];                       // (6, _, ids)
-                }
-            });
-            value_ = val;
-        }
-        this._super(value_);
-    },
-    is_false: function() {
-        return _(this.get("value")).isEmpty();
-    },
-    get_value: function() {
-        var tmp = [commands.replace_with(this.get("value"))];
-        return tmp;
-    },
     get_search_blacklist: function() {
         return this.get("value");
     },
@@ -1270,9 +1295,7 @@ var FieldMany2ManyTags = common.AbstractField.extend(common.CompletionFieldMixin
         return _.map(data, function(el) {return {name: el[1], id:el[0]};});
     },
     get_render_data: function(ids){
-        var self = this;
-        var dataset = new data.DataSetStatic(this, this.field.relation, self.build_context());
-        return dataset.name_get(ids);
+        return this.dataset.name_get(ids);
     },
     render_tag: function(data) {
         var self = this;
@@ -1286,7 +1309,6 @@ var FieldMany2ManyTags = common.AbstractField.extend(common.CompletionFieldMixin
     },
     render_value: function() {
         var self = this;
-        var dataset = new data.DataSetStatic(this, this.field.relation, self.build_context());
         var values = self.get("value");
         var handle_names = function(data) {
             if (self.isDestroyed())
@@ -1317,7 +1339,7 @@ var FieldMany2ManyTags = common.AbstractField.extend(common.CompletionFieldMixin
             width: width,
             minHeight: height
         });
-    },    
+    },
     _search_create_popup: function() {
         this.ignore_blur = true;
         return common.CompletionFieldMixin._search_create_popup.apply(this, arguments);
@@ -1330,18 +1352,12 @@ var FieldMany2ManyTags = common.AbstractField.extend(common.CompletionFieldMixin
         If you see this options, do not use it, it's basically a dirty hack to make one
         precise o2m to behave the way we want.
 */
-var FieldMany2Many = common.AbstractField.extend(common.ReinitializeFieldMixin, {
+var FieldMany2Many = AbstractManyField.extend(common.ReinitializeFieldMixin, {
     multi_selection: false,
     disable_utility_classes: true,
     init: function(field_manager, node) {
         this._super(field_manager, node);
         this.is_loaded = $.Deferred();
-        this.dataset = new Many2ManyDataSet(this, this.field.relation);
-        this.dataset.m2m = this;
-        var self = this;
-        this.dataset.on('unlink', self, function(ids) {
-            self.dataset_changed();
-        });
         this.set_value([]);
         this.list_dm = new utils.DropMisordered();
         this.render_value_dm = new utils.DropMisordered();
@@ -1382,40 +1398,13 @@ var FieldMany2Many = common.AbstractField.extend(common.ReinitializeFieldMixin, 
         this.list_view.destroy();
         this.list_view = undefined;
     },
-    // WARNING: duplicated in 4 other M2M widgets
-    set_value: function(value_) {
-        value_ = value_ || [];
-        if (value_.length >= 1 && value_[0] instanceof Array) {
-            // value_ is a list of m2m commands. We only process
-            // LINK_TO and REPLACE_WITH in this context
-            var val = [];
-            _.each(value_, function (command) {
-                if (command[0] === commands.LINK_TO) {
-                    val.push(command[1]);                   // (4, id[, _])
-                } else if (command[0] === commands.REPLACE_WITH) {
-                    val = command[2];                       // (6, _, ids)
-                }
-            });
-            value_ = val;
-        }
-        this._super(value_);
-    },
-    get_value: function() {
-        return [commands.replace_with(this.get('value'))];
-    },
-    is_false: function () {
-        return _(this.get("value")).isEmpty();
-    },
     render_value: function() {
         var self = this;
-        this.dataset.set_ids(this.get("value"));
+        //this.dataset.set_ids(this.get('value') || []);
         this.render_value_dm.add(this.is_loaded).then(function() {
             return self.list_view.reload_content();
         });
-    },
-    dataset_changed: function() {
-        this.internal_set_value(this.dataset.ids);
-    },
+    }
 });
 
 var Many2ManyDataSet = data.DataSetStatic.extend({
@@ -1449,17 +1438,7 @@ var Many2ManyListView = ListView.extend(/** @lends instance.web.form.Many2ManyLi
         );
         var self = this;
         pop.on("elements_selected", self, function(element_ids) {
-            var reload = false;
-            _(element_ids).each(function (id) {
-                if(! _.detect(self.dataset.ids, function(x) {return x == id;})) {
-                    self.dataset.set_ids(self.dataset.ids.concat([id]));
-                    self.m2m_field.dataset_changed();
-                    reload = true;
-                }
-            });
-            if (reload) {
-                self.reload_content();
-            }
+            return self.o2m.data_link_multi(element_ids);
         });
     },
     do_activate_record: function(index, id) {
@@ -1470,7 +1449,10 @@ var Many2ManyListView = ListView.extend(/** @lends instance.web.form.Many2ManyLi
             alternative_form_view: this.m2m_field.field.views ? this.m2m_field.field.views.form : undefined,
             readonly: this.getParent().get("effective_readonly")
         });
-        pop.on('write_completed', self, self.reload_content);
+        pop.on('write_completed', self, function () {
+            self.dataset.evict_record(id);
+            self.reload_content();
+        });
     },
     do_button_action: function(name, id, callback) {
         var self = this;
@@ -1494,20 +1476,13 @@ var Many2ManyList = AddAnItemList.extend({
     }
 });
 
-var FieldMany2ManyKanban = common.AbstractField.extend(common.CompletionFieldMixin, {
+var FieldMany2ManyKanban = AbstractManyField.extend(common.CompletionFieldMixin, {
     disable_utility_classes: true,
     init: function(field_manager, node) {
         this._super(field_manager, node);
         common.CompletionFieldMixin.init.call(this);
         this.is_loaded = $.Deferred();
         this.initial_is_loaded = this.is_loaded;
-
-        var self = this;
-        this.dataset = new Many2ManyDataSet(this, this.field.relation);
-        this.dataset.m2m = this;
-        this.dataset.on('unlink', self, function(ids) {
-            self.dataset_changed();
-        });
     },
     start: function() {
         this._super.apply(this, arguments);
@@ -1523,27 +1498,6 @@ var FieldMany2ManyKanban = common.AbstractField.extend(common.CompletionFieldMix
                 });
             });
         });
-    },
-    // WARNING: duplicated in 4 other M2M widgets
-    set_value: function(value_) {
-        value_ = value_ || [];
-        if (value_.length >= 1 && value_[0] instanceof Array) {
-            // value_ is a list of m2m commands. We only process
-            // LINK_TO and REPLACE_WITH in this context
-            var val = [];
-            _.each(value_, function (command) {
-                if (command[0] === commands.LINK_TO) {
-                    val.push(command[1]);                   // (4, id[, _])
-                } else if (command[0] === commands.REPLACE_WITH) {
-                    val = command[2];                       // (6, _, ids)
-                }
-            });
-            value_ = val;
-        }
-        this._super(value_);
-    },
-    get_value: function() {
-        return [commands.replace_with(this.get('value'))];
     },
     load_view: function() {
         var self = this;
@@ -1578,9 +1532,6 @@ var FieldMany2ManyKanban = common.AbstractField.extend(common.CompletionFieldMix
             return self.kanban_view.do_search(self.build_domain(), self.dataset.get_context(), []);
         });
     },
-    dataset_changed: function() {
-        this.set({'value': this.dataset.ids});
-    },
     open_popup: function(type, unused) {
         if (type !== "form")
             return;
@@ -1597,13 +1548,7 @@ var FieldMany2ManyKanban = common.AbstractField.extend(common.CompletionFieldMix
                 this.build_context()
             );
             pop.on("elements_selected", self, function(element_ids) {
-                _.each(element_ids, function(one_id) {
-                    if(! _.detect(self.dataset.ids, function(x) {return x == one_id;})) {
-                        self.dataset.set_ids([].concat(self.dataset.ids, [one_id]));
-                        self.dataset_changed();
-                        self.render_value();
-                    }
-                });
+                return self.data_link_multi(element_ids);
             });
         } else {
             var id = self.dataset.ids[self.dataset.index];
@@ -1611,7 +1556,7 @@ var FieldMany2ManyKanban = common.AbstractField.extend(common.CompletionFieldMix
             pop.show_element(self.field.relation, id, self.build_context(), {
                 title: _t("Open: ") + self.string,
                 write_function: function(id, data, options) {
-                    return self.dataset.write(id, data, {}).done(function() {
+                    return self.data_update(id, data, {}).done(function() {
                         self.render_value();
                     });
                 },
@@ -1633,7 +1578,7 @@ var FieldMany2ManyKanban = common.AbstractField.extend(common.CompletionFieldMix
  * Options on attribute ; "blockui" {Boolean} block the UI or not
  * during the file is uploading
  */
-var FieldMany2ManyBinaryMultiFiles = common.AbstractField.extend(common.ReinitializeFieldMixin, {
+var FieldMany2ManyBinaryMultiFiles = AbstractManyField.extend(common.ReinitializeFieldMixin, {
     template: "FieldBinaryFileUploader",
     init: function(field_manager, node) {
         this._super(field_manager, node);
@@ -1651,27 +1596,6 @@ var FieldMany2ManyBinaryMultiFiles = common.AbstractField.extend(common.Reinitia
     },
     initialize_content: function() {
         this.$el.on('change', 'input.oe_form_binary_file', this.on_file_change );
-    },
-    // WARNING: duplicated in 4 other M2M widgets
-    set_value: function(value_) {
-        value_ = value_ || [];
-        if (value_.length >= 1 && value_[0] instanceof Array) {
-            // value_ is a list of m2m commands. We only process
-            // LINK_TO and REPLACE_WITH in this context
-            var val = [];
-            _.each(value_, function (command) {
-                if (command[0] === commands.LINK_TO) {
-                    val.push(command[1]);                   // (4, id[, _])
-                } else if (command[0] === commands.REPLACE_WITH) {
-                    val = command[2];                       // (6, _, ids)
-                }
-            });
-            value_ = val;
-        }
-        this._super(value_);
-    },
-    get_value: function() {
-        return [commands.replace_with(this.get("value"))];
     },
     get_file_url: function (attachment) {
         return this.session.url('/web/binary/saveas', {model: 'ir.attachment', field: 'datas', filename_field: 'datas_fname', id: attachment.id});
@@ -1798,11 +1722,10 @@ var FieldMany2ManyBinaryMultiFiles = common.AbstractField.extend(common.Reinitia
     record existing in the model targeted by the relation, according to the given domain if one is specified. Checked records
     will be added to the relation.
 */
-var FieldMany2ManyCheckBoxes = common.AbstractField.extend(common.ReinitializeFieldMixin, {
+var FieldMany2ManyCheckBoxes = AbstractManyField.extend(common.ReinitializeFieldMixin, {
     className: "oe_form_many2many_checkboxes",
     init: function() {
         this._super.apply(this, arguments);
-        this.set("value", {});
         this.set("records", []);
         this.field_manager.on("view_content_has_changed", this, function() {
             var domain = new data.CompoundDomain(this.build_domain()).eval();
@@ -1828,123 +1751,34 @@ var FieldMany2ManyCheckBoxes = common.AbstractField.extend(common.ReinitializeFi
         });
     },
     render_value: function() {
-        this.$().html(QWeb.render("FieldMany2ManyCheckBoxes", {widget: this, selected: this.get("value")}));
+        this.$().html(QWeb.render("FieldMany2ManyCheckBoxes", {widget: this}));
         var inputs = this.$("input");
         inputs.change(_.bind(this.from_dom, this));
         if (this.get("effective_readonly"))
             inputs.attr("disabled", "true");
     },
     from_dom: function() {
-        var new_value = {};
-        this.$("input").each(function() {
-            var elem = $(this);
-            new_value[elem.data("record-id")] = elem.is(":checked") ? true : undefined;
-        });
-        if (! _.isEqual(new_value, this.get("value")))
+        var new_value = this.$("input:checked").map(function() { return +$(this).data("record-id"); }).get();
+        if (! _.isEqual(new_value, this.get("value"))) {
             this.internal_set_value(new_value);
-    },
-    // WARNING: (mostly) duplicated in 4 other M2M widgets
-    set_value: function(value_) {
-        value_ = value_ || [];
-        if (value_.length >= 1 && value_[0] instanceof Array) {
-            // value_ is a list of m2m commands. We only process
-            // LINK_TO and REPLACE_WITH in this context
-            var val = [];
-            _.each(value_, function (command) {
-                if (command[0] === commands.LINK_TO) {
-                    val.push(command[1]);                   // (4, id[, _])
-                } else if (command[0] === commands.REPLACE_WITH) {
-                    val = command[2];                       // (6, _, ids)
-                }
-            });
-            value_ = val;
         }
-        var formatted = {};
-        _.each(value_, function(el) {
-            formatted[JSON.stringify(el)] = true;
-        });
-        this._super(formatted);
-    },
-    get_value: function() {
-        var value = _.filter(_.keys(this.get("value")), function(el) {
-            return this.get("value")[el];
-        }, this);
-        value = _.map(value, function(el) {
-            return JSON.parse(el);
-        });
-        return [commands.replace_with(value)];
-    },
-});
-
-/**
-    This field can be applied on many2many and one2many. It is a read-only field that will display a single link whose name is
-    "<number of linked records> <label of the field>". When the link is clicked, it will redirect to another act_window
-    action on the model of the relation and show only the linked records.
-
-    Widget options:
-
-    * views: The views to display in the act_window action. Must be a list of tuples whose first element is the id of the view
-      to display (or False to take the default one) and the second element is the type of the view. Defaults to
-      [[false, "tree"], [false, "form"]] .
-*/
-var X2ManyCounter = common.AbstractField.extend(common.ReinitializeFieldMixin, {
-    className: "oe_form_x2many_counter",
-    init: function() {
-        this._super.apply(this, arguments);
-        this.set("value", []);
-        _.defaults(this.options, {
-            "views": [[false, "tree"], [false, "form"]],
-        });
-    },
-    render_value: function() {
-        var text = _.str.sprintf("%d %s", this.val().length, this.string);
-        this.$().html(QWeb.render("X2ManyCounter", {text: text}));
-        this.$("a").click(_.bind(this.go_to, this));
-    },
-    go_to: function() {
-        return this.view.recursive_save().then(_.bind(function() {
-            var val = this.val();
-            var context = {};
-            if (this.field.type === "one2many") {
-                context["default_" + this.field.relation_field] = this.view.datarecord.id;
-            }
-            var domain = [["id", "in", val]];
-            return this.do_action({
-                type: 'ir.actions.act_window',
-                name: this.string,
-                res_model: this.field.relation,
-                views: this.options.views,
-                target: 'current',
-                context: context,
-                domain: domain,
-            });
-        }, this));
-    },
-    val: function() {
-        var value = this.get("value") || [];
-        if (value.length >= 1 && value[0] instanceof Array) {
-            value = value[0][2];
-        }
-        return value;
     }
 });
 
 
-
 core.form_widget_registry
     .add('many2one', FieldMany2One)
-    .add('many2onebutton', Many2OneButton)
     .add('many2many', FieldMany2Many)
     .add('many2many_tags', FieldMany2ManyTags)
     .add('many2many_kanban', FieldMany2ManyKanban)
     .add('one2many', FieldOne2Many)
     .add('one2many_list', FieldOne2Many)
     .add('many2many_binary', FieldMany2ManyBinaryMultiFiles)
-    .add('many2many_checkboxes', FieldMany2ManyCheckBoxes)
-    .add('x2many_counter', X2ManyCounter);
+    .add('many2many_checkboxes', FieldMany2ManyCheckBoxes);
 
 return {
     FieldMany2ManyTags: FieldMany2ManyTags,
+    AbstractManyField: AbstractManyField,
 };
 
 });
@@ -2029,6 +1863,10 @@ odoo.define('web_kanban.Many2ManyKanbanView', function (require) {
     });
 
     var Many2ManyKanbanView = KanbanView.extend({
+        load_kanban: function(data) {
+            this._super(data);
+            this.render_buttons();
+        },
         get_quick_create_class: function () {
             return Many2ManyQuickCreate;
         },
