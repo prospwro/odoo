@@ -513,7 +513,7 @@ var AbstractManyField = common.AbstractField.extend({
         this.set('value', []);
         this.starting_ids = [];
         this.view.on("load_record", this, function () {
-            self.starting_ids = self.get('value');
+            self.starting_ids = self.get('value').slice();
         });
         this.dataset.on('dataset_changed', this, function() {
             // the editable lists change the dataset without call AbstractManyField methods
@@ -532,6 +532,7 @@ var AbstractManyField = common.AbstractField.extend({
             throw new Error("set_value of '"+this.name+"' must receive an list of ids without virtual ids.", ids);
         }
         if (_.find(ids, function(id) { return typeof(id) !== "number"; } )) {
+            this.dataset.alter_ids(this.starting_ids.slice());
             return this.send_commands(ids);
         }
         this.dataset.reset_ids(ids);
@@ -659,7 +660,7 @@ var AbstractManyField = common.AbstractField.extend({
 
         mutex.exec(function () {
             def.resolve(res);
-            self.internal_dataset_changed = true;
+            self.internal_dataset_changed = false;
             self.trigger("change:commands");
         });
         return def;
@@ -727,11 +728,6 @@ var FieldOne2Many = AbstractManyField.extend({
         this.initial_is_loaded = this.is_loaded;
         this.is_started = false;
         this.set_value([]);
-        this.on('change:commands', this, function () {
-            if (this.is_started && !this.no_rerender) {
-                this.reload_current_view();
-            }
-        });
     },
     start: function() {
         this._super.apply(this, arguments);
@@ -1438,7 +1434,7 @@ var Many2ManyListView = ListView.extend(/** @lends instance.web.form.Many2ManyLi
         );
         var self = this;
         pop.on("elements_selected", self, function(element_ids) {
-            return self.o2m.data_link_multi(element_ids);
+            return self.dataset.o2m.data_link_multi(element_ids);
         });
     },
     do_activate_record: function(index, id) {

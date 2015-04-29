@@ -246,8 +246,25 @@ class product_category(osv.osv):
             context = {}
         if name:
             # Be sure name_search is symetric to name_get
-            name = name.split(' / ')[-1]
-            ids = self.search(cr, uid, [('name', operator, name)] + args, limit=limit, context=context)
+            categories = name.split(' / ')
+            parents = list(categories)
+            child = parents.pop()
+            domain = [('name', operator, child)]
+            if parents:
+                names_ids = self.name_search(cr, uid, ' / '.join(parents), args=args, operator='ilike', context=context, limit=limit)
+                category_ids = [name_id[0] for name_id in names_ids]
+                if operator in expression.NEGATIVE_TERM_OPERATORS:
+                    category_ids = self.search(cr, uid, [('id', 'not in', category_ids)])
+                    domain = expression.OR([[('parent_id', 'in', category_ids)], domain])
+                else:
+                    domain = expression.AND([[('parent_id', 'in', category_ids)], domain])
+                for i in range(1, len(categories)):
+                    domain = [[('name', operator, ' / '.join(categories[-1 - i:]))], domain]
+                    if operator in expression.NEGATIVE_TERM_OPERATORS:
+                        domain = expression.AND(domain)
+                    else:
+                        domain = expression.OR(domain)
+            ids = self.search(cr, uid, expression.AND([domain, args]), limit=limit, context=context)
         else:
             ids = self.search(cr, uid, args, limit=limit, context=context)
         return self.name_get(cr, uid, ids, context)
@@ -518,7 +535,7 @@ class product_template(osv.osv):
         'standard_price': fields.property(type = 'float', digits_compute=dp.get_precision('Product Price'), 
                                           help="Cost price of the product template used for standard stock valuation in accounting and used as a base price on purchase orders. "
                                                "Expressed in the default unit of measure of the product.",
-                                          groups="base.group_user", string="Cost Price"),
+                                          string="Cost Price"),
         'volume': fields.float('Volume', help="The volume in m3."),
         'weight': fields.float('Gross Weight', digits_compute=dp.get_precision('Stock Weight'), help="The gross weight in Kg."),
         'weight_net': fields.float('Net Weight', digits_compute=dp.get_precision('Stock Weight'), help="The net weight in Kg."),
@@ -808,7 +825,7 @@ class product_template(osv.osv):
         # re-apply product.template order + name_get
         return super(product_template, self).name_search(
             cr, user, '', args=[('id', 'in', template_ids)],
-            operator=operator, context=context, limit=limit)
+            operator='ilike', context=context, limit=limit)
 
 class product_product(osv.osv):
     _name = "product.product"
