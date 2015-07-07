@@ -25,7 +25,7 @@ from openerp import models, fields, _
 class edu_time_budget(models.Model):
     _name = 'edu.time.budget'
     _description = 'Study Time Budget'
-    _inherit = ['base.abstract.doc']
+    _inherit = ['base.doc']
     _sql_constraints = [
         ('code_unique', 'UNIQUE(code)', _('Code must be unique !')),
     ]

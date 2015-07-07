@@ -21,7 +21,7 @@
 ##############################################################################
 
 from openerp import models, fields
-
+from addons.irsid_base.models.doc import DOC_STATES
 _TASK_TYPES = [
     ('paper','Test Paper'),
     ('theme','Theme'),
@@ -32,7 +32,6 @@ _TASK_TYPES = [
 class edu_module_task(models.Model):
     _name = 'edu.module.task'
     _description = 'Module Task'
-    _inherit = ['base.abstract.doc']
     _order = 'seance, sequence'
 #    _track = {
 #         'state': {
@@ -108,4 +107,13 @@ class edu_module_task(models.Model):
         string='Description',
         readonly = True,
         states = {'draft': [('readonly', False)]},
+    )
+    state = fields.Selection(
+        selection = DOC_STATES,
+        string = 'State',
+        index = True,
+        readonly = True,
+        track_visibility = 'onchange',
+        default = 'draft',
+        copy =False,
     )

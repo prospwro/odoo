@@ -21,11 +21,11 @@
 ##############################################################################
 
 from openerp import models, fields, api
+from addons.irsid_base import doc
 
 class edu_module_seance(models.Model):
     _name = 'edu.module.seance'
     _description = 'Module Seance'
-    _inherit = ['base.abstract.doc']
     _order = 'module, sequence'
 #     _track = {
 #         'state': {
@@ -178,6 +178,15 @@ class edu_module_seance(models.Model):
         string='Description',
         readonly = True,
         states = {'draft': [('readonly', False)]},
+    )
+    state = fields.Selection(
+        selection = DOC_STATES,
+        string = 'State',
+        index = True,
+        readonly = True,
+        track_visibility = 'onchange',
+        default = 'draft',
+        copy =False,
     )
 
 #     _columns = {

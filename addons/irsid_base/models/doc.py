@@ -20,7 +20,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, api
 
 DOC_STATES = [
     ('draft', 'New'),
@@ -33,12 +33,68 @@ DOC_STATES = [
 ]
 
 # Base Document
-class base_doc(models.Model):
+class base_doc(models.AbstractModel):
     _name = 'base.doc'
     _description = 'Base Document'
+    _inherit = ['mail.thread','ir.needaction_mixin']
     _sql_constraints = [
         ('code_unique', 'UNIQUE(code)', 'Code must be unique !'),
     ]
+# Workflow Functions
+    @api.multi
+    def set_draft(self):
+        return self.write({
+            'state':'draft',
+        })
+
+    @api.multi
+    def set_confirmed(self):
+        return self.write({
+            'state':'confirmed',
+        })
+
+    @api.multi
+    def set_validated(self):
+        return self.write({
+            'state':'validated',
+        })
+
+    @api.multi
+    def set_approved(self):
+        return self.write({
+            'state':'approved',
+        })
+    @api.multi
+    def set_done(self):
+        return self.write({
+            'state':'done',
+        })
+
+    @api.multi
+    def set_rejected(self):
+        return self.write({
+            'state':'rejected',
+        })
+
+    @api.multi
+    def set_canceled(self):
+        return self.write({
+            'state':'canceled',
+        })
+
+    @api.multi
+    def unlink(self):
+        for doc in self:
+            if doc.state not in ('draft'):
+                raise Warning('You cannot delete document which is not draft.')
+        return super(base_doc, self).unlink()
+
+    @api.multi
+    def write(self):
+        for doc in self:
+            if doc.code == '/':
+                doc.code = self.env['ir.sequence'].next_by_code(self._name) or '/'
+        return super(base_doc, self).write()
 # Fields
     code = fields.Char(
         string='Code',
@@ -91,6 +147,7 @@ class base_doc(models.Model):
     signatures = fields.One2many(
         comodel_name = 'base.doc.signature',
         inverse_name = 'doc',
+        domain = lambda self: [('model', '=', self._name)],
         string = 'Signatures',
         readonly = True,
         states = {'draft': [('readonly', False)]},

@@ -21,12 +21,11 @@
 ##############################################################################
 
 from openerp import models, fields, api
-from openerp.osv.fields import related
+from addons.irsid_base.models.doc import DOC_STATES
 
 class edu_module_work(models.Model):
     _name = 'edu.module.work'
     _description = 'Module Work'
-    _inherit = ['base.abstract.doc']
     _order = 'module, time, type'
 #     _rec_name = 'code'
 #     _track = {
@@ -235,6 +234,15 @@ class edu_module_work(models.Model):
         string = 'Effective Employee Hours',
         readonly = True,
         compute = _compute_hours,
+    )
+    state = fields.Selection(
+        selection = DOC_STATES,
+        string = 'State',
+        index = True,
+        readonly = True,
+        track_visibility = 'onchange',
+        default = 'draft',
+        copy =False,
     )
 #     _columns = {
 #         'program': fields.related(

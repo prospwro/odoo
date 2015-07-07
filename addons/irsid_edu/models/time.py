@@ -21,11 +21,11 @@
 ##############################################################################
 
 from openerp import models, fields
+from addons.irsid_base.models.doc import DOC_STATES
 
 class edu_time(models.Model):
     _name = 'edu.time'
     _description = 'Study Time'
-    _inherit = ['base.abstract.doc']
     _order = 'budget, section, subsection, sequence'
 #     _rec_name = 'code'
 #     _track = {
@@ -117,4 +117,13 @@ class edu_time(models.Model):
         required=True,
         readonly = True,
         states = {'draft': [('readonly', False)]},
+    )
+    state = fields.Selection(
+        selection = DOC_STATES,
+        string = 'State',
+        index = True,
+        readonly = True,
+        track_visibility = 'onchange',
+        default = 'draft',
+        copy =False,
     )
