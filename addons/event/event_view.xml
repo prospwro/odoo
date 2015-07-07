@@ -3,8 +3,8 @@
     <data>
 
         <!-- Main menu items -->
-        <menuitem name="Events" id="event_main_menu" parent="base.marketing_menu" sequence="2" groups="marketing.group_marketing_user"/>
-        <menuitem name="Events" id="event_configuration" parent="base.menu_marketing_config_root" sequence="1" groups="marketing.group_marketing_user"/>
+        <menuitem name="Events" id="event_main_menu" sequence="65" groups="marketing.group_marketing_user" web_icon="event,static/description/icon.png"/>
+        <menuitem parent="event_main_menu" id="menu_reporting_events" sequence="99" groups="event.group_event_manager" name="Reports"/>
 
         <!-- EVENT.TYPE VIEWS -->
         <record model="ir.ui.view" id="view_event_type_form">
@@ -37,8 +37,10 @@
             <field name="res_model">event.type</field>
             <field name="view_type">form</field>
         </record>
-        
-        <menuitem name="Events Types" id="menu_event_type" action="action_event_type" parent="event.event_configuration" groups="base.group_no_one"/>
+
+        <menuitem id="menu_event_configuration" name="Configuration" parent="event_main_menu"
+            sequence="100" groups="base.group_configuration"/>
+        <menuitem name="Events Types" id="menu_event_type" action="action_event_type" parent="menu_event_configuration" groups="base.group_no_one"/>
 
         <!-- EVENT.REGISTRATION ACTIONS -->
         <record id="act_event_registration_from_event" model="ir.actions.act_window">
@@ -46,7 +48,7 @@
             <field name="view_type">form</field>
             <field name="name">Attendees</field>
             <field name="view_mode">tree,form,calendar,graph</field>
-            <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id, 'search_default_not_cancelled': 1}</field>
+            <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id, 'search_default_expected': True}</field>
         </record>
 
         <!-- EVENT.EVENT VIEWS -->
@@ -63,18 +65,18 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box" groups="base.group_user">
+                            <button name="%(event.act_event_registration_from_event)d"
+                                type="action"
+                                class="oe_stat_button oe_event_attendee_button"
+                                icon="fa-github"
+                                help="Register with this event">
+                                <field name="seats_expected" widget="statinfo" string="Attendees"/>
+                            </button>
+                        </div>
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
                             <h1><field name="name"/></h1>
-                        </div>
-                        <div class="oe_right oe_button_box" groups="base.group_user">
-                            <button name="%(event.act_event_registration_from_event)d" 
-                                type="action" 
-                                class="oe_stat_button oe_inline" 
-                                icon="fa-github" 
-                                help="Register with this event">
-                                <field name="seats_reserved" widget="statinfo" string="Attendees"/>
-                            </button>
                         </div>
                         <group name="main_field_group">
                             <group>
@@ -91,7 +93,7 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Registrations">
+                            <page name="registrations" string="Registrations">
                                 <group>
                                     <group>
                                         <field name="auto_confirm" invisible="1"/>
@@ -130,7 +132,7 @@
             <field name="name">event.event.tree</field>
             <field name="model">event.event</field>
             <field name="arch" type="xml">
-                <tree string="Events" fonts="bold:message_unread==True" colors="red:(seats_min and seats_min&gt;seats_reserved) or (seats_max and seats_max&lt;seats_reserved);grey:state=='cancel'">
+                <tree string="Events" decoration-bf="message_unread==True" decoration-danger="(seats_min and seats_min&gt;seats_reserved) or (seats_max and seats_max&lt;seats_reserved)" decoration-muted="state=='cancel'">
                     <field name="name"/>
                     <field name="type"/>
                     <field name="date_begin"/>
@@ -149,57 +151,55 @@
             <field name="name">event.event.kanban</field>
             <field name="model">event.event</field>
             <field name="arch" type="xml">
-                <kanban>
+                <kanban class="o_event_kanban_view">
                     <field name="user_id"/>
                     <field name="country_id"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
                     <field name="seats_unconfirmed"/>
                     <field name="seats_reserved"/>
+                    <field name="seats_used"/>
+                    <field name="seats_expected"/>
                     <field name="color"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click oe_event_kanban_view" >
-                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
-                                    <i class="fa fa-bars fa-lg"/>
-                                    <ul class="oe_dropdown_menu">
-                                        <t t-if="widget.view.is_action_enabled('delete')">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="o_dropdown_kanban dropdown">
+
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                        <span class="fa fa-bars fa-lg"/>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        <t t-if="widget.deletable">
                                             <li><a type="delete">Delete</a></li>
                                         </t>
                                         <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
                                     </ul>
                                 </div>
-                                <div class="oe_module_vignette row">
-                                    <div class="col-md-3">
-                                        <div class="oe_module_icon">
-                                            <div class="oe_event_date_thumb oe_event_date"><t t-esc="record.date_begin.raw_value.getDate()"/></div>
-                                            <div class="oe_event_date_thumb oe_event_month_year">
-                                                <t t-esc="moment(record.date_begin.raw_value).format('MMM')"/>
-                                                <t t-esc="record.date_begin.raw_value.getFullYear()"/>
-                                            </div>
-                                            <div class="oe_event_date_thumb oe_event_time"><t t-esc="moment(record.date_begin.raw_value).format('LT')"/></div>
-                                        </div>
+                                <div class="o_event_left">
+                                    <div class="o_day"><t t-esc="record.date_begin.raw_value.getDate()"/></div>
+                                    <div>
+                                        <t t-esc="moment(record.date_begin.raw_value).format('MMM')"/>
+                                        <t t-esc="record.date_begin.raw_value.getFullYear()"/>
                                     </div>
-                                    <div class="col-md-8">
-                                        <h4><field name="name"/></h4>
-                                        <div>
-                                            <small>
-                                                <t t-if="record.country_id.raw_value"> <b> <field name="country_id"/> </b> <br/> </t>
-                                                <i class="fa fa-clock-o" t-att-title="moment(record.date_begin.raw_value).format('LT')"/>
-                                                <b>From</b> <t t-esc="moment(record.date_begin.raw_value).format('L')"/>
-                                                <b>To</b> <t t-esc="moment(record.date_end.raw_value).format('LT')"/>
-                                            </small>
-                                        </div>
-                                        <h4>
-                                            <a name="%(act_event_registration_from_event)d" type="action">
-                                                <t t-esc="record.seats_reserved.raw_value" > Attendees</t>
-                                            </a>
-                                            <t t-if="(record.seats_reserved.raw_value + record.seats_unconfirmed.raw_value) > 0 ">&#47;
-                                                <t t-esc="record.seats_reserved.raw_value + record.seats_unconfirmed.raw_value"/> Expected
-                                                <a name="action_event_registration_report" type="object" >&#40;Report&#41;</a>
-                                            </t>
-                                        </h4>
+                                    <div><t t-esc="moment(record.date_begin.raw_value).format('LT')"/></div>
+                                </div>
+                                <div class="o_event_right">
+                                    <h4><field name="name"/></h4>
+                                    <div>
+                                        <t t-if="record.country_id.raw_value"> <b> <field name="country_id"/> </b> <br/> </t>
+                                        <i class="fa fa-clock-o"/>
+                                        <b>To</b> <t t-esc="moment(record.date_end.raw_value).format('lll')"/>
                                     </div>
+                                    <h4>
+                                        <a name="%(act_event_registration_from_event)d" type="action">
+                                            <t t-esc="record.seats_expected.raw_value"> Attendees Expected</t>
+                                        </a>
+                                        <t t-if="(record.seats_reserved.raw_value + record.seats_used.raw_value) > 0 "><br/>
+                                             <t t-esc="record.seats_reserved.raw_value + record.seats_used.raw_value"/> Attendees Confirmed
+                                        <a name="action_event_registration_report" type="object" >&#40;Report&#41;</a>
+                                        </t>
+                                    </h4>
                                 </div>
                             </div>
                         </t>
@@ -233,7 +233,7 @@
                     <separator/>
                     <filter string="My Events" help="My Events" domain="[('user_id','=',uid)]"/>
                     <separator/>
-                    <filter string="Upcoming" name="upcoming" domain="[('date_begin','&gt;=',datetime.datetime.now().replace(hour=0, minute=0, second=0))]" help="Upcoming events from today" />
+                    <filter string="Upcoming" name="upcoming" domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" help="Upcoming events from today" />
                     <field name="type"/>
                     <field name="user_id"/>
                     <group expand="0" string="Group By">
@@ -279,7 +279,7 @@
             <field name="name">event.registration.tree</field>
             <field name="model">event.registration</field>
             <field name="arch" type="xml">
-                <tree string="Registration" fonts="bold:message_unread==True">
+                <tree string="Registration" decoration-bf="message_unread==True">
                     <field name="create_date"/>
                     <field name="partner_id"/>
                     <field name="name"/>
@@ -300,6 +300,7 @@
             <field name="arch" type="xml">
                 <form string="Event Registration">
                     <header>
+                        <button name="action_send_badge_email" string="Send by Email" type="object" states="open,done" class="oe_highlight"/>
                         <button name="confirm_registration" string="Confirm" states="draft" type="object" class="oe_highlight"/>
                         <button name="button_reg_close" string="Attended" states="open" type="object" class="oe_highlight"/>
                         <button string="Set To Unconfirmed" name="do_draft" states="cancel,done" type="object" />
@@ -369,7 +370,7 @@
                     <field name="id" string="Registration ID"/>
                     <field name="name" string="Participant" filter_domain="['|', '|', ('name', 'ilike', self), ('email', 'ilike', self), ('origin', 'ilike', self)]"/>
                     <filter string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
-                    <filter string="Not Cancelled" name="not_cancelled" domain="[('state','!=','cancel')]"/>
+                    <filter string="Expected" name="expected" domain="[('state', 'in', ['draft', 'open', 'done'])]"/>
                     <separator/>
                     <field name="event_id"/>
                     <field name="partner_id"/>
@@ -396,7 +397,7 @@
 
         <menuitem name="Attendees"
             id="menu_action_registration" parent="event.event_main_menu"
-            action="action_registration" groups="event.group_event_manager,event.group_event_user"/>
+            action="action_registration" groups="base.group_no_one"/>
 
         <!-- EVENT.MAIL VIEWS -->
         <record model="ir.ui.view" id="view_event_mail_form">
@@ -449,8 +450,8 @@
             <field name="res_model">event.mail</field>
             <field name="view_type">form</field>
         </record>
-        
-        <menuitem name="Events Mail Schedulers" id="menu_event_type" action="action_event_mail" parent="event.event_configuration" groups="base.group_no_one"/>
+
+        <menuitem name="Mail Schedulers" id="menu_event_type" action="action_event_mail" parent="menu_event_configuration" groups="base.group_no_one"/>
 
     </data>
 </openerp>

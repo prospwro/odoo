@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp.osv import fields,osv
 from openerp.tools.translate import _
@@ -82,9 +64,10 @@ class stock_picking(osv.osv):
         """
         carrier_obj = self.pool.get('delivery.carrier')
         grid_obj = self.pool.get('delivery.grid')
+        fpos_obj = self.pool['account.fiscal.position']
         if not picking.carrier_id or \
             any(inv_line.product_id.id == picking.carrier_id.product_id.id
-                for inv_line in invoice.invoice_line):
+                for inv_line in invoice.invoice_line_ids):
             return None
         grid_id = carrier_obj.grid_get(cr, uid, [picking.carrier_id.id],
                 picking.partner_id.id, context=context)
@@ -94,18 +77,21 @@ class stock_picking(osv.osv):
         price = grid_obj.get_price_from_picking(cr, uid, grid_id,
                 invoice.amount_untaxed, picking.weight, picking.volume,
                 quantity, context=context)
-        account_id = picking.carrier_id.product_id.property_account_income.id
+        account_id = picking.carrier_id.product_id.property_account_income_id.id
         if not account_id:
             account_id = picking.carrier_id.product_id.categ_id\
-                    .property_account_income_categ.id
+                    .property_account_income_categ_id.id
 
         taxes = picking.carrier_id.product_id.taxes_id
+        taxes_ids = [x.id for x in taxes]
         partner = picking.partner_id or False
-        if partner:
-            account_id = self.pool.get('account.fiscal.position').map_account(cr, uid, partner.property_account_position, account_id)
-            taxes_ids = self.pool.get('account.fiscal.position').map_tax(cr, uid, partner.property_account_position, taxes)
-        else:
-            taxes_ids = [x.id for x in taxes]
+        fpos = None
+        if picking.sale_id and picking.sale_id.fiscal_position_id:
+            fpos = picking.sale_id.fiscal_position_id
+        elif picking.partner_id:
+            fpos = partner.property_account_position_id
+        account_id = fpos_obj.map_account(cr, uid, fpos, account_id, context=context)
+        taxes_ids = fpos_obj.map_tax(cr, uid, fpos, taxes, context=context)
 
         return {
             'name': picking.carrier_id.name,
@@ -115,11 +101,10 @@ class stock_picking(osv.osv):
             'account_id': account_id,
             'price_unit': price,
             'quantity': 1,
-            'invoice_line_tax_id': [(6, 0, taxes_ids)],
+            'invoice_line_tax_ids': [(6, 0, taxes_ids)],
         }
 
     def _invoice_create_line(self, cr, uid, moves, journal_id, inv_type='out_invoice', context=None):
-        invoice_obj = self.pool.get('account.invoice')
         invoice_line_obj = self.pool.get('account.invoice.line')
         invoice_ids = super(stock_picking, self)._invoice_create_line(cr, uid, moves, journal_id, inv_type=inv_type, context=context)
         delivey_invoices = {}
@@ -132,7 +117,6 @@ class stock_picking(osv.osv):
                 invoice_line = self._prepare_shipping_invoice_line(cr, uid, picking, invoice, context=context)
                 if invoice_line:
                     invoice_line_obj.create(cr, uid, invoice_line)
-                    invoice_obj.button_compute(cr, uid, [invoice.id], context=context, set_total=(inv_type in ('in_invoice', 'in_refund')))
         return invoice_ids
 
     def _get_default_uom(self, cr, uid, context=None):

@@ -70,7 +70,7 @@ class Website(openerp.addons.web.controllers.main.Home):
         redirect.set_cookie('website_lang', lang)
         return redirect
 
-    @http.route('/page/<page:page>', type='http', auth="public", website=True)
+    @http.route('/page/<page:page>', type='http', auth="public", website=True, cache=300)
     def page(self, page, **opt):
         values = {
             'path': page,
@@ -253,7 +253,8 @@ class Website(openerp.addons.web.controllers.main.Home):
                     old_trans = irt.search_read(
                         request.cr, request.uid,
                         [
-                            ('type', '=', 'view'),
+                            ('type', '=', 'model'),
+                            ('name', '=', 'ir.ui.view,arch_db'),
                             ('res_id', '=', view_id),
                             ('lang', '=', lang),
                             ('src', '=', initial_content),
@@ -261,15 +262,16 @@ class Website(openerp.addons.web.controllers.main.Home):
                     if old_trans:
                         tid = old_trans[0]['id']
                 if tid:
-                    vals = {'value': new_content}
+                    vals = {'value': new_content, 'state': 'translated'}
                     irt.write(request.cr, request.uid, [tid], vals)
                 else:
                     new_trans = {
-                        'name': 'website',
+                        'type': 'model',
+                        'name': 'ir.ui.view,arch_db',
+                        'state': 'translated',
                         'res_id': view_id,
                         'lang': lang,
-                        'type': 'view',
-                        'source': initial_content,
+                        'src': initial_content,
                         'value': new_content,
                     }
                     if t.get('gengo_translation'):

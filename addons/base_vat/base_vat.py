@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2012 OpenERP SA (<http://openerp.com>)
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
 import string
@@ -136,12 +118,6 @@ class res_partner(osv.osv):
                 _logger.info(_("Importing VAT Number [%s] is not valid !" % vat_number))
                 return False
         return True
-
-    def vat_change(self, cr, uid, ids, value, context=None):
-        return {'value': {'vat_subjected': bool(value)}}
-
-    def _commercial_fields(self, cr, uid, context=None):
-        return super(res_partner, self)._commercial_fields(cr, uid, context=context) + ['vat_subjected']
 
     def _construct_constraint_msg(self, cr, uid, ids, context=None):
         def default_vat_check(cn, vn):

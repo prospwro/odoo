@@ -25,38 +25,30 @@
 </t>
 <t t-name="Dialog">
     <div class="modal" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+        <div class="modal-dialog">
+            <div class="modal-content openerp">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 class="modal-title"><t t-raw="title"/><span class="text-muted"><t t-esc="subtitle"/></span></h3>
+                    <h4 class="modal-title"><t t-raw="title"/><span class="o_subtitle text-muted"><t t-esc="subtitle"/></span></h4>
                 </div>
-                <div class="modal-body">
-                </div>
+                <div class="modal-body"/>
+                <div class="modal-footer"/>
             </div>
         </div>
     </div>
 </t>
 <t t-name="CrashManager.warning">
-    <table cellspacing="0" cellpadding="0" border="0" class="oe_dialog_warning">
-    <tr>
-        <td>
-            <p>
-                <t t-js="d">
-                    var message = d.message ? d.message : d.error.data.message;
-                    d.html_error = context.engine.tools.html_escape(message)
-                        .replace(/\n/g, '<br/>');
-                </t>
-                <t t-raw="html_error"/>
-            </p>
-        </td>
-    </tr>
-    </table>
+    <div class="o_dialog_warning">
+        <t t-js="d">
+            var message = d.message ? d.message : d.error.data.message;
+            d.html_error = context.engine.tools.html_escape(message).replace(/\n/g, '<br/>');
+        </t>
+        <t t-raw="html_error"/>
+    </div>
 </t>
 <t t-name="CrashManager.error">
-    <div class="oe_error_detail">
+    <div class="o_error_detail">
         <pre><t t-esc="error.message"/></pre>
-        <hr/>
         <pre><t t-esc="error.data.debug"/></pre>
     </div>
 </t>
@@ -330,7 +322,6 @@
             <tr>
                 <td colspan="2" align="right">
                     <button class='oe_button oe_form_button'>Change Password</button>
-                    <span class="oe_fade oe_form_button"> or </span>
                     <button type="button" class="oe_button oe_form_button_cancel oe_form_button oe_link" href="javascript:void(0)"><span>Cancel</span></button>
                 </td>
             </tr>
@@ -406,12 +397,12 @@
                             <div class="tab-content">
                                 <div id="settings" class="tab-pane active">
                                     <h4>Copyright © 2004-TODAY OpenERP SA. All Rights Reserved.</h4>
-                                    <p>Odoo is a trademark of the <a target="_blank" href="https://www.odoo.com" style="text-decoration: underline;">OpenERP SA Company</a>.</p>
-                                    <p>Licenced under the terms of <a target="_blank" href="http://www.gnu.org/licenses/agpl.html" style="text-decoration: underline;">GNU Affero General Public License</a></p>
+                                    <p>Odoo is a trademark of the <a target="_blank" href="https://www.odoo.com" style="text-decoration: underline;">Odoo S.A. Company</a>.</p>
+                                    <p>Licenced under the terms of <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html" style="text-decoration: underline;">GNU Lesser General Public License</a></p>
                                     <p>For more information visit <a target="_blank" href="https://www.odoo.com" style="text-decoration: underline;">Odoo.com</a></p>
                                 </div>
                                 <div id="email" class="tab-pane">
-                                    <h4>OpenERP S.A.</h4>
+                                    <h4>Odoo S.A.</h4>
                                     <p>
                                         Chaussée de Namur 40<br/>
                                         1367 Grand-Rosière <br/>
@@ -440,24 +431,8 @@
     </div>
 </t>
 
-<t t-name="WebClient.timezone_notification">
-    <div class="oe_webclient_timezone_notification">
-        <p>Your user's preference timezone does not match your browser timezone:</p>
-
-        <dl>
-            <dt>User's timezone</dt>
-            <dd><t t-esc="user_timezone"/> (<t t-esc="user_offset"/>)</dd>
-            <dt>Browser's timezone</dt>
-            <dd><t t-esc="browser_offset"/></dd>
-        </dl>
-
-        <p><a href="#">Click here to change your user's timezone.</a></p>
-    </div>
-</t>
-<t t-name="WebClient.timezone_systray">
-    <li class="oe_topbar_item oe_timezone_systray" title="Timezone mismatch">
-        <a href="#"><i class="fa fa-exclamation-triangle" style="color:red;"></i></a>
-    </li>
+<t t-name="WebClient.timezone_warning">
+    <i class="fa fa-exclamation-triangle oe_tz_warning"></i>
 </t>
 
 <t t-name="EmbedClient">
@@ -495,8 +470,8 @@
     </div>
 </t>
 
-<t t-name="One2ManyControlPanel">
-    <div class="oe-o2m-control-panel container-fluid">
+<t t-name="X2ManyControlPanel">
+    <div class="oe-x2m-control-panel container-fluid">
         <div class="oe-cp-buttons pull-left"/>
         <div class="oe-cp-pager pull-right"/>
     </div>
@@ -584,8 +559,8 @@
         <t t-raw="0"/>
     </div>
     <div class="btn-group btn-group-sm oe-pager-buttons" style="display: inline-block">
-        <a class="fa fa-chevron-left btn btn-default oe-pager-button" type="button" data-pager-action="previous"></a>
-        <a class="fa fa-chevron-right btn btn-default oe-pager-button" type="button" data-pager-action="next"></a>
+        <a class="fa fa-chevron-left btn btn-default oe-pager-button" accesskey="O" type="button" data-pager-action="previous"></a>
+        <a class="fa fa-chevron-right btn btn-default oe-pager-button" accesskey="P" type="button" data-pager-action="next"></a>
     </div>
 </span>
 
@@ -625,12 +600,12 @@
                     </t>
                     <a class="oe_file_attachment" t-att-title="item.title or ''" t-att-data-section="section.name" t-att-data-index="item_index" t-att-href="item.url">
                         <t t-raw="item.label"/>
-                        <span t-if="section.name == 'files' and !item.callback" class="oe_sidebar_delete_item" t-att-data-id="item.id" title="Delete this attachment">
+                        <span t-if="widget.view.is_action_enabled('edit') &amp;&amp; section.name == 'files' and !item.callback" class="oe_sidebar_delete_item" t-att-data-id="item.id" title="Delete this attachment">
                             <i class="fa fa-trash-o"/>
                         </span>
                     </a>
                 </li>
-                <li t-if="section.name == 'files'" class="oe_sidebar_add_attachment">
+                <li t-if="widget.view.is_action_enabled('edit') &amp;&amp; section.name == 'files'" class="oe_sidebar_add_attachment">
                     <t t-call="HiddenInputFile">
                         <t t-set="fileupload_id" t-value="widget.fileupload_id"/>
                         <t t-set="fileupload_action" t-translation="off">/web/binary/upload_attachment</t>
@@ -745,7 +720,8 @@
 </t>
 <tr t-name="ListView.row"
         t-att-data-id="record.get('id')"
-        t-att-style="view.style_for(record)">
+        t-attf-style="#{(view.fonts || view.colors) ? view.style_for(record) : ''}"
+        t-attf-class="#{view.compute_decoration_classnames(record)}">
     <t t-set="asData" t-value="record.toForm().data"/>
     <t t-foreach="columns" t-as="column">
         <td t-if="column.meta"> </td>
@@ -764,7 +740,7 @@
             ><t t-raw="render_cell(record, column)"/></td>
     </t>
     <td t-if="options.deletable" class='oe_list_record_delete' width="13px">
-        <button type="button" name="delete" class="oe_i">d</button>
+        <span name="delete" class="fa fa-trash-o"/>
     </td>
 </tr>
 <t t-extend="ListView.buttons">
@@ -784,8 +760,9 @@
 <button t-name="ListView.row.button" type="button"
         t-att-title="widget.string" t-att-disabled="disabled || undefined"
         t-att-class="disabled ? 'oe_list_button_disabled' : ''"
-        ><img t-attf-src="#{prefix}/web/static/src/img/icons/#{widget.icon}.png"
-        t-att-alt="widget.string"/></button>
+        ><img t-if="!widget.icon.indexOf('fa-') == 0" t-attf-src="#{prefix}/web/static/src/img/icons/#{widget.icon}.png"
+        t-att-alt="widget.string"/><i t-if="widget.icon.indexOf('fa-') == 0" t-attf-class="fa #{widget.icon}" t-att-title="widget.string"/>
+</button>
 <t t-extend="ListView.row">
     <!-- adds back padding to row being rendered after edition, if necessary
          (if not deletable add back padding), otherwise the row being added is
@@ -829,7 +806,7 @@
     <span class="oe_form_pager_state"></span>
 </t>
 <form t-name="FormView.set_default">
-    <t t-set="args" t-value="widget.dialog_options.args"/>
+    <t t-set="args" t-value="widget.args"/>
     <table style="width: 100%">
         <tr>
             <td>
@@ -1118,7 +1095,7 @@
         </ul>
     </div>
 </t>
-<t t-name="Priority">
+<t t-name="FormPriority">
     <ul style="list-style: none; padding-left: 2px; display: inline-block;">
         <t t-foreach="widget.priorities" t-as="rec" >
             <li t-att-data-value="rec.click_value" style="display: inline-block;">
@@ -1129,6 +1106,14 @@
             </li>
         </t>
     </ul>
+</t>
+<t t-name="Priority">
+    <div class="o_priority">
+        <t t-foreach="widget.priorities" t-as="rec" >
+            <a t-if="!widget.get('readonly')" href="#" t-att-data-value="rec.click_value" t-att-title="rec.name" t-att-class="widget.get('value') gte rec.value and 'fa fa-star o_star_on' or 'fa fa-star o_star_off'"/>
+            <span t-if="widget.get('readonly')" t-att-data-value="rec.click_value" t-att-title="rec.name" t-att-class="widget.get('value') gte rec.value and 'fa fa-star o_star_on' or 'fa fa-star o_star_off'"/>
+        </t>
+    </div>
 </t>
 <t t-name="FieldEmail">
     <span class="oe_form_field oe_form_field_email" t-att-style="widget.node.attrs.style">
@@ -1181,12 +1166,10 @@
 </t>
 <t t-name="FieldCharDomain">
     <div class="oe_form_field">
-        <span class="oe_domain_count"/>
-        <button class="oe_button oe_link select_records" type="button"
-            t-att-style="widget.node.attrs.style"
-            t-att-accesskey="widget.node.attrs.accesskey">
-            <span class="fa fa-arrow-right"/>
-        </button>
+        <span class="o_count"/>
+        <button class="btn btn-link" type="button"
+            t-att-accesskey="widget.node.attrs.accesskey"/>
+        <input t-if="widget.debug" type="text" class="o_form_input o_debug_input"/>
     </div>
 </t>
 <t t-name="web.datepicker">
@@ -1279,19 +1262,12 @@
 <t t-name="Many2OneButton.cell"
     ><img t-attf-src="#{prefix}/web/static/src/img/icons/#{widget.icon}.png" t-att-alt="widget.string" width="16" height="16"/>
 </t>
-<t t-name="FieldMany2ManyTags">
-    <div class="oe_form_field oe_tags" t-att-style="widget.node.attrs.style">
-        <t t-if="! widget.get('effective_readonly')">
-            <textarea rows="1" style="width: 100%"
-                t-att-placeholder="widget.node.attrs.placeholder"></textarea>
-        </t>
-    </div>
-</t>
 <t t-name="FieldMany2ManyTag">
     <t t-set="i" t-value="0"/>
     <t t-foreach="elements" t-as="el">
-        <span class="oe_tag" t-att-data-index="i">
+        <span class="badge" t-att-data-index="i" t-att-data-id="el[0]">
             <t t-esc="el[1]"/>
+            <span t-if="!readonly" class="fa fa-times o_delete"/>
         </span>
         <t t-set="i" t-value="i + 1"/>
     </t>
@@ -1318,10 +1294,12 @@
             class="field_boolean"/>
     </span>
 </t>
-<t t-name="FieldProgressBar">
-    <span class="oe_form_field oe_form_field_progressbar" t-att-style="widget.node.attrs.style">
-        <span></span>
-    </span>
+<t t-name="ProgressBar">
+    <div class="o_progressbar">
+        <div t-if="widget.title" class="o_progressbar_title"><t t-esc="widget.title"/></div><div class="o_progress">
+            <div class="o_progressbar_complete"/>
+        </div><div t-if="widget.readonly" class="o_progressbar_value"/><input t-if="!widget.readonly" class="o_progressbar_value"/>
+    </div>
 </t>
 <t t-name="FieldPercentPie">
     <div class="oe_form_field oe_form_field_percent_pie" t-att-style="widget.node.attrs.style">
@@ -1501,8 +1479,7 @@
     </div>
 </t>
 <t t-name="WidgetButton">
-    <span t-if="widget.pre_text"> <t t-esc="widget.pre_text"/> </span>
-    <button type="button" t-att-class="widget.is_stat_button ? 'oe_stat_button btn btn-default' : 'oe_button oe_form_button ' + (widget.node.attrs.class ? widget.node.attrs.class : '')"
+    <button type="button" t-attf-class="btn btn-sm oe_button #{widget.node.attrs.class or ''}"
         t-att-style="widget.node.attrs.style"
         t-att-tabindex="widget.node.attrs.tabindex"
         t-att-autofocus="widget.node.attrs.autofocus"
@@ -1510,9 +1487,8 @@
         <img t-if="!widget.is_stat_button and widget.node.attrs.icon " t-att-src="_s + widget.node.attrs.icon" width="16" height="16"/>
         <div t-if="widget.is_stat_button and widget.icon_class" t-att-class="widget.icon_class"></div>
         <span t-if="widget.string and !widget.is_stat_button"><t t-esc="widget.string"/></span>
-        <div t-if="widget.string and widget.is_stat_button"><t t-esc="widget.string"/></div>
+        <div t-if="widget.string and widget.is_stat_button" class="o_stat_info"><t t-esc="widget.string"/></div>
     </button>
-    <span t-if="widget.post_text"> <t t-esc="widget.post_text"/> </span>
 </t>
 <t t-name="WidgetButton.tooltip" t-extend="WidgetLabel.tooltip">
     <t t-jquery="div.oe_tooltip_string" t-operation="replace">
@@ -1546,51 +1522,13 @@
     </t>
 </t>
 
-<t t-name="AbstractFormPopup.render">
-    <div>
-        <div class="o-modal-header">
-            <div class="o-popup-search"/>
-            <div class="o-search-options oe-search-options"/>
-            <div class="oe_popup_list_pager"/>
-        </div>
-        <div class="oe_popup_list"/>
-        <div class="oe_popup_form"/>
-    </div>
-</t>
-<t t-name="SelectCreatePopup.search.buttons">
-    <t t-if="! widget.options.disable_multiple_selection">
-        <button type="button" class="oe_button oe_selectcreatepopup-search-select oe_highlight" disabled="disabled">Select</button>
-    </t>
-    <t t-if="!widget.options.no_create">
-    <button type="button" class="oe_button oe_selectcreatepopup-search-create">Create</button>
-    or </t><a class="oe_selectcreatepopup-search-close oe_bold oe_form_button_cancel" href="javascript:void(0)">Cancel</a>
-</t>
-<t t-name="AbstractFormPopup.buttons">
-    <t t-if="! readonly">
-        <t t-if="! multi_select">
-            <button type="button" class="oe_button oe_abstractformpopup-form-save oe_highlight">Save</button>
-        </t>
-        <t t-if="multi_select">
-            <button type="button" class="oe_button oe_abstractformpopup-form-save oe_highlight">Save &amp; Close</button>
-            <button type="button" class="oe_button oe_abstractformpopup-form-save-new oe_highlight">Save &amp; New</button>
-        </t>
-        or
-    </t>
-    <a class="oe_abstractformpopup-form-close oe_bold oe_form_button_cancel" href="javascript:void(0)">
-        <t t-if="! readonly">
-            Discard
-        </t>
-        <t t-if="readonly">
-            Close
-        </t>
-    </a>
-</t>
 
 <t t-name="One2Many.formview" t-extend="FormView">
     <t t-jquery=".oe_form_buttons" t-operation="inner">
         <button type="button" class="oe_button oe_form_button_create">Add</button>
     </t>
 </t>
+
 <t t-name="One2Many.listview" t-extend="ListView">
     <t t-jquery="thead > tr:first">
         this.removeAttr('t-if');
@@ -1768,7 +1706,11 @@
     <input type="number" class="field_integer form-control" value = "0" step="1"/>
 </t>
 <t t-name="SearchView.extended_search.proposition.float">
-    <input type="number" class="field_float form-control" value = "0.0" step="0.01"/>
+    <input class="field_float form-control"
+        t-att-type="widget.decimal_point === '.' ? 'number' : 'text'"
+        t-attf-title="Number using #{widget.decimal_point  || '.' } as decimal separator."
+        t-attf-pattern="[0-9]+([\\#{widget.decimal_point || '.' }][0-9]+)?"
+        t-attf-value="0#{widget.decimal_point || '.' }0" step="0.01"/>
 </t>
 <t t-name="SearchView.extended_search.proposition.selection">
     <select class="form-control">
@@ -1895,9 +1837,6 @@
     <button class="oe_button oe_export_button_export" id="delete_export_list" type="button">Delete</button>
 </t>
 
-<div t-name="Many2ManyKanban.quick_create" class="oe_kanban_quick_create">
-    <input t-att-placeholder="_t('Type name to search')"/>
-</div>
 <t t-name="Throbber">
     <div>
         <div class="oe_blockui_spin" style="height: 50px">
@@ -1946,14 +1885,25 @@
     <a href="javascript:void(0)"><t t-esc="text"/></a>
 </t>
 <t t-name="StatInfo">
-    <strong><t t-esc="value"/></strong><br/><t t-esc="text"/>
+    <span class="o_stat_value"><t t-esc="value"/></span>
+    <span class="o_stat_text"><t t-esc="text"/></span>
 </t>
+
 <button t-name="toggle_button" type="button"
     t-att-title="widget.string"
     style="box-shadow: none; white-space:nowrap;">
     <img t-attf-src="#{prefix}/web/static/src/img/icons/#{widget.icon}.png"
     t-att-alt="widget.string"/>
 </button>
+
+<div t-name="Pager">
+    <span class="o_pager_value"></span> / <span class="o_pager_limit"></span>
+    <span class="btn-group btn-group-sm">
+        <button type="button" class="fa fa-chevron-left btn btn-icon o_pager_previous" accesskey="O"/>
+        <button type="button" class="fa fa-chevron-right btn btn-icon o_pager_next" accesskey="P"/>
+    </span>
+</div>
+
 <button t-name="FieldToggleBoolean" type="button"
     t-att-title="widget.string" class="oe_toggle_button">
     <img t-attf-src="#{_s}/web/static/src/img/icons/#{widget.icon}" t-att-alt="widget.string"/>

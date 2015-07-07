@@ -1,25 +1,5 @@
 # -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution	
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
-#    Copyright (C) 2010-2011 OpenERP S.A. (<http://www.openerp.com>).
-#    $Id$
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp.exceptions import UserError
 from openerp.osv import fields, osv
@@ -42,7 +22,11 @@ class wizard_price(osv.osv):
             context = {}
         rec_id = context and context.get('active_id', False)
         assert rec_id, _('Active ID is not set in Context.')
-        res['info_field'] = str(product_pool.compute_price(cr, uid, [], template_ids=[product_obj.id], test=True, context=context))
+        computed_price = product_pool.compute_price(cr, uid, [], template_ids=[product_obj.id], test=True, context=context)
+        if product_obj.id in computed_price:
+            res['info_field'] = "%s: %s" % (product_obj.name, computed_price[product_obj.id]) 
+        else:
+            res['info_field'] = ""
         return res
 
     def compute_from_bom(self, cr, uid, ids, context=None):

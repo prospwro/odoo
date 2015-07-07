@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp import SUPERUSER_ID
 from openerp.osv import fields, osv
@@ -94,10 +76,10 @@ class stock_move(osv.osv):
         return invoice_line_id
 
     def _get_master_data(self, cr, uid, move, company, context=None):
-        if move.purchase_line_id:
+        if context.get('inv_type') in ('in_invoice', 'in_refund') and move.purchase_line_id:
             purchase_order = move.purchase_line_id.order_id
             return purchase_order.partner_id, purchase_order.create_uid.id, purchase_order.currency_id.id
-        elif move.picking_id:
+        elif context.get('inv_type') in ('in_invoice', 'in_refund') and move.picking_id:
             # In case of an extra move, it is better to use the data from the original moves
             for purchase_move in move.picking_id.move_lines:
                 if purchase_move.purchase_line_id:
@@ -114,18 +96,26 @@ class stock_move(osv.osv):
 
     def _get_invoice_line_vals(self, cr, uid, move, partner, inv_type, context=None):
         res = super(stock_move, self)._get_invoice_line_vals(cr, uid, move, partner, inv_type, context=context)
-        if move.purchase_line_id:
+        if inv_type in ('in_invoice', 'in_refund') and move.purchase_line_id:
             purchase_line = move.purchase_line_id
-            res['invoice_line_tax_id'] = [(6, 0, [x.id for x in purchase_line.taxes_id])]
+            res['invoice_line_tax_ids'] = [(6, 0, [x.id for x in purchase_line.taxes_id])]
             res['price_unit'] = purchase_line.price_unit
         return res
 
-    def _get_moves_taxes(self, cr, uid, moves, context=None):
-        is_extra_move, extra_move_tax = super(stock_move, self)._get_moves_taxes(cr, uid, moves, context=context)
-        for move in moves:
-            if move.purchase_line_id:
-                is_extra_move[move.id] = False
-                extra_move_tax[move.picking_id, move.product_id] = [(6, 0, [x.id for x in move.purchase_line_id.taxes_id])]
+    def _get_moves_taxes(self, cr, uid, moves, inv_type, context=None):
+        is_extra_move, extra_move_tax = super(stock_move, self)._get_moves_taxes(cr, uid, moves, inv_type, context=context)
+        if inv_type == 'in_invoice':
+            for move in moves:
+                if move.purchase_line_id:
+                    is_extra_move[move.id] = False
+                    extra_move_tax[move.picking_id, move.product_id] = [(6, 0, [x.id for x in move.purchase_line_id.taxes_id])]
+                elif move.product_id.product_tmpl_id.supplier_taxes_id:
+                    mov_id = self.search(cr, uid, [('purchase_line_id', '!=', False), ('picking_id', '=', move.picking_id.id)], limit=1, context=context)
+                    if mov_id:
+                        mov = self.browse(cr, uid, mov_id[0], context=context)
+                        fp = mov.purchase_line_id.order_id.fiscal_position
+                        res = self.pool.get("account.invoice.line").product_id_change(cr, uid, [], move.product_id.id, None, partner_id=move.picking_id.partner_id.id, fposition_id=(fp and fp.id), type='in_invoice', context=context)
+                        extra_move_tax[0, move.product_id] = [(6, 0, res['value']['invoice_line_tax_id'])]
         return (is_extra_move, extra_move_tax)
 
 
@@ -157,6 +147,10 @@ class stock_move(osv.osv):
                     return self.write(cr, uid, [move.id], {'price_unit': price}, context=context)
         super(stock_move, self).attribute_price(cr, uid, move, context=context)
 
+    def _get_taxes(self, cr, uid, move, context=None):
+        if move.origin_returned_move_id.purchase_line_id.taxes_id:
+            return [tax.id for tax in move.origin_returned_move_id.purchase_line_id.taxes_id]
+        return super(stock_move, self)._get_taxes(cr, uid, move, context=context)
 
 class stock_picking(osv.osv):
     _inherit = 'stock.picking'
@@ -198,8 +192,8 @@ class stock_picking(osv.osv):
         if move.purchase_line_id and move.purchase_line_id.order_id:
             purchase = move.purchase_line_id.order_id
             inv_vals.update({
-                'fiscal_position': purchase.fiscal_position.id,
-                'payment_term': purchase.payment_term_id.id,
+                'fiscal_position_id': purchase.fiscal_position_id.id,
+                'payment_term_id': purchase.payment_term_id.id,
                 })
         return inv_vals
 

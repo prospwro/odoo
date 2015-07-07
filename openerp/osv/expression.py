@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 """ Domain expression processing
 
@@ -401,7 +383,7 @@ def is_leaf(element, internal=False):
         and len(element) == 3 \
         and element[1] in INTERNAL_OPS \
         and ((isinstance(element[0], basestring) and element[0])
-             or element in (TRUE_LEAF, FALSE_LEAF))
+             or tuple(element) in (TRUE_LEAF, FALSE_LEAF))
 
 
 # --------------------------------------------------
@@ -490,7 +472,7 @@ class ExtendedLeaf(object):
     #       i.e.: many2one: 'state_id': current field name
     # --------------------------------------------------
 
-    def __init__(self, leaf, model, join_context=None):
+    def __init__(self, leaf, model, join_context=None, internal=False):
         """ Initialize the ExtendedLeaf
 
             :attr [string, tuple] leaf: operator or tuple-formatted domain
@@ -529,7 +511,7 @@ class ExtendedLeaf(object):
             self._models.append(item[0])
         self._models.append(model)
         # check validity
-        self.check_leaf()
+        self.check_leaf(internal)
 
     def __str__(self):
         return '<osv.ExtendedLeaf: %s on %s (ctx: %s)>' % (str(self.leaf), self.model._table, ','.join(self._get_context_debug()))
@@ -575,7 +557,7 @@ class ExtendedLeaf(object):
     # Leaf manipulation
     # --------------------------------------------------
 
-    def check_leaf(self):
+    def check_leaf(self, internal=False):
         """ Leaf validity rules:
             - a valid leaf is an operator or a leaf
             - a valid leaf has a field objects unless
@@ -584,7 +566,7 @@ class ExtendedLeaf(object):
                 - left is id, operator is 'child_of'
                 - left is in MAGIC_COLUMNS
         """
-        if not is_operator(self.leaf) and not is_leaf(self.leaf, True):
+        if not is_operator(self.leaf) and not is_leaf(self.leaf, internal):
             raise ValueError("Invalid leaf %s" % str(self.leaf))
 
     def is_operator(self):
@@ -603,14 +585,14 @@ class ExtendedLeaf(object):
         self.leaf = normalize_leaf(self.leaf)
         return True
 
-def create_substitution_leaf(leaf, new_elements, new_model=None):
+def create_substitution_leaf(leaf, new_elements, new_model=None, internal=False):
     """ From a leaf, create a new leaf (based on the new_elements tuple
         and new_model), that will have the same join context. Used to
         insert equivalent leafs in the processing stack. """
     if new_model is None:
         new_model = leaf.model
     new_join_context = [tuple(context) for context in leaf.join_context]
-    new_leaf = ExtendedLeaf(new_elements, new_model, join_context=new_join_context)
+    new_leaf = ExtendedLeaf(new_elements, new_model, join_context=new_join_context, internal=internal)
     return new_leaf
 
 class expression(object):
@@ -1044,7 +1026,7 @@ class expression(object):
                         right += ' 00:00:00'
                     push(create_substitution_leaf(leaf, (left, operator, right), model))
 
-                elif column.translate and right:
+                elif column.translate and not callable(column.translate) and right:
                     need_wildcard = operator in ('like', 'ilike', 'not like', 'not ilike')
                     sql_operator = {'=like': 'like', '=ilike': 'ilike'}.get(operator, operator)
                     if need_wildcard:
@@ -1083,7 +1065,7 @@ class expression(object):
                         'model',
                         right,
                     )
-                    push(create_substitution_leaf(leaf, ('id', inselect_operator, (subselect, params)), model))
+                    push(create_substitution_leaf(leaf, ('id', inselect_operator, (subselect, params)), model, internal=True))
 
                 else:
                     push_result(leaf)

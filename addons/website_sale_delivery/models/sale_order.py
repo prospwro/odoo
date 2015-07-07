@@ -33,6 +33,15 @@ class SaleOrder(orm.Model):
             res[order.id]['amount_delivery'] = currency_pool.round(cr, uid, currency, line_amount)
         return res
 
+    def _has_delivery(self, cr, uid, ids, field_name, arg, context=None):
+        result = dict.fromkeys(ids, False)
+        for so in self.browse(cr, uid, ids, context=context):
+            for line in so.order_line:
+                if line.is_delivery:
+                    result[so.id] = True
+                    break
+        return result
+
     def _get_order(self, cr, uid, ids, context=None):
         result = {}
         for line in self.pool.get('sale.order.line').browse(cr, uid, ids, context=context):
@@ -41,13 +50,21 @@ class SaleOrder(orm.Model):
 
     _columns = {
         'amount_delivery': fields.function(
-            _amount_all_wrapper, type='float', digits_compute=decimal_precision.get_precision('Account'),
+            _amount_all_wrapper, type='float', digits=0,
             string='Delivery Amount',
             store={
                 'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line'], 10),
                 'sale.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'
+        ),
+        'has_delivery': fields.function(
+            _has_delivery, type='boolean', string='Has delivery',
+            store={
+                'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line'], 10),
+                'sale.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
+            },
+            help="Has an order line set for delivery"
         ),
         'website_order_line': fields.one2many(
             'sale.order.line', 'order_id',
@@ -123,4 +140,16 @@ class SaleOrder(orm.Model):
         delivery_ids = self._get_delivery_methods(cr, uid, order, context=context)
 
         values['deliveries'] = DeliveryCarrier.browse(cr, SUPERUSER_ID, delivery_ids, context=delivery_ctx)
+        return values
+
+    def _cart_update(self, cr, uid, ids, product_id=None, line_id=None, add_qty=0, set_qty=0, context=None, **kwargs):
+        """ Override to update carrier quotation if quantity changed """
+
+        values = super(SaleOrder, self)._cart_update(
+            cr, uid, ids, product_id, line_id, add_qty, set_qty, context, **kwargs)
+
+        if add_qty or set_qty is not None:
+            for sale_order in self.browse(cr, uid, ids, context=context):
+                self._check_carrier_quotation(cr, uid, sale_order, context=context)
+
         return values

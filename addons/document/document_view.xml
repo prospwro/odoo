@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <openerp>
 <data>
-    <menuitem name="Document Management" id="menu_document_management_configuration" parent="knowledge.menu_document_configuration" sequence="1"/>
+    <menuitem name="Knowledge" id="menu_document" groups="base.group_system,base.group_document_user" icon="fa-magic" sequence="300"/>
+    <menuitem name="Document Management" id="menu_document_management_configuration" parent="menu_document" sequence="1" groups="base.group_no_one"/>
 
     <record model="ir.ui.view" id="view_document_directory_form">
         <field name="name">document.directory</field>
@@ -206,7 +207,7 @@
             <field name="model">ir.attachment</field>
             <field name="inherit_id" ref="base.view_attachment_search"/>
             <field name="arch" type="xml">
-                <filter string="Owner" position="replace">
+                <filter name="owner" position="replace">
                     <filter string="Owner" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
                     <filter string="Partner" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
                     <filter string="Directory" icon="terp-folder-green" domain="[]" context="{'group_by':'parent_id'}"/>
@@ -220,7 +221,7 @@
         <field name="model">ir.attachment</field>
         <field name="priority" eval="1"/>
         <field name="arch" type="xml">
-            <tree colors="blue:type in ('url',)" string="Attachments">
+            <tree decoration-info="type in ('url',)" string="Attachments">
                 <field name="name"/>
                 <field name="parent_id" />
                 <field name="user_id"/>
@@ -280,4 +281,3 @@
         src_model="document.directory"/>
 </data>
 </openerp>
-

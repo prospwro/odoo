@@ -62,7 +62,7 @@
                             <a t-attf-href="#{blog_url('', ['blog', 'post'], blog=post.blog_id, post=post)}" t-field="post.name"></a>
                             <span t-if="not post.website_published" class="text-warning">
                                 &amp;nbsp;
-                                <span class="fa fa-warning" title="Not published"/>
+                                <span class="fa fa-exclamation-triangle" title="Not published"/>
                             </span>
                         </h4>
                         <div class="text-muted">
@@ -294,7 +294,7 @@
     </xpath>
     <xpath expr="//ul[@id='comments-list']" position="before">
         <section class="mb32 read_width css_editable_mode_hidden">
-            <form id="comment" t-attf-action="/blog/post_comment/#{blog_post.id}" method="POST">
+            <form id="comment" class="js_website_submit_form" t-attf-action="/blog/post_comment/#{blog_post.id}" method="POST">
                 <div class="media">
                     <span class="pull-left">
                         <img t-if="user_id.partner_id.image_small" class="img img-circle media-object" t-att-src="website.image_url(user_id.partner_id, 'image_small')" style="width: 30px"/>

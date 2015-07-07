@@ -292,6 +292,21 @@ function human_size (size) {
 }
 
 /**
+ * Returns a human readable number
+ *
+ * @param {Number} number
+ */
+function human_number (number) {
+    var units = _t(",k,M").split(',');
+    var i = 0;
+    while (number >= 1000) {
+        number /= 1000;
+        ++i;
+    }
+    return parseInt(number) + units[i];
+}
+
+/**
  * performs a half up rounding with arbitrary precision, correcting for float loss of precision
  * See the corresponding float_round() in server/tools/float_utils.py for more info
  * @param {Number} the value to be rounded
@@ -326,10 +341,26 @@ function float_is_zero (value, decimals) {
     return Math.abs(round_precision(value, epsilon)) < epsilon;
 };
 
+/**
+ * Confines a value inside an interval
+ * @param {Number} [val] the value to confine
+ * @param {Number} [min] the minimum of the interval
+ * @param {Number} [max] the maximum of the interval
+ * @return val if val is in [min, max], min if val < min and max otherwise
+ */
+function confine (val, min, max) {
+    return Math.max(min, Math.min(max, val));
+}
+
 function assert (bool) {
     if (!bool) {
         throw new Error("AssertionError");
     }
+}
+
+/* Logical XOR */
+function xor (a, b) {
+    return (a && !b) || (!a && b);
 }
 
 var DropMisordered = Class.extend({
@@ -389,10 +420,13 @@ return {
     is_bin_size: is_bin_size,
     binary_to_binsize: binary_to_binsize,
     human_size: human_size,
+    human_number: human_number,
     round_precision: round_precision,
     round_decimals: round_decimals,
     float_is_zero: float_is_zero,
+    confine: confine,
     assert: assert,
+    xor: xor,
     DropMisordered: DropMisordered,
 };
 

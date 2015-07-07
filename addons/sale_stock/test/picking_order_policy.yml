@@ -41,7 +41,7 @@
     from openerp.tools import float_compare
     so = self.browse(cr, uid, ref('sale_order_service'))
     float_compare(sum([l.price_subtotal for l in so.order_line]), so.amount_untaxed, precision_digits=2) == 0, "The amount of the Quotation is not correctly computed"
-- 
+-
   I set an explicit invoicing partner that is different from the main SO Customer
 -
   !python {model: sale.order}: |
@@ -120,7 +120,6 @@
          assert move.product_uos_qty == (order_line.product_uos and order_line.product_uos_qty or order_line.product_uom_qty), "Product UOS Quantity is not correspond."
          assert move.product_uos.id == (order_line.product_uos and order_line.product_uos.id or order_line.product_uom.id), "Product UOS is not correspond"
          assert move.product_packaging.id == order_line.product_packaging.id,"Product packaging is not correspond."
-         assert move.partner_id.id == order_line.address_allotment_id.id or sale_order.partner_shipping_id.id,"Address is not correspond"
          #assert move.location_id.id == location_id,"Source Location is not correspond."
 -
   Now, I dispatch delivery order.
@@ -151,7 +150,7 @@
     sale = self.pool.get('sale.order')
     sale_order = sale.browse(cr, uid, ref("sale_order_service"))
     ship_ids = [x.id for x in sale_order.picking_ids]
-    wiz_id = self.create(cr, uid, {'journal_id': ref('account.sales_journal')},
+    wiz_id = self.create(cr, uid, {'journal_id': ref('sales_journal')},
       {'active_ids': ship_ids, 'active_model': 'stock.picking'})
     self.create_invoice(cr, uid, [wiz_id], {"active_ids": ship_ids, "active_id": ship_ids[0]})
 -
@@ -161,7 +160,7 @@
     from openerp.tools import float_compare
     order = self.browse(cr, uid, ref("sale_order_service"))
     assert order.invoice_ids, "Invoice is not created."
-    ac = order.partner_invoice_id.property_account_receivable.id
+    ac = order.partner_invoice_id.property_account_receivable_id.id
     journal_ids = self.pool.get('account.journal').search(cr, uid, [('type', '=', 'sale'), ('company_id', '=', order.company_id.id)])
     for invoice in order.invoice_ids:
         assert invoice.type == 'out_invoice',"Invoice should be Customer Invoice."
@@ -171,10 +170,10 @@
         assert invoice.currency_id.id == order.pricelist_id.currency_id.id, "Currency is not correspond."
         assert (invoice.comment or '') == (order.note or ''),"Note is not correspond."
         assert invoice.journal_id.id in journal_ids,"Sales Journal is not link on Invoice."
-        assert invoice.payment_term.id == order.payment_term.id, "Payment term is not correspond."
+        assert invoice.payment_term_id.id == order.payment_term_id.id, "Payment term is not correspond."
     for so_line in order.order_line:
         inv_line = so_line.invoice_lines[0]
-        ac = so_line.product_id.property_account_income.id or so_line.product_id.categ_id.property_account_income_categ.id
+        ac = so_line.product_id.property_account_income_id.id or so_line.product_id.categ_id.property_account_income_categ_id.id
         assert inv_line.product_id.id == so_line.product_id.id or False,"Product is not correspond"
         assert inv_line.account_id.id == ac,"Account of Invoice line is not corresponding."
         assert inv_line.uos_id.id == (so_line.product_uos and so_line.product_uos.id or so_line.product_uom.id), "Product UOS is not correspond."
@@ -201,12 +200,9 @@
     sale_order = self.pool.get('sale.order')
     order = sale_order.browse(cr, uid, ref("sale_order_service"))
     journal_ids = self.pool.get('account.journal').search(cr, uid, [('type', '=', 'cash'), ('company_id', '=', order.company_id.id)], limit=1)
+    import time
     for invoice in order.invoice_ids:
-        invoice.pay_and_reconcile(
-            invoice.amount_total, ref('account.cash'), ref('account.period_8'),
-            journal_ids[0], ref('account.cash'),
-            ref('account.period_8'), journal_ids[0],
-            name='test')
+        self.pay_and_reconcile(cr, uid, [invoice.id], journal_ids[0])
 -
   To test process of the Sale Order with access rights of saleman,
 -

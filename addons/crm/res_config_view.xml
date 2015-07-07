@@ -55,7 +55,7 @@
                                 </div>
                                  <div attrs="{'invisible': [('alias_domain', 'not in', ['localhost', '', False])]}">
                                     <p>
-                                        <label string="Your alias domain is not configured yet, or is still 'localhost'"/>
+                                        <label string="To be able to set your Leads Email Alias, you need to fill your alias domain first."/>
                                         <button type="action" name="base_setup.action_general_configuration" string="Configure your domain alias" icon="gtk-execute" class="oe_inline oe_link"/>
                                     </p>
                                 </div>
@@ -67,8 +67,11 @@
             </field>
         </record>
 
-        <menuitem id="base.menu_sale_config" name="Sales" parent="base.menu_config"
-            sequence="1" action="base_setup.action_sale_config"/>
+        <menuitem id="base.menu_sale_config" name="Configuration" parent="base.menu_base_partner"
+            sequence="100" groups="base.group_configuration"/>
+        <menuitem id="base.menu_sale_general_settings" name="Settings" parent="base.menu_sale_config"
+            sequence="0" action="base_setup.action_sale_config"/>
+
 
     </data>
 </openerp>

@@ -20,6 +20,7 @@
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="mail.view_document_file_kanban"/>
             <field name="domain">[('res_model','=','hr.applicant')]</field>
+            <field name="context" eval="{'default_res_model': 'hr.applicant'}"/>
             <field name="help" type="html">
             <p>
              Search through resumes and motivation letters.
@@ -29,7 +30,7 @@
 
         <menuitem
             name="Resumes and Letters"
-            parent="base.menu_crm_case_job_req_main"
+            parent="hr_recruitment.menu_hr_recruitment_root"
             id="menu_crm_case_categ0_act_job02" action="hr_applicant_resumes" sequence="3"/>
 
    </data>

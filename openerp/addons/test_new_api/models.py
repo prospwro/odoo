@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-2014 OpenERP (<http://www.openerp.com>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp.osv import osv, fields
 
@@ -49,6 +31,7 @@ class Category(models.Model):
     name = fields.Char(required=True)
     parent = fields.Many2one('test_new_api.category')
     display_name = fields.Char(compute='_compute_display_name', inverse='_inverse_display_name')
+    dummy = fields.Char(store=False)
 
     @api.one
     @api.depends('name', 'parent.display_name')     # this definition is recursive
@@ -85,7 +68,7 @@ class Discussion(models.Model):
         'test_new_api_discussion_category', 'discussion', 'category')
     participants = fields.Many2many('res.users')
     messages = fields.One2many('test_new_api.message', 'discussion')
-    message_changes = fields.Integer(string='Message changes')
+    message_concat = fields.Text(string='Message concatenate')
 
     @api.onchange('moderator')
     def _onchange_moderator(self):
@@ -93,7 +76,7 @@ class Discussion(models.Model):
 
     @api.onchange('messages')
     def _onchange_messages(self):
-        self.message_changes = len(self.messages)
+        self.message_concat = "\n".join(["%s:%s" % (m.name, m.body) for m in self.messages])
 
 
 class Message(models.Model):

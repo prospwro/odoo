@@ -5,6 +5,7 @@ var core = require('web.core');
 var crash_manager = require('web.crash_manager');
 var data = require('web.data');
 var datepicker = require('web.datepicker');
+var ProgressBar = require('web.ProgressBar');
 var Dialog = require('web.Dialog');
 var common = require('web.form_common');
 var formats = require('web.formats');
@@ -61,10 +62,7 @@ var WidgetButton = common.FormWidget.extend({
                 var dialog = new Dialog(this, {
                     title: _t('Confirm'),
                     buttons: [
-                        {text: _t("Cancel"), click: function() {
-                                this.parents('.modal').modal('hide');
-                            }
-                        },
+                        {text: _t("Cancel"), close: true},
                         {text: _t("Ok"), click: function() {
                                 var self2 = this;
                                 self.on_confirmed().always(function() {
@@ -73,8 +71,9 @@ var WidgetButton = common.FormWidget.extend({
                             }
                         }
                     ],
-                }, $('<div/>').text(self.node.attrs.confirm)).open();
-                dialog.on("closing", null, function() {def.resolve();});
+                    $content: $('<div/>').text(self.node.attrs.confirm)
+                }).open();
+                dialog.on("closed", null, function() {def.resolve();});
                 return def.promise();
             } else {
                 return self.on_confirmed();
@@ -229,6 +228,7 @@ var KanbanSelection = FieldChar.extend({
         var dd_fetched = this.prepare_dropdown_selection();
         return $.when(dd_fetched).then(function (states) {
             self.states = states;
+            self.$el.addClass('oe_right');
             self.$el.html(QWeb.render("KanbanSelection", {'widget': self}));
             self.$el.find('li').on('click', self.set_kanban_selection.bind(self));
         });
@@ -284,7 +284,7 @@ var Priority = FieldChar.extend({
     },
     render_value: function() {
         this.priorities = this.prepare_priority();
-        this.$el.html(QWeb.render("Priority", {'widget': this}));
+        this.$el.html(QWeb.render("FormPriority", {'widget': this}));
         if (!this.get('readonly')){
             this.$el.find('li').on('click', this.set_priority.bind(this));
         }
@@ -413,47 +413,61 @@ var FieldFloat = FieldChar.extend({
 });
 
 var FieldCharDomain = common.AbstractField.extend(common.ReinitializeFieldMixin, {
+    template: "FieldCharDomain",
+    events: {
+        'click button': 'on_click',
+        'change .o_debug_input': function(e) {
+            this.set('value', $(e.target).val());
+        }
+    },
+    init: function() {
+        this._super.apply(this, arguments);
+        this.debug = session.debug;
+    },
     render_value: function() {
         var self = this;
-        this.$el.html(QWeb.render("FieldCharDomain", {widget: this}));
+
         if (this.get('value')) {
             var model = this.options.model || this.field_manager.get_field_value(this.options.model_field);
             var domain = pyeval.eval('domain', this.get('value'));
             var ds = new data.DataSetStatic(self, model, self.build_context());
             ds.call('search_count', [domain]).then(function (results) {
-                $('.oe_domain_count', self.$el).text(results + ' records selected');
+                self.$('.o_count').text(results + ' selected records');
                 if (self.get('effective_readonly')) {
-                    $('button span', self.$el).text(' See selection');
+                    self.$('button').text('See selection ');
                 }
                 else {
-                    $('button span', self.$el).text(' Change selection');
+                    self.$('button').text('Change selection ');
                 }
+                self.$('button').append($("<span/>").addClass('fa fa-arrow-right'));
             });
+
+            if(this.debug) {
+                this.$('.o_debug_input').val(this.get('value'));
+            }
         } else {
-            $('.oe_domain_count', this.$el).text('0 record selected');
-            $('button span', this.$el).text(' Select records');
+            this.$('.o_count').text('No selected record');
+            var $arrow = this.$('button span').detach();
+            this.$('button').text('Select records ').append($("<span/>").addClass('fa fa-arrow-right'));
         }
-        this.$('.select_records').on('click', self.on_click);
     },
     on_click: function(event) {
         event.preventDefault();
-        var self = this;
-        var model = this.options.model || this.field_manager.get_field_value(this.options.model_field);
 
-        var options = {
-                title: this.get('effective_readonly') ? 'Selected records' : 'Select records...',
-                readonly: this.get('effective_readonly'),
-                disable_multiple_selection: this.get('effective_readonly'),
-                no_create: this.get('effective_readonly'),
-            };
-        var domain = this.get('value');
-        var popup = new common.DomainEditorPopup(this);
-        popup.select_element(model, options, domain, {});
-        popup.on("elements_selected", self, function(selected_ids) {
-            if (!self.get('effective_readonly')) {
-                self.set_value(popup.get_domain(selected_ids));
+        var self = this;
+        var dialog = new common.DomainEditorDialog(this, {
+            res_model: this.options.model || this.field_manager.get_field_value(this.options.model_field),
+            default_domain: this.get('value'),
+            title: this.get('effective_readonly') ? 'Selected records' : 'Select records...',
+            readonly: this.get('effective_readonly'),
+            disable_multiple_selection: this.get('effective_readonly'),
+            no_create: this.get('effective_readonly'),
+            on_selected: function(selected_ids) {
+                if (!self.get('effective_readonly')) {
+                    self.set_value(dialog.get_domain(selected_ids));
+                }
             }
-        });
+        }).open();
     },
 });
 
@@ -560,7 +574,7 @@ var FieldText = common.AbstractField.extend(common.ReinitializeFieldMixin, {
             this.$textarea.val(show_value);
             if (! this.auto_sized) {
                 this.auto_sized = true;
-                this.$textarea.autosize();
+                autosize(this.$textarea);
             } else {
                 this.$textarea.trigger("autosize");
             }
@@ -689,15 +703,27 @@ var FieldBoolean = common.AbstractField.extend({
 /**
     The progressbar field expect a float from 0 to 100.
 */
-var FieldProgressBar = common.AbstractField.extend({
-    template: 'FieldProgressBar',
-    render_value: function() {
-        this.$el.progressbar({
+var FieldProgressBar = common.AbstractField.extend(common.ReinitializeFieldMixin, {
+    initialize_content: function() {
+        if(this.progressbar) {
+            this.progressbar.destroy();
+        }
+
+        this.progressbar = new ProgressBar(this, {
+            readonly: this.get('effective_readonly'),
+            edit_on_click: true,
             value: this.get('value') || 0,
-            disabled: this.get("effective_readonly")
         });
-        var formatted_value = formats.format_value(this.get('value') || 0, { type : 'float' });
-        this.$('span').html(formatted_value + '%');
+
+        var self = this;
+        this.progressbar.appendTo('<div>').done(function() {
+            self.progressbar.$el.addClass(self.$el.attr('class'));
+            self.replaceElement(self.progressbar.$el);
+
+            self.progressbar.on('update', self, function(update) {
+                self.set('value', update.changed_value);
+            });
+        });
     }
 });
 
@@ -886,6 +912,66 @@ var FieldSelection = common.AbstractField.extend(common.ReinitializeFieldMixin, 
             width: width
         });
     }
+});
+
+/**
+    This widget is intended to display a warning near a label of a 'timezone' field
+    indicating if the browser timezone is identical (or not) to the selected timezone.
+    This widget depends on a field given with the param 'tz_offset_field', which contains
+    the time difference between UTC time and local time, in minutes.
+*/
+var TimezoneMismatch = FieldSelection.extend({
+    initialize_content: function(){
+        this._super.apply(this, arguments);
+        this.tz_offset_field = (this.options && this.options.tz_offset_field) || this.tz_offset_field || 'tz_offset';
+        this.set({"tz_offset": this.field_manager.get_field_value(this.tz_offset_field)});
+        this.on("change:tz_offset", this, this.render_value);
+    },
+    start: function(){
+        this._super.apply(this, arguments);
+        // trigger a render_value when tz_offset field change
+        this.field_manager.on("field_changed:" + this.tz_offset_field, this, function() {
+            this.set({"tz_offset": this.field_manager.get_field_value(this.tz_offset_field)});
+        });
+    },
+    check_timezone: function(){
+        var user_offset = this.get('tz_offset');
+        if (user_offset) {
+            var offset = -(new Date().getTimezoneOffset());
+            var browser_offset = (offset < 0) ? "-" : "+";
+            browser_offset += _.str.sprintf("%02d", Math.abs(offset / 60));
+            browser_offset += _.str.sprintf("%02d", Math.abs(offset % 60));
+            return (browser_offset !== user_offset);
+        }
+        return false;
+    },
+    render_value: function(){
+        this._super.apply(this, arguments);
+        if(this.check_timezone()){
+            this.$label.find('.oe_tz_warning').remove();
+            var options = _.extend({
+                delay: { show: 501, hide: 0 },
+                title: _t("Timezone Mismatch : The timezone of your browser doesn't match the selected one. The time in Odoo is displayed according to your field timezone."),
+            });
+            this.$label.css('white-space', 'normal');
+            $(QWeb.render('WebClient.timezone_warning')).appendTo(this.$label);
+            this.$label.find('.oe_tz_warning').tooltip(options);
+        }
+    }
+});
+
+var LabelSelection = FieldSelection.extend({
+    init: function(field_manager, node) {
+        this._super(field_manager, node);
+        this.classes = this.options && this.options.classes || {};
+    },
+    render_value: function() {
+        this._super.apply(this, arguments);
+        if (this.get("effective_readonly")) {
+            var btn_class = this.classes[this.get('value')] || 'default';
+            this.$el.wrapInner($('<span/>').addClass('label label-' + btn_class));
+        }
+    },
 });
 
 var FieldRadio = common.AbstractField.extend(common.ReinitializeFieldMixin, {
@@ -1157,9 +1243,11 @@ var FieldBinary = common.AbstractField.extend(common.ReinitializeFieldMixin, {
     set_filename: function(value) {
         var filename = this.node.attrs.filename;
         if (filename) {
-            var tmp = {};
-            tmp[filename] = value;
-            this.field_manager.set_values(tmp);
+            var field = this.field_manager.fields[filename];
+            if (field) {
+                field.set_value(value);
+                field._dirty_flag = true;
+            }
         }
     },
     on_clear: function() {
@@ -1206,16 +1294,27 @@ var FieldBinaryFile = FieldBinary.extend({
     },
     on_file_uploaded_and_valid: function(size, name, content_type, file_base64) {
         this.binary_value = true;
+        this.set_filename(name);
         this.internal_set_value(file_base64);
         var show_value = name + " (" + utils.human_size(size) + ")";
         this.$el.find('input').eq(0).val(show_value);
-        this.set_filename(name);
     },
     on_clear: function() {
         this._super.apply(this, arguments);
         this.$el.find('input').eq(0).val('');
         this.set_filename('');
-    }
+    },
+    set_value: function(value_){
+        var changed = value_ !== this.get_value();
+        this._super.apply(this, arguments);
+        // Trigger value change if size is the same
+        if (!changed){
+            this.trigger("change:value", this, {
+                oldValue: value_,
+                newValue: value_
+            });
+        }
+     }
 });
 
 var FieldBinaryImage = FieldBinary.extend({
@@ -1439,7 +1538,7 @@ var FieldMonetary = FieldFloat.extend({
     init: function() {
         this._super.apply(this, arguments);
         this.set({"currency": false});
-        var currency_field = (this.options && this.options.currency_field) || this.currency_field || 'currency_id';
+        var currency_field = (this.options && this.options.currency_field) || this.field.currency_field || 'currency_id';
         if (currency_field) {
             this.field_manager.on("field_changed:" + currency_field, this, function() {
                 this.set({"currency": this.field_manager.get_field_value(currency_field)});
@@ -1509,6 +1608,7 @@ var StatInfo = common.AbstractField.extend({
             }
         }
         this.$el.html(QWeb.render("StatInfo", options));
+        this.$el.addClass('o_stat_info');
     },
 
 });
@@ -1579,7 +1679,9 @@ core.form_widget_registry
     .add('monetary', FieldMonetary)
     .add('priority', Priority)
     .add('kanban_state_selection', KanbanSelection)
-    .add('statinfo', StatInfo);
+    .add('statinfo', StatInfo)
+    .add('timezone_mismatch', TimezoneMismatch)
+    .add('label_selection', LabelSelection);
 
 
 /**
@@ -1592,6 +1694,7 @@ core.form_tag_registry.add('button', WidgetButton);
 
 return {
     FieldChar: FieldChar,
+    FieldMonetary: FieldMonetary
 };
 
 });

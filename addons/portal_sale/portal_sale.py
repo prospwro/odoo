@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Business Applications
-#    Copyright (c) 2012 OpenERP S.A. <http://openerp.com>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp import SUPERUSER_ID
 from openerp.osv import osv, fields
@@ -139,21 +121,3 @@ class account_invoice(osv.Model):
         if user.share:
             return self.pool['ir.actions.act_window'].for_xml_id(cr, uid, 'portal_sale', 'portal_action_invoices', context=context)
         return super(account_invoice, self).get_formview_action(cr, uid, id, context=context)
-
-
-class mail_mail(osv.osv):
-    _inherit = 'mail.mail'
-
-    def _postprocess_sent_message(self, cr, uid, mail, context=None, mail_sent=True):
-        if mail_sent and mail.model == 'sale.order':
-            so_obj = self.pool.get('sale.order')
-            order = so_obj.browse(cr, uid, mail.res_id, context=context)
-            partner = order.partner_id
-            # Add the customer in the SO as follower
-            if partner not in order.message_follower_ids:
-                so_obj.message_subscribe(cr, uid, [mail.res_id], [partner.id], context=context)
-            # Add all recipients of the email as followers
-            for p in mail.partner_ids:
-                if p not in order.message_follower_ids:
-                    so_obj.message_subscribe(cr, uid, [mail.res_id], [p.id], context=context)
-        return super(mail_mail, self)._postprocess_sent_message(cr, uid, mail=mail, context=context, mail_sent=mail_sent)

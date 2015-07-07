@@ -7,6 +7,13 @@ var pyeval = require('web.pyeval');
 var Widget = require('web.Widget');
 
 var View = Widget.extend({
+    events: {
+        'click a[type=action]': function (ev) {
+            ev.preventDefault();
+            var action_data = $(ev.target).attr('name');
+            this.do_action(action_data);
+        }
+    },
     // name displayed in view switchers
     display_name: '',
     /**
@@ -98,7 +105,7 @@ var View = Widget.extend({
                 // Wrong group_by values will simply fail and forbid rendering of the destination view
                 var ncontext = new data.CompoundContext(
                     _.object(_.reject(_.pairs(dataset.get_context().eval()), function(pair) {
-                      return pair[0].match('^(?:(?:default_|search_default_).+|.+_view_ref|group_by|group_by_no_leaf|active_id|active_ids)$') !== null;
+                      return pair[0].match('^(?:(?:default_|search_default_|show_).+|.+_view_ref|group_by|group_by_no_leaf|active_id|active_ids)$') !== null;
                     }))
                 );
                 ncontext.add(action_data.context || {});

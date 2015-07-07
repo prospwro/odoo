@@ -4,6 +4,7 @@ odoo.define('website.website', function (require) {
 var ajax = require('web.ajax');
 var core = require('web.core');
 var session = require('web.session');
+var Tour = require('web.Tour');
 
 var _t = core._t;
 
@@ -170,7 +171,7 @@ function prompt(options, qweb) {
 }
 
 function error(data, url) {
-    var $error = $(core.qweb.render('website.error_dialog', {
+    var $error = $(openerp.qweb.render('website.error_dialog', {
         'title': data.data ? data.data.arguments[0] : "",
         'message': data.data ? data.data.arguments[1] : data.statusText,
         'backend_url': url
@@ -305,6 +306,8 @@ function ready() {
         all_ready = dom_ready.then(function () {
             return templates_def;
         }).then(function () {
+            odoo.init();
+            
             // display button if they are at least one editable zone in the page (check the branding)
             if ($('[data-oe-model]').size()) {
                 $("#oe_editzone").show();
@@ -389,6 +392,13 @@ dom_ready.then(function () {
         init_kanban(this);
     });
 
+    $('.js_website_submit_form').on('submit', function() {
+        var $buttons = $(this).find('button[type="submit"], a.a-submit');
+        _.each($buttons, function(btn) {
+            $(btn).attr('data-loading-text', '<i class="fa fa-spinner fa-spin"></i> ' + $(btn).text()).button('loading');
+        });
+    });
+
     setTimeout(function () {
         if (window.location.hash.indexOf("scrollTop=") > -1) {
             window.document.body.scrollTop = +location.hash.match(/scrollTop=([0-9]+)/)[1];
@@ -402,6 +412,11 @@ dom_ready.then(function () {
     $('#oe_applications').before($collapse);
     $collapse.wrap('<div class="visible-xs"/>');
     $('[data-target="#oe_applications"]').attr("data-target", "#oe_applications_collapse");
+    });
+
+    Tour.autoRunning = false;
+    ready().then(function () {
+        setTimeout(Tour.running,0);
 });
 
 return {

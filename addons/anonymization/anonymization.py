@@ -1,24 +1,5 @@
 # -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
-#    $Id$
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from lxml import etree
 import os
@@ -31,6 +12,7 @@ import random
 import datetime
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+from openerp.tools.safe_eval import safe_eval as eval
 
 from itertools import groupby
 from operator import itemgetter
@@ -302,7 +284,7 @@ class ir_model_fields_anonymize_wizard(osv.osv_memory):
 
         return res
 
-    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, *args, **kwargs):
+    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
         state = self.pool.get('ir.model.fields.anonymization')._get_global_state(cr, uid, context=context)
 
         if context is None:
@@ -310,7 +292,7 @@ class ir_model_fields_anonymize_wizard(osv.osv_memory):
 
         step = context.get('step', 'new_window')
 
-        res = super(ir_model_fields_anonymize_wizard, self).fields_view_get(cr, uid, view_id, view_type, context, *args, **kwargs)
+        res = super(ir_model_fields_anonymize_wizard, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
 
         eview = etree.fromstring(res['arch'])
         placeholder = eview.xpath("group[@name='placeholder1']")

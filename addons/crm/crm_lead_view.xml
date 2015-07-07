@@ -121,8 +121,8 @@
                             on_change="onchange_stage_id(stage_id)"/>
                 </header>
                 <sheet>
-                    <div class="oe_right oe_button_box" name="buttons">
-                        <button class="oe_inline oe_stat_button" type="action"
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action"
                             context="{'default_opportunity_id': active_id, 'search_default_opportunity_id': active_id, 'default_partner_id': partner_id, 'default_duration': 1.0}"
                             name="%(crm.crm_phonecall_category_phone_incoming0)d" icon="fa-phone">
                             <field string="Calls" name="calls_count" widget="statinfo"/>
@@ -140,26 +140,24 @@
                                 options='{"create_name_field": "name"}'
                                 context="{'default_name': contact_name, 'default_street': street, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_function': function, 'default_phone': phone, 'default_mobile': mobile, 'default_fax': fax, 'default_email': email_from, 'default_user_id': user_id, 'default_team_id': team_id}"/>
                             <label for="street" string="Address"/>
-                            <div>
-                                <field name="street" placeholder="Street..."/>
-                                <field name="street2"/>
-                                <div class="address_format">
-                                    <field name="city" placeholder="City" style="width: 40%%"/>
-                                    <field name="state_id" on_change="onchange_state(state_id)" options='{"no_open": True}' placeholder="State" style="width: 24%%"/>
-                                    <field name="zip" placeholder="ZIP" style="width: 34%%"/>
-                                </div>
-                                <field name="country_id" placeholder="Country" options='{"no_open": True, "no_create": True}'/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}' on_change="onchange_state(state_id)"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
                             </div>
                         </group>
                         <group>
                             <label for="contact_name"/>
-                            <div>
-                                <field name="contact_name" class="oe_inline"/><span attrs="{'invisible': [('title', '=', '')]}">, </span>
-                                <field name="title" placeholder="Title" domain="[('domain', '=', 'contact')]" class="oe_inline" options='{"no_open": True}'/>
+                            <div class="o_row">
+                                <field name="contact_name"/><span attrs="{'invisible': [('title', '=', '')]}">, </span>
+                                <field name="title" placeholder="Title" domain="[('domain', '=', 'contact')]" options='{"no_open": True}'/>
                             </div>
                             <field name="email_from" widget="email"/>
                             <field name="function"/>
-                            <field name="phone"/>
+                            <field name="phone" widget="phone"/>
                             <field name="mobile"/>
                             <field name="fax"/>
                         </group>
@@ -167,7 +165,7 @@
                             <field name="user_id" on_change="on_change_user(user_id, context)"
                                 context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'base.group_sale_salesman_all_leads'] }"/>
                             <label for="team_id" groups="base.group_multi_salesteams"/>
-                            <div groups="base.group_multi_salesteams">
+                            <div class="o_row" groups="base.group_multi_salesteams">
                                 <field name="team_id"/>
                                 <button name="case_escalate" string="Escalate"
                                         type="object" class="oe_link"
@@ -184,11 +182,11 @@
                     <page string="Internal Notes">
                         <field name="description"/>
                     </page>
-                    <page string="Extra Info">
+                    <page name="extra" string="Extra Info">
                         <group>
                             <group string="Mailings">
                                 <field name="opt_out"/>
-                                <field name="message_bounce"/>
+                                <field name="message_bounce" readonly="1"/>
                             </group>
                             <group string="Categorization" groups="base.group_multi_company,base.group_no_one" name="categorization">
                                 <field name="company_id"
@@ -198,7 +196,7 @@
                                 <field name="medium_id"/>
                                 <field name="source_id" />
                             </group>
-                            <group string="Misc">
+                            <group name="misc" string="Misc">
                                 <field name="probability" groups="base.group_no_one"/>
                                 <field name="active"/>
                                 <field name="referred"/>
@@ -248,7 +246,7 @@
             <field name="name">Leads</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <tree string="Leads" fonts="bold:message_unread==True" colors="grey:probability == 100">
+                <tree string="Leads" decoration-bf="message_unread==True" decoration-muted="probability == 100">
                     <field name="date_deadline" invisible="1"/>
                     <field name="create_date"/>
                     <field name="name"/>
@@ -284,12 +282,12 @@
             </field>
         </record>
 
-        <!-- CRM Lead Kanban View  -->
+    <!-- CRM Lead Kanban View  -->
         <record model="ir.ui.view" id="crm_case_kanban_view_leads">
             <field name="name">CRM - Leads Kanban</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="stage_id">
+                <kanban default_group_by="stage_id" class="o_kanban_small_column">
                     <field name="stage_id" options='{"group_by_tooltip": {"requirements": "Description", "legend_priority": "Use of stars"}}'/>
                     <field name="color"/>
                     <field name="priority"/>
@@ -300,15 +298,19 @@
                     <field name="message_summary"/>
                     <field name="message_unread"/>
                     <field name="tag_ids"/>
+                    <field name="partner_id"/>
                     <templates>
                         <field name="date_deadline"/>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
-                                <div class="oe_dropdown_toggle oe_dropdown_kanban">
-                                    <i class="fa fa-bars fa-lg"/>
-                                    <ul class="oe_dropdown_menu">
-                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit Opportunity</a></li></t>
-                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                            <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
+                                <div class="o_dropdown_kanban dropdown">
+
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                        <span class="fa fa-bars fa-lg"/>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        <t t-if="widget.editable"><li><a type="edit">Edit Opportunity</a></li></t>
+                                        <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
                                         <li><a name="%(mail.action_email_compose_message_wizard)d" type="action" >Send Email</a></li>
                                         <li><a type="action" name="%(crm.crm_phonecall_category_phone_incoming0)d">Calls</a></li>
                                         <li><a name="action_schedule_meeting" type="object">Schedule Meeting</a></li>
@@ -317,32 +319,17 @@
                                 </div>
                                 <div class="oe_kanban_content">
                                     <div>
-                                        <strong><field name="name"/></strong>
-                                        <t t-if="record.planned_revenue.raw_value">
-                                            - <b><t t-esc="record.planned_revenue.value"/>
-                                            <field name="company_currency"/></b>
-                                        </t>
-                                    </div>
-                                    <div>
-                                        <field name="partner_id"/>
-                                    </div>
-                                    <div class="oe_deadline">
-                                        <t t-if="record.date_deadline.raw_value and record.date_deadline.raw_value lt (new Date())" t-set="red">oe_kanban_text_red</t>
-                                        <span t-attf-class="#{red || ''}"><field name="date_action"/></span>
-                                        <t t-if="record.date_action.raw_value"> : </t>
-                                        <field name="title_action"/>
-                                    </div>
-                                    <div class="oe_kanban_footer_left">
                                         <field name="tag_ids"/>
                                     </div>
-                                    <div class="oe_kanban_bottom_left">
-                                        <t t-raw="record.message_summary.raw_value"/>
+                                    <div>
+                                        <strong><field name="name"/></strong>
                                     </div>
-                                    <div class="oe_kanban_bottom_right">
+                                    <div class="text-muted">
+                                        <span t-if="record.planned_revenue.raw_value"><t t-esc="record.planned_revenue.value"/><field name="company_currency"/></span> <span t-if="record.partner_id.value"> - <t t-esc="record.partner_id.value"/></span>
+                                    </div>
+                                    <div class="o_kanban_footer">
+                                        <field name="priority" widget="priority" groups="base.group_user"/> <t t-raw="record.message_summary.raw_value"/>
                                         <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar pull-right"/>
-                                        <div class="pull-left" groups="base.group_user">
-                                            <field name="priority" widget="priority"/>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="oe_clear"></div>
@@ -386,7 +373,7 @@
                         <filter string="Salesperson" domain="[]" context="{'group_by':'user_id'}"/>
                         <filter string="Sales Team" domain="[]" context="{'group_by':'team_id'}" groups="base.group_multi_salesteams"/>
                         <filter string="Stage" domain="[]" context="{'group_by':'stage_id'}"/>
-                        <filter string="Customer" help="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter name="customer" string="Customer" help="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
                         <filter string="Campaign"  domain="[]" context="{'group_by':'campaign_id'}"/>
                         <filter string="Source"  domain="[]" context="{'group_by':'source_id'}"/>
                         <filter string="Channel"  domain="[]" context="{'group_by':'medium_id'}"/>
@@ -410,20 +397,20 @@
             <field name="arch" type="xml">
                 <form string="Opportunities">
                     <header>
-                        <button name="case_mark_won" string="Mark Won" type="object" class="oe_highlight"/>
-                        <button name="case_mark_lost" string="Mark Lost" type="object" class="oe_highlight"/>
+                        <button name="case_mark_won" string="Mark Won" attrs="{'invisible': [('probability', '=', 100)]}" type="object" class="oe_highlight"/>
+                        <button name="case_mark_lost" string="Mark Lost" attrs="{'invisible': [('probability', '=', 100)]}" type="object" class="oe_highlight"/>
                         <field name="stage_id" widget="statusbar" clickable="True"
                             options="{'fold_field': 'fold'}"
                             domain="['&amp;', ('team_ids', '=', team_id), '|', ('type', '=', type), ('type', '=', 'both')]"/>
                     </header>
                     <sheet>
-                        <div name="buttons" class="oe_right oe_button_box">
-                            <button class="oe_inline oe_stat_button" type="action"
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action"
                                 name="%(crm.crm_phonecall_category_phone_incoming0)d" icon="fa-phone"
                                 context="{'default_opportunity_id': active_id, 'search_default_opportunity_id': active_id, 'default_partner_id': partner_id, 'default_duration': 1.0}">
                                 <field string="Calls" name="calls_count" widget="statinfo"/>
                             </button>
-                            <button class="oe_inline oe_stat_button" type="object"
+                            <button class="oe_stat_button" type="object"
                                 context="{'partner_id': partner_id}"
                                 name="action_schedule_meeting" icon="fa-calendar">
                                 <field string="Meetings" name="meeting_count" widget="statinfo"/>
@@ -432,13 +419,16 @@
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
                             <h1><field name="name" placeholder="e.g. Product Pricing"/></h1>
-                            <label for="planned_revenue" style="padding-right: 50px" class="oe_edit_only"/>
-                            <label for="probability" class="oe_edit_only"/>
-                            <h2>
+                            <div class="o_row">
+                                <label for="planned_revenue" class="oe_edit_only"/>
+                                <label for="probability" class="oe_edit_only"/>
+                            </div>
+                            <h2 class="o_row">
                                 <field name="company_currency" invisible="1"/>
-                                <field name="planned_revenue" class="oe_inline" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <field name="planned_revenue" widget='monetary' options="{'currency_field': 'company_currency'}"/>
                                 <span class="oe_grey"> at </span>
-                                <field name="probability" class="oe_inline" widget="integer"/>%%
+                                <field name="probability" widget="integer"/>
+                                <span>%%</span>
                             </h2>
                         </div>
                         <group>
@@ -448,14 +438,15 @@
                                     string="Customer"
                                     context="{'default_name': partner_name, 'default_email': email_from, 'default_phone': phone}"/>
                                 <field name="email_from" string="Email" widget="email"/>
-                                <field name="phone"/>
+                                <field name="phone" widget="phone"/>
                             </group>
 
                             <group>
                                 <label for="title_action"/>
-                                <div>
-                                    <field name="date_action" nolabel="1"/> <label string="-" attrs="{'invisible': ['|', ('date_action', '=', False), ('title_action', '=', False)]}"/>
-                                    <field name="title_action" class="oe_inline" nolabel="1" placeholder="e.g. Call for proposal"/>
+                                <div class="o_row">
+                                    <field name="date_action" nolabel="1"/>
+                                    <span attrs="{'invisible': ['|', ('date_action', '=', False), ('title_action', '=', False)]}" class="oe_read_only"> - </span>
+                                    <field name="title_action"  nolabel="1" placeholder="e.g. Call for proposal"/>
                                 </div>
                                 <field name="date_deadline"/>
                                 <field name="priority" widget="priority"/>
@@ -464,7 +455,7 @@
                             <group>
                                 <field name="user_id" on_change="on_change_user(user_id, context)" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'base.group_sale_salesman_all_leads']}"/>
                                 <label for="team_id" groups="base.group_multi_salesteams"/>
-                                <div groups="base.group_multi_salesteams">
+                                <div groups="base.group_multi_salesteams" class="o_row">
                                     <field name="team_id" widget="selection"/>
                                     <button name="case_escalate" string="Escalate" type="object" class="oe_link"
                                             attrs="{'invisible': ['|', ('team_id','=',False), ('probability', '=', 100)]}"/>
@@ -481,28 +472,26 @@
                         <page string="Internal Notes">
                             <field name="description"/>
                         </page>
-                        <page string="Lead">
+                        <page name="lead" string="Lead">
                             <group>
                                 <group>
                                     <field name="partner_name"/>
                                     <label for="street" string="Address"/>
-                                    <div>
-                                        <field name="street" placeholder="Street..."/>
-                                        <field name="street2"/>
-                                        <div class="address_format">
-                                            <field name="city" placeholder="City" style="width: 40%%"/>
-                                            <field name="state_id" options='{"no_open": True}' on_change="onchange_state(state_id)" placeholder="State" style="width: 24%%"/>
-                                            <field name="zip" placeholder="ZIP" style="width: 34%%"/>
-                                        </div>
-                                        <field name="country_id" placeholder="Country" options='{"no_open": True, "no_create": True}'/>
+                                    <div class="o_address_format">
+                                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                        <field name="city" placeholder="City" class="o_address_city"/>
+                                        <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}' on_change="onchange_state(state_id)"/>
+                                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
                                     </div>
                                 </group>
 
                                 <group>
                                     <label for="contact_name"/>
                                     <div>
-                                        <field name="contact_name" class="oe_inline"/>
-                                        <field name="title" placeholder="Title" domain="[('domain', '=', 'contact')]" options='{"no_open": True}' class="oe_inline"/>
+                                        <field name="contact_name"/>
+                                        <field name="title" placeholder="Title" domain="[('domain', '=', 'contact')]" options='{"no_open": True}'/>
                                     </div>
                                     <field name="function"/>
                                     <field name="mobile"/>
@@ -523,7 +512,7 @@
                                     <field name="referred"/>
                                     <field name="type" invisible="1"/>
                                 </group>
-                                <group string="References">
+                                <group name="references" string="References">
                                     <field name="ref"/>
                                     <field name="ref2"/>
                                 </group>
@@ -549,7 +538,7 @@
             <field name="name">Opportunities Tree</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <tree string="Opportunities" fonts="bold:message_unread==True" colors="gray:probability == 100;red:date_deadline and (date_deadline &lt; current_date)">
+                <tree string="Opportunities" decoration-bf="message_unread==True" decoration-muted="probability == 100" decoration-danger="date_deadline and (date_deadline &lt; current_date)">
                     <field name="date_deadline" invisible="1"/>
                     <field name="create_date"/>
                     <field name="name" string="Opportunity"/>
@@ -612,7 +601,7 @@
                         <filter string="Sales Team" context="{'group_by':'team_id'}" groups="base.group_multi_salesteams"/>
                         <filter string="Country" context="{'group_by':'country_id'}" />
                         <filter string="Company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
-                        <filter string="Stage" context="{'group_by':'stage_id'}"/>
+                        <filter name="stage" string="Stage" context="{'group_by':'stage_id'}"/>
                         <filter string="Campaign" domain="[]" context="{'group_by':'campaign_id'}"/>
                         <filter string="Channel" domain="[]" context="{'group_by':'medium_id'}"/>
                         <filter string="Source" domain="[]" context="{'group_by':'source_id'}"/>

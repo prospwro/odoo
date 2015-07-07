@@ -62,7 +62,8 @@ class view(models.Model):
             xml_id = super(view, self).get_view_id(xml_id)
         return xml_id
 
-    @tools.ormcache_context(**dict(accepted_keys=('lang', 'inherit_branding', 'editable', 'translatable', 'website_id', 'version_id')))
+    @tools.ormcache_context('uid', 'view_id',
+        keys=('lang', 'inherit_branding', 'editable', 'translatable', 'website_id', 'version_id'))
     def _read_template(self, cr, uid, view_id, context=None):
         arch = self.read_combined(cr, uid, view_id, fields=['arch'], context=context)['arch']
         arch_tree = etree.fromstring(arch)
@@ -169,7 +170,12 @@ class view(models.Model):
         for v in view_list:
             views = self.customize_template_get(v.id, full=True)
             views_ids += [v.get('id') for v in views if v.get('active')]
-        domain = [('type', '=', 'view'), ('res_id', 'in', views_ids), ('lang', '=', lang)]
+        domain = [
+            ('type', '=', 'model'),
+            ('name', '=', 'ir.ui.view,arch_db'),
+            ('res_id', 'in', views_ids),
+            ('lang', '=', lang),
+        ]
         element_list = irt.search_read(self.env.cr, self.env.uid,
                                        domain, field, context=self.env.context)
         for element in element_list:

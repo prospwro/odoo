@@ -620,7 +620,7 @@ updating a record):
             "help": "BarCode",
             "string": "EAN13"
         },
-        "property_account_position": {
+        "property_account_position_id": {
             "type": "many2one",
             "help": "The fiscal position will determine taxes and accounts used for the partner.",
             "string": "Fiscal Position"
@@ -635,7 +635,7 @@ updating a record):
             "help": "",
             "string": "Geo Localization Date"
         },
-        "ref_companies": {
+        "ref_company_ids": {
             "type": "one2many",
             "help": "",
             "string": "Companies that refers to partner"
@@ -1257,16 +1257,16 @@ the workflow instance associated with the record.
             'res.partner', 'search_read',
             [[('customer', '=', True)]],
             {'limit': 1, 'fields': [
-                'property_account_receivable',
-                'property_payment_term',
-                'property_account_position']
+                'property_account_receivable_id',
+                'property_payment_term_id',
+                'property_account_position_id']
             })[0]
         invoice_id = models.execute_kw(
             db, uid, password,
             'account.invoice', 'create', [{
                 'partner_id': client['id'],
-                'account_id': client['property_account_receivable'][0],
-                'invoice_line': [(0, False, {'name': "AAA"})]
+                'account_id': client['property_account_receivable_id'][0],
+                'invoice_line_ids': [(0, False, {'name': "AAA"})]
             }])
 
         models.exec_workflow(
@@ -1281,16 +1281,16 @@ the workflow instance associated with the record.
             array(
                 'limit' => 1,
                 'fields' => array(
-                    'property_account_receivable',
-                    'property_payment_term',
-                    'property_account_position'
+                    'property_account_receivable_id',
+                    'property_payment_term_id',
+                    'property_account_position_id'
                 )))[0];
         $invoice_id = $models->execute_kw(
             $db, $uid, $password,
             'account.invoice', 'create', array(array(
                 'partner_id' => $client['id'],
-                'account_id' => $client['property_account_receivable'][0],
-                'invoice_line' => array(array(0, false, array('name' => "AAA")))
+                'account_id' => $client['property_account_receivable_id'][0],
+                'invoice_line_ids' => array(array(0, false, array('name' => "AAA")))
             )));
 
         $models->exec_workflow(
@@ -1304,14 +1304,14 @@ the workflow instance associated with the record.
             db, uid, password,
             'res.partner', 'search_read',
             [[['customer', '=', true]]],
-            {limit: 1, fields: %w(property_account_receivable property_payment_term property_account_position)}
+            {limit: 1, fields: %w(property_account_receivable_id property_payment_term_id property_account_position_id)}
         )[0]
         invoice_id = models.execute_kw(
             db, uid, password,
             'account.invoice', 'create', [{
                 partner_id: client['id'],
-                account_id: client['property_account_receivable'][0],
-                invoice_line: [[0, false, {name: "AAA"}]]
+                account_id: client['property_account_receivable_id'][0],
+                invoice_line_ids: [[0, false, {name: "AAA"}]]
             }])
 
         models.exec_workflow(
@@ -1330,9 +1330,9 @@ the workflow instance associated with the record.
                     new HashMap<String, Object>() {{
                             put("limit", 1);
                             put("fields", asList(
-                                "property_account_receivable",
-                                "property_payment_term",
-                                "property_account_position"
+                                "property_account_receivable_id",
+                                "property_payment_term_id",
+                                "property_account_position_id"
                             ));
                         }}
             )))[0];
@@ -1342,8 +1342,8 @@ the workflow instance associated with the record.
                 "account.invoice", "create",
                 asList(new HashMap<String, Object>() {{
                     put("partner_id", c.get("id"));
-                    put("account_id", ((Object[])c.get("property_account_receivable"))[0]);
-                    put("invoice_line", asList(
+                    put("account_id", ((Object[])c.get("property_account_receivable_id"))[0]);
+                    put("invoice_line_ids", asList(
                         asList(0, false, new HashMap<String, Object>() {{
                             put("name", "AAA");
                         }})

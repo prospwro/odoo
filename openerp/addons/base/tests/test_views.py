@@ -452,7 +452,7 @@ class TestTemplating(ViewCase):
     def setUp(self):
         import openerp.modules
         super(TestTemplating, self).setUp()
-        self._pool = openerp.modules.registry.RegistryManager.get(common.DB)
+        self._pool = openerp.modules.registry.RegistryManager.get(common.get_db_name())
         self._init = self._pool._init
         # fuck off
         self._pool._init = False
@@ -544,7 +544,6 @@ class TestTemplating(ViewCase):
                         'data-oe-id': str(id2),
                         'data-oe-field': 'arch',
                         'data-oe-xpath': '/xpath/item/content[1]',
-                        'data-oe-source-id': str(id)
                     }), {
                         'order': '2',
                     }),
@@ -553,7 +552,7 @@ class TestTemplating(ViewCase):
                     'data-oe-model': 'ir.ui.view',
                     'data-oe-id': str(id),
                     'data-oe-field': 'arch',
-                    'data-oe-xpath': '/root[1]/item[1]'
+                    'data-oe-xpath': '/root[1]/item[1]',
                 })
             )
         )
@@ -707,7 +706,7 @@ class test_views(ViewCase):
             'model': 'ir.ui.view',
             'arch': """
                 <form string="Base title" version="7.0">
-                    <separator string="separator" colspan="4"/>
+                    <separator name="separator" string="Separator" colspan="4"/>
                     <footer>
                         <button name="action_next" type="object" string="Next button"/>
                         or
@@ -730,7 +729,7 @@ class test_views(ViewCase):
                             <button name="action_next" type="object" string="New button"/>
                         </footer>
                     </footer>
-                    <separator string="separator" position="replace">
+                    <separator name="separator" position="replace">
                         <p>Replacement data</p>
                     </separator>
                 </data>
@@ -775,7 +774,7 @@ class test_views(ViewCase):
             'model': 'ir.ui.view.custom',
             'arch': """
                 <form string="Base title" version="7.0">
-                    <separator string="separator" colspan="4"/>
+                    <separator name="separator" string="Separator" colspan="4"/>
                     <footer>
                         <button name="action_next" type="object" string="Next button"/>
                         or
@@ -798,7 +797,7 @@ class test_views(ViewCase):
                             <button name="action_next" type="object" string="New button"/>
                         </footer>
                     </footer>
-                    <separator string="separator" position="replace">
+                    <separator name="separator" position="replace">
                         <p>Replacement data</p>
                     </separator>
                 </data>

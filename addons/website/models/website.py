@@ -333,8 +333,8 @@ class website(osv.osv):
         except:
             return False
 
-    @openerp.tools.ormcache(skiparg=3)
-    def _get_languages(self, cr, uid, id):
+    @openerp.tools.ormcache('id')
+    def _get_languages(self, cr, uid, id, context=None):
         website = self.browse(cr, uid, id)
         return [(lg.code, lg.name) for lg in website.language_ids]
 
@@ -375,9 +375,9 @@ class website(osv.osv):
                 lang['hreflang'] = lang['short']
         return langs
 
-    @openerp.tools.ormcache(skiparg=3)
-    def _get_current_website_id(self, cr, uid, domain_name):
-        ids = self.search(cr, uid, [('name', '=', domain_name)], limit=1)
+    @openerp.tools.ormcache('domain_name')
+    def _get_current_website_id(self, cr, uid, domain_name, context=None):
+        ids = self.search(cr, uid, [('name', '=', domain_name)], limit=1, context=context)
         if ids:
             return ids[0]
         else:
@@ -968,6 +968,13 @@ class website_published_mixin(osv.AbstractModel):
 
     def _website_url(self, cr, uid, ids, field_name, arg, context=None):
         return dict.fromkeys(ids, '#')
+
+    def website_publish_button(self, cr, uid, ids, context=None):
+        if self.pool['res.users'].has_group(cr, uid, 'base.group_website_publisher'):
+            return self.open_website_url(cr, uid, ids, context)
+        for r in self.browse(cr, uid, ids, context=context):
+            r.write({'website_published': not r.website_published})
+        return True
 
     def open_website_url(self, cr, uid, ids, context=None):
         return {

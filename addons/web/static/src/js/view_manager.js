@@ -19,7 +19,7 @@ var ViewManager = Widget.extend(ControlPanelMixin, {
      * @param {Array} [views] List of [view_id, view_type]
      * @param {Object} [flags] various boolean describing UI state
      */
-    init: function(parent, dataset, views, flags, action) {
+    init: function(parent, dataset, views, flags, action, options) {
         if (action) {
             flags = action.flags || {};
             if (!('auto_search' in flags)) {
@@ -63,6 +63,12 @@ var ViewManager = Widget.extend(ControlPanelMixin, {
             self.view_order.push(view_descr);
             self.views[view_type] = view_descr;
         });
+
+        if (options && options.state && options.state.view_type) {
+            var view_type = options.state.view_type;
+            var view_descr = this.views[view_type];
+            this.default_view = view_descr && view_descr.multi_record ? view_type : undefined;
+        }
 
         // Listen to event 'switch_view' indicating that the VM must now display view wiew_type
         this.on('switch_view', this, function(view_type) {
@@ -109,7 +115,7 @@ var ViewManager = Widget.extend(ControlPanelMixin, {
         return $.when(main_view_loaded, this.search_view_loaded);
     },
     get_default_view: function() {
-        return this.flags.default_view || this.view_order[0].type;
+        return this.default_view || this.flags.default_view || this.view_order[0].type;
     },
     switch_mode: function(view_type, no_store, view_options) {
         var self = this;
@@ -155,6 +161,7 @@ var ViewManager = Widget.extend(ControlPanelMixin, {
     _display_view: function (view_options) {
         var self = this;
         var view_controller = this.active_view.controller;
+        var view_control_elements = this.render_view_control_elements();
 
         // Show the view
         this.active_view.$container.show();
@@ -163,7 +170,7 @@ var ViewManager = Widget.extend(ControlPanelMixin, {
             var cp_status = {
                 active_view_selector: '.oe-cp-switch-' + self.active_view.type,
                 breadcrumbs: self.action_manager && self.action_manager.get_breadcrumbs(),
-                cp_content: _.extend({}, self.control_elements, self.render_view_control_elements()),
+                cp_content: _.extend({}, self.control_elements, view_control_elements),
                 hidden: self.flags.headless,
                 searchview: self.searchview,
                 search_view_hidden: view_controller.searchable === false,
@@ -179,7 +186,7 @@ var ViewManager = Widget.extend(ControlPanelMixin, {
 
         if (view.type === "form" && ((this.action && (this.action.target === 'new' || this.action.target === 'inline')) ||
             (view_options && view_options.mode === 'edit'))) {
-            options.initial_mode = 'edit';
+            options.initial_mode = options.initial_mode || 'edit';
         }
         var controller = new View(this, this.dataset, view.view_id, options);
         var $container = view.$container;
@@ -243,7 +250,11 @@ var ViewManager = Widget.extend(ControlPanelMixin, {
     /**
      * Renders the control elements (buttons, sidebar, pager) of the current view
      * This must be done when active_search is resolved (for KanbanViews)
-     * Fills this.active_view.control_elements dictionnary with the rendered elements
+     * Fills this.active_view.control_elements dictionnary with the rendered
+     * elements and the adequate view switcher, to send to the ControlPanel
+     * Warning: it should be called before calling do_show on the view as the
+     * sidebar is extended to listen on the load_record event triggered as soon
+     * as do_show is done (the sidebar should thus be instantiated before)
      */
     render_view_control_elements: function() {
         if (!this.active_view.control_elements) {

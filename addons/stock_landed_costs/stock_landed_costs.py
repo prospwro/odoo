@@ -1,27 +1,9 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
-from openerp.tools import float_compare
+from openerp.tools import float_compare, float_round
 from openerp.tools.translate import _
 import product
 from openerp.exceptions import UserError
@@ -77,7 +59,7 @@ class stock_landed_cost(osv.osv):
         'cost_lines': fields.one2many('stock.landed.cost.lines', 'cost_id', 'Cost Lines', states={'done': [('readonly', True)]}, copy=True),
         'valuation_adjustment_lines': fields.one2many('stock.valuation.adjustment.lines', 'cost_id', 'Valuation Adjustments', states={'done': [('readonly', True)]}),
         'description': fields.text('Item Description', states={'done': [('readonly', True)]}),
-        'amount_total': fields.function(_total_amount, type='float', string='Total', digits_compute=dp.get_precision('Account'),
+        'amount_total': fields.function(_total_amount, type='float', string='Total', digits=0,
             store={
                 'stock.landed.cost': (lambda self, cr, uid, ids, c={}: ids, ['cost_lines'], 20),
                 'stock.landed.cost.lines': (_get_cost_line, ['price_unit', 'quantity', 'cost_id'], 20),
@@ -99,10 +81,10 @@ class stock_landed_cost(osv.osv):
         cost_product = line.cost_line_id and line.cost_line_id.product_id
         if not cost_product:
             return False
-        accounts = product_obj.get_product_accounts(cr, uid, line.product_id.product_tmpl_id.id, context=context)
-        debit_account_id = accounts['property_stock_valuation_account_id']
-        already_out_account_id = accounts['stock_account_output']
-        credit_account_id = line.cost_line_id.account_id.id or cost_product.property_account_expense.id or cost_product.categ_id.property_account_expense_categ.id
+        accounts = product_obj.browse(cr, uid, line.product_id.product_tmpl_id.id, context=context).get_product_accounts()
+        debit_account_id = accounts.get('stock_valuation', False) and accounts['stock_valuation'].id or False
+        already_out_account_id = accounts['stock_output'].id
+        credit_account_id = line.cost_line_id.account_id.id or cost_product.property_account_expense_id.id or cost_product.categ_id.property_account_expense_categ_id.id
 
         if not credit_account_id:
             raise UserError(_('Please configure Stock Expense Account for product: %s.') % (cost_product.name))
@@ -115,6 +97,10 @@ class stock_landed_cost(osv.osv):
         Afterwards, for the goods that are already out of stock, we should create the out moves
         """
         aml_obj = self.pool.get('account.move.line')
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['check_move_validity'] = False
         base_line = {
             'name': line.name,
             'move_id': move_id,
@@ -131,8 +117,8 @@ class stock_landed_cost(osv.osv):
             # negative cost, reverse the entry
             debit_line['credit'] = -diff
             credit_line['debit'] = -diff
-        aml_obj.create(cr, uid, debit_line, context=context)
-        aml_obj.create(cr, uid, credit_line, context=context)
+        aml_obj.create(cr, uid, debit_line, context=ctx)
+        aml_obj.create(cr, uid, credit_line, context=ctx)
         
         #Create account move lines for quants already out of stock
         if qty_out > 0:
@@ -150,14 +136,14 @@ class stock_landed_cost(osv.osv):
                 # negative cost, reverse the entry
                 debit_line['credit'] = -diff
                 credit_line['debit'] = -diff
-            aml_obj.create(cr, uid, debit_line, context=context)
-            aml_obj.create(cr, uid, credit_line, context=context)
+            aml_obj.create(cr, uid, debit_line, context=ctx)
+            aml_obj.create(cr, uid, credit_line, context=ctx)
+        self.pool.get('account.move').assert_balanced(cr, uid, [move_id], context=context)
         return True
 
     def _create_account_move(self, cr, uid, cost, context=None):
         vals = {
             'journal_id': cost.account_journal_id.id,
-            'period_id': self.pool.get('account.period').find(cr, uid, cost.date, context=context)[0],
             'date': cost.date,
             'ref': cost.name
         }
@@ -215,6 +201,7 @@ class stock_landed_cost(osv.osv):
                         qty_out += quant.qty
                 self._create_accounting_entries(cr, uid, line, move_id, qty_out, context=context)
             self.write(cr, uid, cost.id, {'state': 'done', 'account_move_id': move_id}, context=context)
+            self.pool.get('account.move').post(cr, uid, [move_id], context=context)
         return True
 
     def button_cancel(self, cr, uid, ids, context=None):
@@ -233,6 +220,7 @@ class stock_landed_cost(osv.osv):
         line_obj = self.pool.get('stock.valuation.adjustment.lines')
         unlink_ids = line_obj.search(cr, uid, [('cost_id', 'in', ids)], context=context)
         line_obj.unlink(cr, uid, unlink_ids, context=context)
+        digits = dp.get_precision('Product Price')(cr)
         towrite_dict = {}
         for cost in self.browse(cr, uid, ids, context=None):
             if not cost.picking_ids:
@@ -255,6 +243,7 @@ class stock_landed_cost(osv.osv):
                 total_line += 1
 
             for line in cost.cost_lines:
+                value_split = 0.0
                 for valuation in cost.valuation_adjustment_lines:
                     value = 0.0
                     if valuation.cost_line_id and valuation.cost_line_id.id == line.id:
@@ -274,6 +263,11 @@ class stock_landed_cost(osv.osv):
                             value = valuation.former_cost * per_unit
                         else:
                             value = (line.price_unit / total_line)
+
+                        if digits:
+                            value = float_round(value, precision_digits=digits[1], rounding_method='UP')
+                            value = min(value, line.price_unit - value_split)
+                            value_split += value
 
                         if valuation.id not in towrite_dict:
                             towrite_dict[valuation.id] = value
@@ -304,7 +298,7 @@ class stock_landed_cost_lines(osv.osv):
         result['name'] = product.name
         result['split_method'] = product.split_method
         result['price_unit'] = product.standard_price
-        result['account_id'] = product.property_account_expense and product.property_account_expense.id or product.categ_id.property_account_expense_categ.id
+        result['account_id'] = product.property_account_expense_id and product.property_account_expense_id.id or product.categ_id.property_account_expense_categ_id.id
         return {'value': result}
 
     _columns = {
@@ -313,7 +307,7 @@ class stock_landed_cost_lines(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', required=True),
         'price_unit': fields.float('Cost', required=True, digits_compute=dp.get_precision('Product Price')),
         'split_method': fields.selection(product.SPLIT_METHOD, string='Split Method', required=True),
-        'account_id': fields.many2one('account.account', 'Account', domain=[('type', '<>', 'view'), ('type', '<>', 'closed')]),
+        'account_id': fields.many2one('account.account', 'Account', domain=[('internal_type', '!=', 'view'), ('internal_type', '!=', 'closed'), ('deprecated', '=', False)]),
     }
 
 class stock_valuation_adjustment_lines(osv.osv):
@@ -349,9 +343,9 @@ class stock_valuation_adjustment_lines(osv.osv):
         'weight': fields.float('Weight', digits_compute=dp.get_precision('Product Unit of Measure')),
         'volume': fields.float('Volume', digits_compute=dp.get_precision('Product Unit of Measure')),
         'former_cost': fields.float('Former Cost', digits_compute=dp.get_precision('Product Price')),
-        'former_cost_per_unit': fields.function(_amount_final, multi='cost', string='Former Cost(Per Unit)', type='float', digits_compute=dp.get_precision('Account'), store=True),
+        'former_cost_per_unit': fields.function(_amount_final, multi='cost', string='Former Cost(Per Unit)', type='float', store=True, digits=0),
         'additional_landed_cost': fields.float('Additional Landed Cost', digits_compute=dp.get_precision('Product Price')),
-        'final_cost': fields.function(_amount_final, multi='cost', string='Final Cost', type='float', digits_compute=dp.get_precision('Account'), store=True),
+        'final_cost': fields.function(_amount_final, multi='cost', string='Final Cost', type='float', store=True, digits=0),
     }
 
     _defaults = {

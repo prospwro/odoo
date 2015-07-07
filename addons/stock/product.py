@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
@@ -280,7 +262,9 @@ class product_product(osv.osv):
     }
 
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
-        res = super(product_product,self).fields_view_get(cr, uid, view_id, view_type, context, toolbar=toolbar, submenu=submenu)
+        res = super(product_product, self).fields_view_get(
+            cr, uid, view_id=view_id, view_type=view_type, context=context,
+            toolbar=toolbar, submenu=submenu)
         if context is None:
             context = {}
         if ('location' in context) and context['location']:
@@ -328,14 +312,14 @@ class product_product(osv.osv):
         templ_ids = list(set([x.product_tmpl_id.id for x in self.browse(cr, uid, ids, context=context)]))
         return template_obj.action_view_routes(cr, uid, templ_ids, context=context)
 
-    def onchange_track_all(self, cr, uid, ids, track_all, context=None):
-        if not track_all:
+    def onchange_tracking(self, cr, uid, ids, tracking, context=None):
+        if not tracking or tracking == 'none':
             return {}
         unassigned_quants = self.pool['stock.quant'].search_count(cr, uid, [('product_id','in', ids), ('lot_id','=', False), ('location_id.usage','=', 'internal')], context=context)
         if unassigned_quants:
             return {'warning' : {
                     'title': _('Warning!'),
-                    'message' : _("Lots are not defined for all the existing inventory of this product. You should assign serial numbers (e.g. by creating an inventory) first.")
+                    'message' : _("You have products in stock that have no lot number.  You can assign serial numbers by doing an inventory.  ")
             }}
         return {}
 
@@ -408,10 +392,7 @@ class product_template(osv.osv):
         'loc_rack': fields.char('Rack', size=16),
         'loc_row': fields.char('Row', size=16),
         'loc_case': fields.char('Case', size=16),
-        'track_incoming': fields.boolean('Track Incoming Lots', help="Forces to specify a Serial Number for all moves containing this product and coming from a Supplier Location"),
-        'track_outgoing': fields.boolean('Track Outgoing Lots', help="Forces to specify a Serial Number for all moves containing this product and going to a Customer Location"),
-        'track_all': fields.boolean('Full Lots Traceability', help="Forces to specify a Serial Number on each and every operation related to this product"),
-        
+        'tracking': fields.selection(selection=[('serial', 'By Unique Serial Number'), ('lot', 'By Lots'), ('none', 'No Tracking')], string="Tracking", required=True),
         # sum of product variant qty
         # 'reception_count': fields.function(_product_available, multi='qty_available',
         #     fnct_search=_search_product_quantity, type='float', string='Quantity On Hand'),
@@ -420,7 +401,7 @@ class product_template(osv.osv):
         'qty_available': fields.function(_product_available, multi='qty_available', digits_compute=dp.get_precision('Product Unit of Measure'),
             fnct_search=_search_product_quantity, type='float', string='Quantity On Hand'),
         'virtual_available': fields.function(_product_available, multi='qty_available', digits_compute=dp.get_precision('Product Unit of Measure'),
-            fnct_search=_search_product_quantity, type='float', string='Quantity Available'),
+            fnct_search=_search_product_quantity, type='float', string='Forecasted Quantity'),
         'incoming_qty': fields.function(_product_available, multi='qty_available', digits_compute=dp.get_precision('Product Unit of Measure'),
             fnct_search=_search_product_quantity, type='float', string='Incoming'),
         'outgoing_qty': fields.function(_product_available, multi='qty_available', digits_compute=dp.get_precision('Product Unit of Measure'),
@@ -432,6 +413,7 @@ class product_template(osv.osv):
 
     _defaults = {
         'sale_delay': 7,
+        'tracking': 'none',
     }
 
     def action_view_routes(self, cr, uid, ids, context=None):
@@ -448,12 +430,12 @@ class product_template(osv.osv):
         result['domain'] = "[('id','in',[" + ','.join(map(str, route_ids)) + "])]"
         return result
 
-    def onchange_track_all(self, cr, uid, ids, track_all, context=None):
-        if not track_all:
+    def onchange_tracking(self, cr, uid, ids, tracking, context=None):
+        if not tracking:
             return {}
         product_product = self.pool['product.product']
         variant_ids = product_product.search(cr, uid, [('product_tmpl_id', 'in', ids)], context=context)
-        return product_product.onchange_track_all(cr, uid, variant_ids, track_all, context=context)
+        return product_product.onchange_tracking(cr, uid, variant_ids, tracking, context=context)
 
     def _get_products(self, cr, uid, ids, context=None):
         products = []

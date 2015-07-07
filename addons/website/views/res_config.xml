@@ -25,7 +25,7 @@
                                 </div>
                             </div>
                         </group>
-                        <group string="Social Media">
+                        <group name="social" string="Social Media">
                             <label for="social_twitter"/>
                             <div name="social_twitter">
                                 <div class="oe_inline">
@@ -109,8 +109,9 @@
             <field name="target">inline</field>
         </record>
 
-        <menuitem id="menu_website_configuration" parent="base.menu_config"
-            sequence="90" action="action_website_configuration"/>
+        <menuitem id="menu_website_configuration" sequence="215" name="Website Admin" groups="base.group_configuration"/>
+        <menuitem id="menu_website_global_configuration" parent="menu_website_configuration"
+            sequence="100" action="action_website_configuration" name="Configuration"/>
 
     </data>
 </openerp>

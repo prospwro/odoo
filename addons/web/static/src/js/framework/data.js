@@ -542,8 +542,8 @@ var DataSet =  Class.extend(mixins.PropertiesMixin, {
     /**
      * @param name
      */
-    name_create: function(name) {
-        return this._model.call('name_create', [name], {context: this.get_context()});
+    name_create: function(name, context) {
+        return this._model.call('name_create', [name], {context: this.get_context(context)});
     },
     exec_workflow: function (id, signal) {
         return this._model.exec_workflow(id, signal);
@@ -773,7 +773,7 @@ var BufferedDataSet = DataSetStatic.extend({
         $.extend(cached.values, _.extend({}, record.values, (options || {}).readonly_fields || {}));
         if (dirty)
             this.trigger("dataset_changed", id, data, options);
-        return $.Deferred().resolve(true).promise();
+        return $.Deferred().resolve(data).promise();
     },
     unlink: function(ids, callback, error_callback) {
         var self = this;

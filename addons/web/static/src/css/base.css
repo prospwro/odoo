@@ -35,6 +35,12 @@
   border: 0;
 }
 
+.oe_tz_warning {
+  color: red;
+  float: right;
+  margin: 4px;
+}
+
 .oe_indicator {
   z-index: 99999;
   position: absolute;
@@ -46,21 +52,11 @@
   box-shadow: 0 0 1px black;
   left: 50%;
   transform: translate(-50%, 0);
+  -webkit-filter: blur(0);
 }
 
 .oe_notification {
   z-index: 1600;
-}
-
-.oe_webclient_timezone_notification a {
-  color: white;
-  text-decoration: underline;
-}
-.oe_webclient_timezone_notification p {
-  margin-top: 1em;
-}
-.oe_webclient_timezone_notification dt {
-  font-weight: bold;
 }
 
 .oe_timezone_systray span {
@@ -146,9 +142,6 @@
 }
 .openerp td {
   vertical-align: top;
-}
-.openerp .oe_title {
-  float: left;
 }
 .openerp .oe_title:after {
   content: ".";
@@ -409,13 +402,6 @@
   display: inline;
   vertical-align: middle;
 }
-.openerp .oe_stat_button:hover {
-  background: #7c7bad;
-  color: white;
-}
-.openerp .oe_stat_button:hover .fa {
-  color: white;
-}
 .openerp .oe_button_box {
   width: 400px;
   text-align: right;
@@ -561,6 +547,7 @@
   border-radius: 3px;
   background: #f0f0fa;
   color: #4C4C4C;
+  word-break: break-word;
 }
 .openerp .oe_tag_dark {
   background: #7C7BAD;
@@ -604,7 +591,8 @@
   width: 100% !important;
 }
 .openerp .oe_tags .text-core {
-  min-height: 22px;
+  height: initial !important;
+  word-break: break-word;
 }
 .openerp .oe_tags .text-core .text-wrap .text-dropdown .text-list .text-suggestion em {
   font-style: italic;
@@ -936,9 +924,6 @@
   right: 0;
   left: 0;
 }
-.openerp .oe-view-manager .oe-view-manager-content a {
-  color: #7C7BAD;
-}
 .openerp .oe-view-manager .oe-view-manager-content > div {
   height: 100%;
   position: static;
@@ -950,14 +935,14 @@
 .openerp .oe-view-manager .oe-view-manager-content .oe-view-manager-content > div {
   display: block;
 }
-.openerp .oe-o2m-control-panel {
+.openerp .oe-x2m-control-panel {
   width: 100%;
 }
-.openerp .oe-o2m-control-panel .oe-cp-buttons div {
+.openerp .oe-x2m-control-panel .oe-cp-buttons div {
   display: inline-block;
   padding: 5px 5px;
 }
-.openerp .oe-o2m-control-panel .oe-cp-pager div {
+.openerp .oe-x2m-control-panel .oe-cp-pager div {
   display: inline-block;
   padding: 5px 5px;
 }
@@ -1108,21 +1093,6 @@
 }
 .openerp .oe-control-panel .oe-pager-buttons {
   min-height: 30px;
-}
-.openerp .o-modal-header > div {
-  margin-left: 45%;
-}
-.openerp .oe_popup_form {
-  display: none;
-}
-.openerp .oe_popup_form .oe_formview .oe_form_pager {
-  display: none !important;
-}
-.openerp .oe_popup_form table label {
-  font-weight: normal;
-}
-.openerp .oe_popup_list_pager {
-  float: right;
 }
 .openerp .oe_searchview {
   cursor: text;
@@ -1715,6 +1685,7 @@
   max-width: 892px;
   margin: 0 auto;
   padding: 16px 16px 48px;
+  background-color: #f0eeee;
 }
 .openerp .oe_form div.oe_form_configuration p, .openerp .oe_form div.oe_form_configuration ul, .openerp .oe_form div.oe_form_configuration ol {
   color: #aaa;
@@ -2336,7 +2307,7 @@
 .openerp .oe_form_field_one2many > .oe_view_manager .oe_view_manager_view_list, .openerp .oe_form_field_many2many > .oe_view_manager .oe_view_manager_view_list {
   min-height: 132px;
 }
-.openerp .oe_form_field_one2many .oe_form_field_one2many_list_row_add, .openerp .oe_form_field_one2many .oe_form_field_many2many_list_row_add, .openerp .oe_form_field_many2many .oe_form_field_one2many_list_row_add, .openerp .oe_form_field_many2many .oe_form_field_many2many_list_row_add {
+.openerp .oe_form_field_one2many .oe_form_field_x2many_list_row_add, .openerp .oe_form_field_many2many .oe_form_field_x2many_list_row_add {
   font-weight: bold;
 }
 .openerp .oe_form_field_one2many .oe_list_content > thead, .openerp .oe_form_field_many2many .oe_list_content > thead {
@@ -2559,6 +2530,12 @@
 .openerp .oe_list_content > tbody > tr {
   height: 27px;
   border-top: 1px solid #ddd;
+}
+.openerp .oe_list_content > tbody > tr.text-bf {
+  font-weight: bold;
+}
+.openerp .oe_list_content > tbody > tr.text-it {
+  font-style: italic;
 }
 .openerp .oe_list_content > tbody > tr > td.oe_list_field_cell {
   padding: 3px 6px;
@@ -3046,6 +3023,12 @@ body.oe_single_form .oe_single_form_container {
 @media print {
   body {
     height: auto !important;
+    overflow: visible !important;
+  }
+
+  tr, td {
+    page-break-inside: avoid;
+    page-break-after: auto;
   }
 
   .openerp#announcement_bar_table {
@@ -3054,6 +3037,13 @@ body.oe_single_form .oe_single_form_container {
 
   .openerp {
     text-shadow: none;
+  }
+  .openerp.openerp_webclient_container {
+    display: block;
+    height: auto !important;
+  }
+  .openerp .oe-view-manager {
+    display: block;
   }
   .openerp .oe_application, .openerp .oe_view_manager_wrapper {
     height: auto !important;
@@ -3068,7 +3058,7 @@ body.oe_single_form .oe_single_form_container {
   .openerp .oe_list_content button, .openerp .oe_list_content input[type=checkbox] {
     visibility: hidden;
   }
-  .openerp .tree_header button, .openerp .oe_mail .oe_mail_thread_msg .oe_mail_unread, .openerp .oe_mail_fetch_more, .openerp .oe_m2o_drop_down_button img, .openerp .oe_form_field_one2many_list_row_add {
+  .openerp .tree_header button, .openerp .oe_mail .oe_mail_thread_msg .oe_mail_unread, .openerp .oe_mail_fetch_more, .openerp .oe_m2o_drop_down_button img, .openerp .oe_form_field_x2many_list_row_add {
     visibility: hidden;
   }
   .openerp a.oe_m2o_cm_button, .openerp a.fa {
@@ -3080,6 +3070,9 @@ body.oe_single_form .oe_single_form_container {
   .openerp .oe_notebook > li.ui-tabs-selected {
     display: block;
   }
+  .openerp .oe_application {
+    width: auto;
+  }
   .openerp .oe_application .oe_form_sheet, .openerp .oe_application .oe_form_sheetbg {
     border: 0px !important;
     box-shadow: 0px 0px 0px;
@@ -3087,7 +3080,7 @@ body.oe_single_form .oe_single_form_container {
   .openerp .oe_application .oe_form_sheet .oe_list, .openerp .oe_application .oe_form_sheetbg .oe_list {
     overflow-x: visible;
   }
-  .openerp .oe-control-panel, .openerp .oe-o2m-control-panel {
+  .openerp .oe-control-panel, .openerp .oe-x2m-control-panel {
     border: 0px !important;
     box-shadow: 0px 0px 0px;
   }
@@ -3096,6 +3089,9 @@ body.oe_single_form .oe_single_form_container {
   }
   .openerp .openerp div.oe_mail_wall {
     overflow: hidden !important;
+  }
+  .openerp .oe-view-manager .oe-view-manager-content {
+    overflow: visible;
   }
 
   .openerp.openerp_webclient_container {
@@ -3167,49 +3163,6 @@ body.oe_single_form .oe_single_form_container {
   background-image: url("/web/static/lib/jquery.ui/images/ui-icons_ffffff_256x240.png");
 }
 
-.modal .modal-header button.close {
-  border: none;
-  background: none;
-  padding: 1px;
-  height: 18px;
-  font-size: 20px;
-}
-.modal .modal-body {
-  overflow: auto;
-  padding: 0;
-}
-.modal .modal-body .oe_application {
-  width: 100%;
-}
-.modal .modal-body .oe_popup_list {
-  display: none;
-  min-height: 150px;
-}
-.modal .modal-body .oe-view-manager {
-  min-height: 150px;
-}
-.modal .modal-body .oe_form_sheetbg .oe_form_sheet {
-  padding: 0;
-}
-.modal .modal-footer {
-  text-align: left;
-}
-.modal .oe_button {
-  margin: 0 4px 0 0;
-}
-.modal .oe_act_window.modal-body {
-  padding: 0;
-}
-.modal .oe-view-manager-content {
-  position: static !important;
-}
-
-@media (min-width: 768px) {
-  .modal .modal-body {
-    max-height: -webkit-calc(100vh - 170px);
-    max-height: calc(100vh - 170px);
-  }
-}
 .ui-datepicker {
   z-index: 1500 !important;
 }
@@ -3268,4 +3221,32 @@ body {
   .oe-view-manager-content .oe-view-manager-content > div {
     position: relative !important;
   }
+}
+.o_progressbar > div {
+  display: inline-block;
+}
+.o_progressbar .o_progressbar_title {
+  white-space: nowrap;
+  padding-right: 10px;
+}
+.o_progressbar .o_progress {
+  width: 100px;
+  height: 15px;
+  vertical-align: middle;
+  border: 1px solid silver;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+}
+.o_progressbar .o_progress.o_progress_overflow {
+  background-color: gray;
+}
+.o_progressbar .o_progress .o_progressbar_complete {
+  background-color: #3071A9;
+  height: 100%;
+}
+.o_progressbar .o_progressbar_value {
+  width: 100px;
+  white-space: nowrap;
+  padding-left: 10px;
 }

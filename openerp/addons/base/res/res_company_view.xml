@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <menuitem id="menu_res_company_global" parent="base.menu_administration" name="Companies" sequence="2"
-            groups="base.group_no_one"/>
-
         <report id="preview_report" model="res.company" name="preview.report" multi="True" rml="base/report/preview_report.rml" string="Preview Report"/>
         <record id="bank_account_update" model="ir.actions.act_window">
             <field name="name">Company Bank Accounts</field>
@@ -18,6 +15,9 @@
             <field name="arch" type="xml">
                 <form string="Company">
                   <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(preview_report)d" string="Preview Header/Footer" type="action"/>
+                    </div>
                     <div>
                         <field name="logo" widget="image"  class="oe_avatar oe_left"/>
                     </div>
@@ -26,6 +26,10 @@
                         <h1>
                             <field name="name" class="oe_inline"/>
                         </h1>
+                        <label for="rml_header1" class="oe_edit_only"/>
+                        <h3>
+                            <field name="rml_header1" placeholder="e.g. Global Business Solutions"/>
+                        </h3>
                     </div>
                     <div attrs="{'invisible' : [('logo','!=',False)]}" class="oe_view_nocontent oe_clear">
                         <p class="oe_view_nocontent_create oe_edit_only">
@@ -51,10 +55,6 @@
                                         </div>
                                         <field name="country_id" placeholder="Country" class="oe_no_button" options='{"no_open": True}' on_change="on_change_country(country_id)"/>
                                     </div>
-                                    <label for="rml_header1"/>
-                                    <div>
-                                        <field name="rml_header1" placeholder="e.g. Global Business Solutions"/>
-                                    </div>
                                     <field name="website" widget="url" placeholder="e.g. www.odoo.com"
                                         on_change="onchange_footer(custom_footer, phone, fax, email, website, vat, company_registry, bank_ids)"/>
                                 </group>
@@ -68,17 +68,23 @@
                             </group>
                             <group string="Bank Accounts">
                                 <field name="bank_ids" nolabel="1" context="{'default_company_id': active_id, 'footer_hide': False}"
-                                    on_change="onchange_footer(custom_footer, phone, fax, email, website, vat, company_registry, bank_ids)"/>
+                                    on_change="onchange_footer(custom_footer, phone, fax, email, website, vat, company_registry, bank_ids)">
+                                    <tree>
+                                        <field name="acc_number"/>
+                                        <field name="bank_name"/>
+                                        <field name="footer"/>
+                                    </tree>
+                                </field>
                             </group>
                         </page>
-                        <page string="Configuration">
+                        <page name="configuration" string="Configuration">
                             <group>
                                 <group name="account_grp" string="Accounting">
                                     <field name="currency_id"/>
                                 </group>
                             </group>
                         </page>
-                        <page string="Report Configuration">
+                        <page name="report" string="Report Configuration">
                             <group string="Configuration">
                                 <field name="custom_footer" on_change="onchange_footer(custom_footer, phone, fax, email, website, vat, company_registry, bank_ids)"/>
                                 <field name="rml_footer" attrs="{'invisible': [('custom_footer','=',False)]}"/>
@@ -92,9 +98,6 @@
                                 <div>
                                     <field name="font" class="oe_inline" on_change="onchange_font_name(font, rml_header, rml_header2, rml_header3)" />
                                     <button string="(reload fonts)" name="act_discover_fonts" type="object" class="oe_link" colspan="1"/>
-                                </div>
-                                <div class="oe_right oe_button_box" name="button_box" colspan="2">
-                                    <button name="%(preview_report)d" string="Preview Header/Footer" type="action"/>
                                 </div>
                                 <group col="1" colspan="2">
                                     <field name="rml_header"/>
@@ -134,7 +137,7 @@
             <field name="view_type">form</field>
             <field name="help">Create and manage the companies that will be managed by Odoo from here. Shops or subsidiaries can be created and maintained from here.</field>
         </record>
-        <menuitem action="action_res_company_form" id="menu_action_res_company_form" parent="base.menu_res_company_global"/>
+        <menuitem action="action_res_company_form" id="menu_action_res_company_form" parent="base.menu_users"/>
         <record id="action_res_company_tree" model="ir.actions.act_window">
             <field name="name">Company's Structure</field>
             <field name="type">ir.actions.act_window</field>
@@ -142,7 +145,7 @@
             <field name="domain">[('parent_id','=',False)]</field>
             <field name="view_type">tree</field>
         </record>
-        <menuitem action="action_res_company_tree" groups="base.group_multi_company" id="menu_action_res_company_tree" parent="base.menu_res_company_global" sequence="16"/>
+        <menuitem action="action_res_company_tree" groups="base.group_multi_company" id="menu_action_res_company_tree" parent="base.menu_users" sequence="2"/>
 
         <record id="ir_open_company" model="ir.values">
             <field eval="'tree_but_open'" name="key2"/>

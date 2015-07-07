@@ -42,11 +42,30 @@
                             changed = true;
                         }
                     });
-                } while (changed && transitive)
+                } while (changed && transitive);
                 return deps;
             },
             get_dependents: function (name) {
-                return _.pluck(_.where(job_deps, {from: name}), 'to');            
+                return _.pluck(_.where(job_deps, {from: name}), 'to');
+            },
+            get_waited_jobs: function () {
+                return _.uniq(_.map(jobs, function(job) {return job.name;}));
+            },
+            get_missing_jobs: function () {
+                var self = this;
+                var waited = this.get_waited_jobs();
+                var missing = [];
+                _.each(waited, function(job) {
+                    _.each(self.get_dependencies(job), function(job) {
+                        if (!(job in self.services)) {
+                            missing.push(job);
+                        }
+                    });
+                });
+                return _.filter(_.difference(_.uniq(missing), waited), function (job) {return !job.error;});
+            },
+            get_failed_jobs: function () {
+                return _.filter(jobs, function (job) {return !!job.error;});
             },
             factories: factories,
             services: services,
@@ -103,22 +122,34 @@
             odoo.__DEBUG__.web_client = services['web.web_client'];
 
             if (jobs.length) {
+                var debug_jobs = {}, job;
+
                 for (var k=0; k<jobs.length; k++) {
-                    var deps = odoo.__DEBUG__.get_dependencies( jobs[k].name );
+                    debug_jobs[jobs[k].name] = job = {
+                        dependencies: jobs[k].deps,
+                        dependents: odoo.__DEBUG__.get_dependents(jobs[k].name),
+                        name: jobs[k].name
+                    };
+                    if (jobs[k].error) {
+                        job.error = jobs[k].error;
+                    }
+                    var deps = odoo.__DEBUG__.get_dependencies( job.name );
                     for (var i=0; i<deps.length; i++) {
-                        if (jobs[k].name !== deps[i] && !(deps[i] in services)) {
-                            if (!jobs[k].missing) {
-                                jobs[k].missing = [];
+                        if (job.name !== deps[i] && !(deps[i] in services)) {
+                            if (!job.missing) {
+                                job.missing = [];
                             }
-                            jobs[k].missing.push(deps[i]);
+                            job.missing.push(deps[i]);
                         }
                     }
                 }
-                console.warn('Warning: some modules could not be started for missing dependencies.', jobs);
+                var missing = odoo.__DEBUG__.get_missing_jobs();
+                var failed = odoo.__DEBUG__.get_failed_jobs();
+                console.warn('Warning: Some modules could not be started !'+
+                    '\nMissing dependencies: ', !missing.length ? null : missing,
+                    '\nFailed modules:       ', _.isEmpty(failed) ? null : _.map(failed, function (job) {return job.name;}),
+                    '\nUnloaded modules:     ', _.isEmpty(debug_jobs) ? null : debug_jobs);
             }
-            // _.each(factories, function (value, key) {
-            //     delete factories[key];
-            // });
         },
         process_jobs: function (jobs, services) {
             var job, require;
@@ -126,15 +157,15 @@
                 require = make_require(job);
                 try {
                     services[job.name] = job.factory.call(null, require);
+                    jobs.splice(jobs.indexOf(job), 1);
                 } catch (e) {
-                    console.error("Error: at least one error are found in module '"+job.name+"'", e);
+                    job.error = e;
                 }
-                jobs.splice(jobs.indexOf(job), 1);
             }
             return services;
 
             function is_ready (job) {
-                return _.every(job.factory.deps, function (name) { return name in services; });
+                return !job.error && _.every(job.factory.deps, function (name) { return name in services; });
             }
 
             function make_require (job) {

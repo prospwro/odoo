@@ -4,44 +4,7 @@
         <menuitem name="Sales"
             id="base.menu_base_partner"
             icon="fa-credit-card"
-            groups="base.group_sale_salesman,base.group_sale_manager"/>
-
-        <!-- Case Teams Salesteams kanban view -->
-
-       <record id="crm_team_salesteams_view_kanban" model="ir.ui.view" >
-            <field name="name">crm.team.kanban</field>
-            <field name="model">crm.team</field>
-            <field name="arch" type="xml">
-                <kanban class="oe_background_grey">
-                    <field name="name"/>
-                    <field name="user_id"/>
-                    <field name="member_ids"/>
-                    <field name="note"/>
-                    <field name="color"/>
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click oe_kanban_crm_salesteams">
-                                <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_sale_manager">
-                                    <i class="fa fa-bars fa-lg"/>
-                                    <ul class="oe_dropdown_menu">
-                                        <li t-if="widget.view.is_action_enabled('edit')"><a type="edit">Edit Sales Team</a></li>
-                                        <li t-if="widget.view.is_action_enabled('delete')"><a type="delete">Delete</a></li>
-                                        <li t-if="widget.view.is_action_enabled('edit')"><ul class="oe_kanban_colorpicker" data-field="color"/></li>
-                                    </ul>
-                                </div>
-                                <div class="oe_kanban_content">
-                                    <h4 class="text-center" name="name"><strong><field name="name"/></strong></h4>
-                                    <div class="oe_salesteam_kanban_view row oe_margin_top_16">
-                                        <span name="oe_salesteam_separator"/>
-                                    </div>
-                                    <div class="oe_clear"></div>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-            </field>
-        </record>
+            groups="base.group_sale_salesman,base.group_sale_manager" sequence="6"/>
 
         <!-- Cateamions Search view -->
         <record id="crm_team_salesteams_search" model="ir.ui.view">
@@ -107,13 +70,13 @@
                             </group>
                         </group>
                         <notebook colspan="4">
-                            <page string="Team Members">
+                            <page name="members" string="Team Members">
                                 <field name="member_ids" widget="many2many_kanban">
                                     <kanban quick_create="false" create="true" delete="true">
                                         <field name="name"/>
                                         <templates>
                                             <t t-name="kanban-box">
-                                                <div>
+                                                <div class="oe_kanban_global_click" style="position: relative">
                                                     <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
                                                     <div class="oe_module_vignette">
                                                         <img t-att-src="kanban_image('res.users', 'image_small', record.id.value)" class="oe_avatar oe_kanban_avatar_smallbox"/>
@@ -129,12 +92,14 @@
                             </page>
                             <page string="More Info" groups="base.group_sale_manager">
                                 <group name="sales_team_more_info">
-                                    <group string="Escalation">
+                                    <group string="Escalation" name="sales_team_escalation_group">
                                         <field name="parent_id"/>
                                         <field name="change_responsible"/>                                
                                     </group>
                                     <group>
                                         <field name="active"/>
+                                        <field name="company_id" groups="base.group_multi_company"
+                                            options="{'no_create': True}"/>
                                     </group>
                                 </group>                                
                             </page>
@@ -181,7 +146,7 @@
             </field>
         </record>
 
-        <menuitem id="sales_team.menu_sales_team_act" action="crm_team_salesteams_act" sequence="1" parent="base.menu_sales" groups="base.group_multi_salesteams"/>
+        <menuitem id="sales_team.menu_sales_team_act" action="crm_team_salesteams_act" sequence="1" parent="base.menu_base_partner" groups="base.group_multi_salesteams" name="Dashboard"/>
 
         <!-- add css / js -->
         <template id="assets_backend" name="sales_team assets" inherit_id="web.assets_backend">
@@ -191,7 +156,7 @@
             </xpath>
         </template>
 
-        <menuitem id="base.next_id_64" name="Sales" parent="base.menu_reporting" sequence="1" groups="base.group_sale_manager"/>
+        <menuitem id="base.menu_sale_report" name="Reports" parent="base.menu_base_partner" sequence="99" groups="base.group_sale_manager"/>
 
     </data>
 </openerp>

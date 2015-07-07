@@ -1,23 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
 import re
@@ -25,8 +7,7 @@ import time
 from _common import ceiling
 
 
-from openerp import SUPERUSER_ID
-from openerp import tools
+from openerp import api, tools, SUPERUSER_ID
 from openerp.osv import osv, fields, expression
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -196,48 +177,22 @@ class product_uom(osv.osv):
             return {'value': {'factor': 1, 'factor_inv': 1}}
         return {}
 
-    def write(self, cr, uid, ids, vals, context=None):
-        if isinstance(ids, (int, long)):
-            ids = [ids]
-        if 'category_id' in vals:
-            for uom in self.browse(cr, uid, ids, context=context):
-                if uom.category_id.id != vals['category_id']:
-                    raise UserError(_("Cannot change the category of existing Unit of Measure '%s'.") % (uom.name,))
-        return super(product_uom, self).write(cr, uid, ids, vals, context=context)
-
-
-
-class product_ul(osv.osv):
-    _name = "product.ul"
-    _description = "Logistic Unit"
-    _columns = {
-        'name' : fields.char('Name', select=True, required=True, translate=True),
-        'type' : fields.selection([('unit','Unit'),('pack','Pack'),('box', 'Box'), ('pallet', 'Pallet')], 'Type', required=True),
-        'height': fields.float('Height', help='The height of the package'),
-        'width': fields.float('Width', help='The width of the package'),
-        'length': fields.float('Length', help='The length of the package'),
-        'weight': fields.float('Empty Package Weight'),
-    }
-
-
 #----------------------------------------------------------
 # Categories
 #----------------------------------------------------------
 class product_category(osv.osv):
 
-    def name_get(self, cr, uid, ids, context=None):
-        if isinstance(ids, (list, tuple)) and not len(ids):
-            return []
-        if isinstance(ids, (long, int)):
-            ids = [ids]
-        reads = self.read(cr, uid, ids, ['name','parent_id'], context=context)
-        res = []
-        for record in reads:
-            name = record['name']
-            if record['parent_id']:
-                name = record['parent_id'][1]+' / '+name
-            res.append((record['id'], name))
-        return res
+    @api.multi
+    def name_get(self):
+        def get_names(cat):
+            """ Return the list [cat.name, cat.parent_id.name, ...] """
+            res = []
+            while cat:
+                res.append(cat.name)
+                cat = cat.parent_id
+            return res
+
+        return [(cat.id, " / ".join(reversed(get_names(cat)))) for cat in self]
 
     def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
         if not args:
@@ -342,6 +297,7 @@ class product_attribute(osv.osv):
         'name': fields.char('Name', translate=True, required=True),
         'value_ids': fields.one2many('product.attribute.value', 'attribute_id', 'Values', copy=True),
         'sequence': fields.integer('Sequence', help="Determine the display order"),
+        'attribute_line_ids': fields.one2many('product.attribute.line', 'attribute_id', 'Lines'),
     }
 
 class product_attribute_value(osv.osv):
@@ -522,7 +478,7 @@ class product_template(osv.osv):
             help="A precise description of the Product, used only for internal information purposes."),
         'description_purchase': fields.text('Purchase Description',translate=True,
             help="A description of the Product that you want to communicate to your suppliers. "
-                 "This description will be copied to every Purchase Order, Receipt and Supplier Invoice/Refund."),
+                 "This description will be copied to every Purchase Order, Receipt and Supplier Bill/Refund."),
         'description_sale': fields.text('Sale Description',translate=True,
             help="A description of the Product that you want to communicate to your customers. "
                  "This description will be copied to every Sale Order, Delivery Order and Customer Invoice/Refund"),
@@ -536,9 +492,9 @@ class product_template(osv.osv):
                                           help="Cost price of the product template used for standard stock valuation in accounting and used as a base price on purchase orders. "
                                                "Expressed in the default unit of measure of the product.",
                                           string="Cost Price"),
-        'volume': fields.float('Volume', help="The volume in m3."),
-        'weight': fields.float('Gross Weight', digits_compute=dp.get_precision('Stock Weight'), help="The gross weight in Kg."),
-        'weight_net': fields.float('Net Weight', digits_compute=dp.get_precision('Stock Weight'), help="The net weight in Kg."),
+        'volume': fields.float('Volume', help="Volume is the amount of space that an item you are measuring takes up."),
+        'weight': fields.float('Gross Weight', digits_compute=dp.get_precision('Stock Weight'), help="The total weight, including contents, packaging, etc."),
+        'weight_net': fields.float('Net Weight', digits_compute=dp.get_precision('Stock Weight'), help="The weight of the contents, not including any packaging, etc."),
         'warranty': fields.float('Warranty'),
         'sale_ok': fields.boolean('Can be Sold', help="Specify if the product can be selected in a sales order line."),
         'pricelist_id': fields.dummy(string='Pricelist', relation='product.pricelist', type='many2one'),
@@ -589,7 +545,7 @@ class product_template(osv.osv):
 
         'active': fields.boolean('Active', help="If unchecked, it will allow you to hide the product without removing it."),
         'color': fields.integer('Color Index'),
-        'is_product_variant': fields.function( _is_product_variant, type='boolean', string='Is product variant'),
+        'is_product_variant': fields.function( _is_product_variant, type='boolean', string='Is a product variant'),
 
         'attribute_line_ids': fields.one2many('product.attribute.line', 'product_tmpl_id', 'Product Attributes'),
         'product_variant_ids': fields.one2many('product.product', 'product_tmpl_id', 'Products', required=True),
@@ -654,6 +610,9 @@ class product_template(osv.osv):
         except ValueError:
             res = False
         return res
+
+    def onchange_type(self, cr, uid, ids, type):
+        return {}
 
     def onchange_uom(self, cursor, user, ids, uom_id, uom_po_id):
         if uom_id:
@@ -971,7 +930,7 @@ class product_product(osv.osv):
             'product.product': (lambda self, cr, uid, ids, c=None: ids, [], 10),
         }, select=True),
         'attribute_value_ids': fields.many2many('product.attribute.value', id1='prod_id', id2='att_id', string='Attributes', readonly=True, ondelete='restrict'),
-        'is_product_variant': fields.function( _is_product_variant_impl, type='boolean', string='Is product variant'),
+        'is_product_variant': fields.function( _is_product_variant_impl, type='boolean', string='Is a product variant'),
 
         # image: all image fields are base64 encoded and PIL-supported
         'image_variant': fields.binary("Variant Image",
@@ -1012,6 +971,9 @@ class product_product(osv.osv):
         # products due to ondelete='cascade'
         self.pool.get('product.template').unlink(cr, uid, unlink_product_tmpl_ids, context=context)
         return res
+
+    def onchange_type(self, cr, uid, ids, type):
+        return {}
 
     def onchange_uom(self, cursor, user, ids, uom_id, uom_po_id):
         if uom_id and uom_po_id:
@@ -1203,54 +1165,17 @@ class product_product(osv.osv):
 class product_packaging(osv.osv):
     _name = "product.packaging"
     _description = "Packaging"
-    _rec_name = 'barcode'
     _order = 'sequence'
     _columns = {
-        'sequence': fields.integer('Sequence', help="Gives the sequence order when displaying a list of packaging."),
-        'name' : fields.text('Description'),
+        'name' : fields.char('Packaging Type', required=True),
+        'sequence': fields.integer('Sequence', help="The first in the sequence is the default one."),
+        'product_tmpl_id': fields.many2one('product.template', string='Product'),
         'qty' : fields.float('Quantity by Package',
             help="The total number of products you can put by pallet or box."),
-        'ul' : fields.many2one('product.ul', 'Package Logistic Unit', required=True),
-        'ul_qty' : fields.integer('Package by layer', help='The number of packages by layer'),
-        'ul_container': fields.many2one('product.ul', 'Pallet Logistic Unit'),
-        'rows' : fields.integer('Number of Layers', required=True,
-            help='The number of layers on a pallet or box'),
-        'product_tmpl_id' : fields.many2one('product.template', 'Product', select=1, ondelete='cascade', required=True),
-        'barcode' : fields.char('Barcode', help="The Barcode of the package unit.", oldname="ean"),
-        'code' : fields.char('Code', help="The code of the transport unit."),
-        'weight': fields.float('Total Package Weight',
-            help='The weight of a full package, pallet or box.'),
     }
-
-    def name_get(self, cr, uid, ids, context=None):
-        if not len(ids):
-            return []
-        res = []
-        for pckg in self.browse(cr, uid, ids, context=context):
-            p_name = pckg.barcode and '[' + pckg.barcode + '] ' or ''
-            p_name += pckg.ul.name
-            res.append((pckg.id,p_name))
-        return res
-
-    def _get_1st_ul(self, cr, uid, context=None):
-        cr.execute('select id from product_ul order by id asc limit 1')
-        res = cr.fetchone()
-        return (res and res[0]) or False
-
     _defaults = {
-        'rows' : 3,
         'sequence' : 1,
-        'ul' : _get_1st_ul,
     }
-
-    def checksum(ean):
-        salt = '31' * 6 + '3'
-        sum = 0
-        for ean_part, salt_part in zip(ean, salt):
-            sum += int(ean_part) * int(salt_part)
-        return (10 - (sum % 10)) % 10
-    checksum = staticmethod(checksum)
-
 
 
 class product_supplierinfo(osv.osv):

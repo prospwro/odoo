@@ -17,7 +17,7 @@ class event(models.Model):
     website_message_ids = fields.One2many(
         'mail.message', 'res_id',
         domain=lambda self: [
-            '&', ('model', '=', self._name), ('type', '=', 'comment')
+            '&', ('model', '=', self._name), ('message_type', '=', 'comment')
         ],
         string='Website Messages',
         help="Website communication history",
@@ -33,7 +33,9 @@ class event(models.Model):
     def _default_hashtag(self):
         return re.sub("[- \\.\\(\\)\\@\\#\\&]+", "", self.env.user.company_id.name).lower()
 
-    show_menu = fields.Boolean('Dedicated Menu', compute='_get_show_menu', inverse='_set_show_menu')
+    show_menu = fields.Boolean('Dedicated Menu', compute='_get_show_menu', inverse='_set_show_menu',
+                               help="Creates menus Introduction, Location and Register on the page "
+                                    " of the event on the website.")
     menu_id = fields.Many2one('website.menu', 'Event Menu')
 
     @api.one
@@ -93,3 +95,13 @@ class event(models.Model):
         elif 'website_published' in init_values and not self.website_published:
             return 'website_event.mt_event_unpublished'
         return super(event, self)._track_subtype(init_values)
+
+    @api.multi
+    def action_open_badge_editor(self):
+        """ open the event badge editor : redirect to the report page of event badge report """
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_url',
+            'target': 'new',
+            'url': '/report/html/%s/%s' % ('event.event_event_report_template_badge', self.id),
+        }

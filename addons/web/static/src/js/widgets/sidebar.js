@@ -16,6 +16,7 @@ var Sidebar = Widget.extend({
     init: function(parent) {
         var self = this;
         this._super(parent);
+        this.view = this.getParent();
         this.sections = [
             { 'name' : 'print', 'label' : _t('Print'), },
             { 'name' : 'other', 'label' : _t('More'), }
@@ -120,7 +121,7 @@ var Sidebar = Widget.extend({
                 domain = $.Deferred().resolve(undefined);
             }
             if (ids.length === 0) {
-                new Dialog(this, { title: _t("Warning"), size: 'medium',}, $("<div />").text(_t("You must choose at least one record."))).open();
+                new Dialog(this, {title: _t("Warning"), size: 'medium', $content: $("<div/>").html(_t("You must choose at least one record."))}).open();
                 return false;
             }
             var dataset = self.getParent().dataset;
