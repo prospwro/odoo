@@ -83,7 +83,7 @@ Generating HTML in Python isn't very pleasant.
 The usual solution is templates_, pseudo-documents with placeholders and
 display logic. Odoo allows any Python templating system, but provides its
 own :ref:`QWeb <reference/qweb>` templating system which integrates with other
-Odoo features.
+features.
 
 Create a template and ensure the template file is registered in the
 ``__openerp__.py`` manifest, and alter the controller to use our template:
@@ -255,7 +255,7 @@ since "Carol" is not an integer, the route was ignored and no route could be
 found.
 
 Odoo provides an additional converter called ``model`` which provides records
-directly when given their id, let's use that and create a generic page for
+directly when given their id. Let's use this to create a generic page for
 teacher biographies:
 
 .. patch::
