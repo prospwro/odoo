@@ -5,7 +5,7 @@ var BarcodeParser = require('barcodes.BarcodeParser');
 var PosDB = require('point_of_sale.DB');
 var devices = require('point_of_sale.devices');
 var core = require('web.core');
-var Model = require('web.Model');
+var Model = require('web.DataModel');
 var session = require('web.session');
 var time = require('web.time');
 var utils = require('web.utils');
@@ -92,7 +92,6 @@ exports.PosModel = Backbone.Model.extend({
         });
     },
     after_load_server_data: function(){
-         this.barcode_reader.connect();
          this.load_orders();
          this.set_start_order();
          if(this.config.use_proxy){
@@ -169,6 +168,7 @@ exports.PosModel = Backbone.Model.extend({
         model:  'product.uom',
         fields: [],
         domain: null,
+        context: function(self){ return { active_test: false }; },
         loaded: function(self,units){
             self.units = units;
             var units_by_id = {};
@@ -287,7 +287,7 @@ exports.PosModel = Backbone.Model.extend({
         loaded: function(self, pricelists){ self.pricelist = pricelists[0]; },
     },{
         model: 'res.currency',
-        fields: ['symbol','position','rounding','accuracy'],
+        fields: ['name','symbol','position','rounding','accuracy'],
         ids:    function(self){ return [self.pricelist.currency_id[0]]; },
         loaded: function(self, currencies){
             self.currency = currencies[0];
@@ -315,7 +315,7 @@ exports.PosModel = Backbone.Model.extend({
     },{
         model:  'product.product',
         fields: ['display_name', 'list_price','price','pos_categ_id', 'taxes_id', 'barcode', 'default_code', 
-                 'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description',
+                 'to_weight', 'uom_id', 'description_sale', 'description',
                  'product_tmpl_id'],
         order:  ['sequence','name'],
         domain: [['sale_ok','=',true],['available_in_pos','=',true]],
@@ -1275,13 +1275,13 @@ exports.Orderline = Backbone.Model.extend({
             return base_amount >= 0 ? ret : ret * -1;
         }
         if ((tax.amount_type === 'percent' && !tax.price_include) || (tax.amount_type === 'division' && tax.price_include)){
-            return base_amount * tax.amount / 100;
+            return (base_amount * tax.amount / 100) * quantity;
         }
         if (tax.amount_type === 'percent' && tax.price_include){
-            return base_amount - (base_amount / (1 + tax.amount / 100));
+            return (base_amount - (base_amount / (1 + tax.amount / 100))) * quantity;
         }
         if (tax.amount_type === 'division' && !tax.price_include) {
-            return base_amount / (1 - tax.amount / 100) - base_amount;
+            return (base_amount / (1 - tax.amount / 100) - base_amount) * quantity;
         }
         return false;
     },
@@ -1721,6 +1721,10 @@ exports.Order = Backbone.Model.extend({
         this.select_orderline(this.get_last_orderline());
     },
     add_product: function(product, options){
+        if(this._printed){
+            this.destroy();
+            return this.pos.get_order().add_product(product, options);
+        }
         this.assert_editable();
         options = options || {};
         var attr = JSON.parse(JSON.stringify(product));
@@ -1826,9 +1830,7 @@ exports.Order = Backbone.Model.extend({
         }), 0), this.pos.currency.rounding);
     },
     get_total_with_tax: function() {
-        return round_pr(this.orderlines.reduce((function(sum, orderLine) {
-            return sum + orderLine.get_price_with_tax();
-        }), 0), this.pos.currency.rounding);
+        return this.get_total_without_tax() + this.get_total_tax();
     },
     get_total_without_tax: function() {
         return round_pr(this.orderlines.reduce((function(sum, orderLine) {

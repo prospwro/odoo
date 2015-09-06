@@ -6,7 +6,7 @@ var core = require('web.core');
 var FavoriteMenu = require('web.FavoriteMenu');
 var FilterMenu = require('web.FilterMenu');
 var GroupByMenu = require('web.GroupByMenu');
-var Model = require('web.Model');
+var Model = require('web.DataModel');
 var pyeval = require('web.pyeval');
 var search_inputs = require('web.search_inputs');
 var utils = require('web.utils');
@@ -370,6 +370,9 @@ var SearchView = Widget.extend(/** @lends instance.web.SearchView# */{
     init: function(parent, dataset, view_id, defaults, options) {
         this.options = _.defaults(options || {}, {
             hidden: false,
+            disable_filters: false,
+            disable_groupby: false,
+            disable_favorites: false,
             disable_custom_filters: false,
         });
         this._super(parent);
@@ -393,7 +396,7 @@ var SearchView = Widget.extend(/** @lends instance.web.SearchView# */{
     },    
     start: function() {
         if (this.headless) {
-            this.$el.hide();
+            this.do_hide();
         }
         this.toggle_visibility(false);
         this.$facets_container = this.$('div.oe_searchview_facets');
@@ -416,25 +419,29 @@ var SearchView = Widget.extend(/** @lends instance.web.SearchView# */{
         return this.title;
     },
     view_loaded: function (r) {
-        var custom_filters_ready;
+        var menu_defs = [];
         this.fields_view_get = r;
         this.view_id = this.view_id || r.view_id;
         this.prepare_search_inputs();
         if (this.$buttons) {
-
             var fields_def = new Model(this.dataset.model).call('fields_get', {
-                    context: this.dataset.context
+                    context: this.dataset.get_context()
                 });
 
-            this.groupby_menu = new GroupByMenu(this, this.groupbys, fields_def);
-            this.filter_menu = new FilterMenu(this, this.filters, fields_def);
-            this.favorite_menu = new FavoriteMenu(this, this.query, this.dataset.model, this.action_id);
-
-            this.filter_menu.appendTo(this.$buttons);
-            this.groupby_menu.appendTo(this.$buttons);
-            custom_filters_ready = this.favorite_menu.appendTo(this.$buttons);
+            if (!this.options.disable_filters) {
+                this.filter_menu = new FilterMenu(this, this.filters, fields_def);
+                menu_defs.push(this.filter_menu.appendTo(this.$buttons));
+            }
+            if (!this.options.disable_groupby) {
+                this.groupby_menu = new GroupByMenu(this, this.groupbys, fields_def);
+                menu_defs.push(this.groupby_menu.appendTo(this.$buttons));
+            }
+            if (!this.options.disable_favorites) {
+                this.favorite_menu = new FavoriteMenu(this, this.query, this.dataset.model, this.action_id);
+                menu_defs.push(this.favorite_menu.appendTo(this.$buttons));
+            }
         }
-        return $.when(custom_filters_ready).then(this.proxy('set_default_filters'));
+        return $.when.apply($, menu_defs).then(this.proxy('set_default_filters'));
     },
     set_default_filters: function () {
         var self = this,
@@ -510,7 +517,7 @@ var SearchView = Widget.extend(/** @lends instance.web.SearchView# */{
         };
     },
     toggle_visibility: function (is_visible) {
-        this.$el.toggle(!this.headless && is_visible);
+        this.do_toggle(!this.headless && is_visible);
         if (this.$buttons) {
             this.$buttons.toggle(!this.headless && is_visible && this.visible_filters);
         }
@@ -694,9 +701,16 @@ var SearchView = Widget.extend(/** @lends instance.web.SearchView# */{
                 current_group = [];
             }
             if (filter.item.tag === 'field') {
-                var attrs = filter.item.attrs,
-                    field = self.fields_view_get.fields[attrs.name],
-                    Obj = core.search_widgets_registry.get_any([attrs.widget, field.type]);
+                var attrs = filter.item.attrs;
+                var field = self.fields_view_get.fields[attrs.name];
+
+                // M2O combined with selection widget is pointless and broken in search views,
+                // but has been used in the past for unsupported hacks -> ignore it
+                if (field.type === "many2one" && attrs.widget === "selection") {
+                    attrs.widget = undefined;
+                }
+
+                var Obj = core.search_widgets_registry.get_any([attrs.widget, field.type]);
                 if (Obj) {
                     self.search_fields.push(new (Obj) (filter.item, field, self));
                 }

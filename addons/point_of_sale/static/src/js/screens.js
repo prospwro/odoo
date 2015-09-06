@@ -31,7 +31,7 @@ var PosBaseWidget = require('point_of_sale.BaseWidget');
 var gui = require('point_of_sale.gui');
 var models = require('point_of_sale.models');
 var core = require('web.core');
-var Model = require('web.Model');
+var Model = require('web.DataModel');
 var utils = require('web.utils');
 var formats = require('web.formats');
 
@@ -624,7 +624,7 @@ var ProductCategoriesWidget = PosBaseWidget.extend({
     },
 
     get_image_url: function(category){
-        return window.location.origin + '/web/binary/image?model=pos.category&field=image_medium&id='+category.id;
+        return window.location.origin + '/web/image?model=pos.category&field=image_medium&id='+category.id;
     },
 
     render_category: function( category, with_image ){
@@ -771,7 +771,7 @@ var ProductListWidget = PosBaseWidget.extend({
         this.renderElement();
     },
     get_product_image_url: function(product){
-        return window.location.origin + '/web/binary/image?model=product.product&field=image_medium&id='+product.id;
+        return window.location.origin + '/web/image?model=product.product&field=image_medium&id='+product.id;
     },
     replace: function($target){
         this.renderElement();
@@ -1109,7 +1109,7 @@ var ClientListScreenWidget = ScreenWidget.extend({
         }
     },
     partner_icon_url: function(id){
-        return '/web/binary/image?model=res.partner&id='+id+'&field=image_small';
+        return '/web/image?model=res.partner&id='+id+'&field=image_small';
     },
 
     // ui handle for the 'edit selected customer' action
@@ -1508,7 +1508,9 @@ var PaymentScreenWidget = ScreenWidget.extend({
             if (event.type === "keypress") {
                 if (event.keyCode === 13) { // Enter
                     self.validate_order();
-                } else if (event.keyCode === 46) { // Period
+                } else if ( event.keyCode === 190 || // Dot
+                            event.keyCode === 110 ||  // Decimal point (numpad)
+                            event.keyCode === 188 ) { // Comma
                     key = '.';
                 } else if (event.keyCode >= 48 && event.keyCode <= 57) { // Numbers
                     key = '' + (event.keyCode - 48);

@@ -82,11 +82,12 @@ var Dialog = Widget.extend({
             var $b = $(QWeb.render('WidgetButton', { widget : { string: text, node: { attrs: {'class': classes} }}}));
             $b.prop('disabled', b.disabled);
             $b.on('click', function(e) {
+                var click_def;
                 if(b.click) {
-                    b.click.call(self, e);
+                    click_def = b.click.call(self, e);
                 }
                 if(b.close) {
-                    self.close();
+                    $.when(click_def).always(self.close.bind(self));
                 }
             });
             self.$footer.append($b);
@@ -145,6 +146,22 @@ var Dialog = Widget.extend({
     }
 });
 
+// static method to open simple alert dialog
+Dialog.alert = function (owner, message, options) {
+    var buttons = [{
+        text: _t("Ok"),
+        close: true,
+        click: options && options.confirm_callback,
+    }];
+    return new Dialog(owner, _.extend({
+        size: 'medium',
+        buttons: buttons,
+        $content: $('<div>', {
+            text: message,
+        }),
+        title: _t("Alert"),
+    }, options)).open();
+};
 
 // static method to open simple confirm dialog
 Dialog.confirm = function (owner, message, options) {
@@ -167,6 +184,7 @@ Dialog.confirm = function (owner, message, options) {
         $content: $('<div>', {
             text: message,
         }),
+        title: _t("Confirmation"),
     }, options)).open();
 };
 

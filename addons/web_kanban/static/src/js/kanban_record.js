@@ -56,6 +56,8 @@ var KanbanRecord = Widget.extend({
             record: this.record,
             widget: this,
             read_only_mode: this.read_only_mode,
+            user_context: session.user_context,
+            formats: formats,
         };
         for (var p in this) {
             if (_.str.startsWith(p, 'kanban_')) {
@@ -94,7 +96,7 @@ var KanbanRecord = Widget.extend({
     transform_record: function(record) {
         var self = this;
         var new_record = {};
-        _.each(record, function(value, name) {
+        _.each(_.extend(_.object(_.keys(this.fields), []), record), function(value, name) {
             var r = _.clone(self.fields[name] || {});
             if ((r.type === 'date' || r.type === 'datetime') && value) {
                 r.raw_value = time.auto_str_to_date(value);
@@ -123,10 +125,12 @@ var KanbanRecord = Widget.extend({
         } else if (this.record[field] && ! this.record[field].value) {
             url = "/web/static/src/img/placeholder.png";
         } else {
-            id = JSON.stringify(id);
+            if (_.isArray(id)) { id = id[0]; }
+            if (!id) { id = undefined; }
             if (options.preview_image)
                 field = options.preview_image;
-            url = session.url('/web/binary/image', {model: model, field: field, id: id});
+            var unique = this.record.__last_update.value.replace(/[^0-9]/g, '');
+            url = session.url('/web/image', {model: model, field: field, id: id, unique: unique});
             if (cache !== undefined) {
                 // Set the cache duration in seconds.
                 url += '&cache=' + parseInt(cache, 10);

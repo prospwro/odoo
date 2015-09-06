@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from dateutil import relativedelta
 import random
 
+from openerp import _
 from openerp import tools
-from openerp import models, api, _
 from openerp import SUPERUSER_ID
 from openerp.exceptions import UserError
 from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp.tools.safe_eval import safe_eval as eval
-from openerp.tools import ustr
 from openerp.osv import osv, fields
 
 
@@ -22,6 +20,50 @@ class MassMailingTag(osv.Model):
 
     _columns = {
         'name': fields.char('Name', required=True),
+    }
+    _sql_constraints = [
+            ('name_uniq', 'unique (name)', "Tag name already exists !"),
+    ]
+
+class MassMailingList(osv.Model):
+    """Model of a contact list. """
+    _name = 'mail.mass_mailing.list'
+    _order = 'name'
+    _description = 'Mailing List'
+
+    def _get_contact_nbr(self, cr, uid, ids, name, arg, context=None):
+        result = dict.fromkeys(ids, 0)
+        Contacts = self.pool.get('mail.mass_mailing.contact')
+        for group in Contacts.read_group(cr, uid, [('list_id', 'in', ids), ('opt_out', '!=', True)], ['list_id'], ['list_id'], context=context):
+            result[group['list_id'][0]] = group['list_id_count']
+        return result
+
+    _columns = {
+        'name': fields.char('Mailing List', required=True),
+        'active': fields.boolean('Active'),
+        'create_date': fields.datetime('Creation Date'),
+        'contact_nbr': fields.function(
+            _get_contact_nbr, type='integer',
+            string='Number of Contacts',
+        ),
+        'popup_content': fields.html("Website Popup Content", translate=True, required=True, sanitize=False),
+        'popup_redirect_url': fields.char("Website Popup Redirect URL"),
+    }
+
+    def _get_default_popup_content(self, cr, uid, context=None):
+        return """<div class="modal-header text-center">
+    <h3 class="modal-title mt8">Odoo Presents</h3>
+</div>
+<div class="o_popup_message">
+    <font>7</font>
+    <strong>Business Hacks</strong>
+    <span> to<br/>boost your marketing</span>
+</div>
+<p class="o_message_paragraph">Join our Marketing newsletter and get <strong>this white paper instantly</strong></p>"""
+
+    _defaults = {
+        'active': True,
+        'popup_content': _get_default_popup_content,
     }
 
 
@@ -105,46 +147,6 @@ class MassMailingContact(osv.Model):
             self.write(cr, uid, [obj.id], {'message_bounce': obj.message_bounce + 1}, context=context)
 
 
-class MassMailingList(osv.Model):
-    """Model of a contact list. """
-    _name = 'mail.mass_mailing.list'
-    _order = 'name'
-    _description = 'Mailing List'
-
-    def _get_contact_nbr(self, cr, uid, ids, name, arg, context=None):
-        result = dict.fromkeys(ids, 0)
-        Contacts = self.pool.get('mail.mass_mailing.contact')
-        for group in Contacts.read_group(cr, uid, [('list_id', 'in', ids), ('opt_out', '!=', True)], ['list_id'], ['list_id'], context=context):
-            result[group['list_id'][0]] = group['list_id_count']
-        return result
-
-    _columns = {
-        'name': fields.char('Mailing List', required=True),
-        'create_date': fields.datetime('Creation Date'),
-        'contact_nbr': fields.function(
-            _get_contact_nbr, type='integer',
-            string='Number of Contacts',
-        ),
-        'popup_content': fields.html("Website Popup Content", translate=True, required=True, sanitize=False),
-        'popup_redirect_url': fields.char("Website Popup Redirect URL"),
-    }
-
-    def _get_default_popup_content(self, cr, uid, context=None):
-        return """<div class="o_popup_modal_header text-center">
-    <h3 class="o_popup_modal_title mt8">Odoo Presents</h3>
-</div>
-<div class="o_popup_message">
-    <font>7</font>
-    <strong>Business Hacks</strong>
-    <span> to<br/>boost your marketing</span>
-</div>
-<p class="o_message_paragraph">Join our Marketing newsletter and get <strong>this white paper instantly</strong></p>"""
-
-    _defaults = {
-        'popup_content': _get_default_popup_content,
-    }
-
-
 class MassMailingStage(osv.Model):
     """Stage for mass mailing campaigns. """
     _name = 'mail.mass_mailing.stage'
@@ -208,7 +210,7 @@ class MassMailingCampaign(osv.Model):
         cr.execute("""
             SELECT COUNT(DISTINCT(stats.id)) AS nb_mails, COUNT(DISTINCT(clicks.mail_stat_id)) AS nb_clicks, stats.mass_mailing_campaign_id AS id 
             FROM mail_mail_statistics AS stats
-            LEFT OUTER JOIN website_links_click AS clicks ON clicks.mail_stat_id = stats.id
+            LEFT OUTER JOIN link_tracker_click AS clicks ON clicks.mail_stat_id = stats.id
             WHERE stats.mass_mailing_campaign_id IN %s
             GROUP BY stats.mass_mailing_campaign_id
         """, (tuple(ids), ))
@@ -436,7 +438,7 @@ class MassMailing(osv.Model):
         cr.execute("""
             SELECT COUNT(DISTINCT(stats.id)) AS nb_mails, COUNT(DISTINCT(clicks.mail_stat_id)) AS nb_clicks, stats.mass_mailing_id AS id 
             FROM mail_mail_statistics AS stats
-            LEFT OUTER JOIN website_links_click AS clicks ON clicks.mail_stat_id = stats.id
+            LEFT OUTER JOIN link_tracker_click AS clicks ON clicks.mail_stat_id = stats.id
             WHERE stats.mass_mailing_id IN %s
             GROUP BY stats.mass_mailing_id
         """, (tuple(ids), ))
@@ -447,7 +449,7 @@ class MassMailing(osv.Model):
         return res
     def _get_next_departure(self, cr, uid, ids, name, arg, context=None):
         mass_mailings = self.browse(cr, uid, ids, context=context)
-        cron_next_call = self.pool.get('ir.model.data').xmlid_to_object(cr, uid, 'mass_mailing.ir_cron_mass_mailing_queue', context=context).nextcall
+        cron_next_call = self.pool.get('ir.model.data').xmlid_to_object(cr, SUPERUSER_ID, 'mass_mailing.ir_cron_mass_mailing_queue', context=context).nextcall
 
         result = {}
         for mass_mailing in mass_mailings:
@@ -475,11 +477,12 @@ class MassMailing(osv.Model):
 
     _columns = {
         'name': fields.char('Subject', required=True),
+        'active': fields.boolean('Active'),
         'email_from': fields.char('From', required=True),
         'create_date': fields.datetime('Creation Date'),
         'sent_date': fields.datetime('Sent Date', oldname='date', copy=False),
         'schedule_date': fields.datetime('Schedule in the Future'),
-        'body_html': fields.html('Body'),
+        'body_html': fields.html('Body', translate=True),
         'attachment_ids': fields.many2many(
             'ir.attachment', 'mass_mailing_ir_attachments_rel',
             'mass_mailing_id', 'attachment_id', 'Attachments'
@@ -583,7 +586,7 @@ class MassMailing(osv.Model):
 
     def mass_mailing_statistics_action(self, cr, uid, ids, context=None):
         res = self.pool['ir.actions.act_window'].for_xml_id(cr, uid, 'mass_mailing', 'action_view_mass_mailing_statistics', context=context)
-        link_click_ids = self.pool['website.links.click'].search(cr, uid, [('mass_mailing_id', 'in', ids)], context=context)
+        link_click_ids = self.pool['link.tracker.click'].search(cr, uid, [('mass_mailing_id', 'in', ids)], context=context)
         res['domain'] = [('id', 'in', link_click_ids)]
         return res
 
@@ -597,6 +600,7 @@ class MassMailing(osv.Model):
         return res
 
     _defaults = {
+        'active': True,
         'state': 'draft',
         'email_from': lambda self, cr, uid, ctx=None: self.pool['mail.message']._get_default_from(cr, uid, context=ctx),
         'reply_to': lambda self, cr, uid, ctx=None: self.pool['mail.message']._get_default_from(cr, uid, context=ctx),
@@ -796,7 +800,7 @@ class MassMailing(osv.Model):
             if utm_mixin.medium_id:
                 vals['medium_id'] = utm_mixin.medium_id.id
 
-            res[mass_mailing.id] = self.pool['website.links'].convert_links(cr, uid, html, vals, blacklist=['/unsubscribe_from_list'], context=context)
+            res[mass_mailing.id] = self.pool['link.tracker'].convert_links(cr, uid, html, vals, blacklist=['/unsubscribe_from_list'], context=context)
 
         return res
 

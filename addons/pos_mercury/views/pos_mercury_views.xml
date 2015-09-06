@@ -30,6 +30,9 @@
                                 For quickly handling orders: just swiping a credit card when on the payment screen
                                 (without having pressed anything else) will charge the full amount of the order to
                                 the card.
+                            </p><p>
+                                If you don't already have a Mercury account, contact Mercury at +1 (800) 846-4472
+                                to create one.
                             </p>
                         </div>
                         <group col="2">
@@ -74,19 +77,6 @@
                     <field name="pos_mercury_config_id"/>
                 </xpath>
             </field>
-        </record>
-
-        <record id="view_bank_statements_pos_tree" model="ir.ui.view">
-          <field name="name">POS bank statements</field>
-          <field name="model">account.bank.statement</field>
-          <field name="inherit_id" ref="account.view_bank_statement_form"/>
-          <field name="arch" type="xml">
-            <xpath expr="//field[@name='amount']" position="before">
-              <field name="mercury_prefixed_card_number"/>
-              <field name="mercury_card_brand"/>
-              <field name="mercury_card_owner_name"/>
-            </xpath>
-          </field>
         </record>
 
         <record id="view_pos_order" model="ir.ui.view">

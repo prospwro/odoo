@@ -8,7 +8,7 @@ var core = require('web.core');
 var crash_manager = require('web.crash_manager');
 var formats = require('web.formats');
 var framework = require('web.framework');
-var Model = require('web.Model');
+var Model = require('web.DataModel');
 var session = require('web.session');
 var Sidebar = require('web.Sidebar');
 var utils = require('web.utils');
@@ -21,6 +21,7 @@ var total = _t("Total");
 
 var PivotView = View.extend({
     template: 'PivotView',
+    icon: 'fa-table',
     display_name: _lt('Pivot'),
     view_type: 'pivot',
     events: {
@@ -117,7 +118,7 @@ var PivotView = View.extend({
      **/
     render_sidebar: function($node) {
         if (this.xlwt_installed && $node && this.options.sidebar) {
-            this.sidebar = new Sidebar(this);
+            this.sidebar = new Sidebar(this, {editable: this.is_action_enabled('edit')});
             this.sidebar.add_items('other', [{
                 label: _t("Download xls"),
                 callback: this.download_table.bind(this),
@@ -209,7 +210,6 @@ var PivotView = View.extend({
         this.do_push_state({});
         this.data_loaded.done(function () {
             self.display_table(); 
-            self.$el.show();
         });
         return this._super();
     },

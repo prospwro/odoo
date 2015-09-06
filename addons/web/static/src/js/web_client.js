@@ -8,23 +8,33 @@ var data = require('web.data');
 var framework = require('web.framework');
 var Loading = require('web.Loading');
 var Menu = require('web.Menu');
-var Model = require('web.Model');
-var Notification = require('web.Notification');
+var Model = require('web.DataModel');
+var NotificationManager = require('web.notification').NotificationManager;
 var session = require('web.session');
 var SystrayMenu = require('web.SystrayMenu');
 var UserMenu = require('web.UserMenu');
 var utils = require('web.utils');
 var Widget = require('web.Widget');
-var BarcodeEvents = require('web.BarcodeEvents');
 
 var QWeb = core.qweb;
 var _t = core._t;
-
 
 var WebClient = Widget.extend({
     events: {
         'click .oe_logo_edit_admin': 'logo_edit',
         'click .oe_logo img': 'on_logo_click',
+    },
+    custom_events: {
+        'notification': function (e) {
+            if(this.notification_manager) {
+                this.notification_manager.notify(e.data.title, e.data.message, e.data.sticky);
+            }
+        },
+        'warning': function (e) {
+            if(this.notification_manager) {
+                this.notification_manager.warn(e.data.title, e.data.message, e.data.sticky);
+            }
+        },
     },
 
     init: function(parent, client_options) {
@@ -38,7 +48,6 @@ var WebClient = Widget.extend({
         this.menu_dm = new utils.DropMisordered();
         this.action_mutex = new utils.Mutex();
         this.set('title_part', {"zopenerp": "Odoo"});
-        this.barcode_events = new BarcodeEvents(this);
     },
     start: function() {
         var self = this;
@@ -110,16 +119,13 @@ var WebClient = Widget.extend({
     show_common: function() {
         var self = this;
         session.on('error', crash_manager, crash_manager.rpc_error);
-        self.notification = new Notification(this);
-        self.notification.appendTo(self.$('.openerp'));
+        self.notification_manager = new NotificationManager(this);
+        self.notification_manager.appendTo(self.$('.openerp'));
         self.loading = new Loading(self);
         self.loading.appendTo(self.$('.openerp_webclient_container'));
         self.action_manager = new ActionManager(self);
         self.action_manager.replace(self.$('.oe_application'));
 
-        core.bus.on('display_notification_warning', this, function (title, message) {
-            self.notification.warn(title, message);
-        });
         window.onerror = function (message, file, line, col, error) {
             var traceback = error ? error.stack : '';
             crash_manager.show_error({
@@ -250,14 +256,6 @@ var WebClient = Widget.extend({
             session.load_modules(true).then(
                 self.menu.proxy('do_reload')); });
     },
-    do_notify: function() {
-        var n = this.notification;
-        return n.notify.apply(n, arguments);
-    },
-    do_warn: function() {
-        var n = this.notification;
-        return n.warn.apply(n, arguments);
-    },
     on_logout: function() {
         var self = this;
         this.clear_uncommitted_changes().then(function() {
@@ -317,7 +315,7 @@ var WebClient = Widget.extend({
                 return self.action_mutex.exec(function() {
                     if (options.needaction) {
                         result.context = new data.CompoundContext(result.context, {
-                            search_default_message_unread: true,
+                            search_default_message_needaction: true,
                             search_disable_custom_filters: true,
                         });
                     }
@@ -344,9 +342,6 @@ var WebClient = Widget.extend({
         this.$('.oe_webclient').toggleClass(
             'oe_content_full_screen', fullscreen);
     },
-    get_barcode_events: function() {
-        return this.barcode_events;
-    }
 });
 
 return WebClient;

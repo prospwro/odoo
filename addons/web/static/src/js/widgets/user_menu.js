@@ -4,7 +4,7 @@ odoo.define('web.UserMenu', function (require) {
 var core = require('web.core');
 var Dialog = require('web.Dialog');
 var framework = require('web.framework');
-var Model = require('web.Model');
+var Model = require('web.DataModel');
 var session = require('web.session');
 var Widget = require('web.Widget');
 
@@ -47,7 +47,7 @@ var SystrayMenu = Widget.extend({
                 if (!session.debug) {
                     topbar_name = _.str.sprintf("%s (%s)", topbar_name, session.db);
                 }
-                var avatar_src = session.url('/web/binary/image', {model:'res.users', field: 'image_small', id: session.uid});
+                var avatar_src = session.url('/web/image', {model:'res.users', field: 'image_small', id: session.uid});
                 $avatar.attr('src', avatar_src);
 
                 core.bus.trigger('resize');  // Re-trigger the reflow logic
